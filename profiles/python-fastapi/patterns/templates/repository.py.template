@@ -1,0 +1,54 @@
+"""Repository for ${entity} data access."""
+from uuid import UUID
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.db.models.${domain} import ${Entity}
+
+
+class ${Entity}Repository:
+    """Repository for ${Entity} data access."""
+
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
+
+    async def get_by_id(self, id: UUID) -> ${Entity} | None:
+        """Get ${entity} by ID."""
+        query = select(${Entity}).where(${Entity}.id == id)
+        result = await self.session.execute(query)
+        return result.scalars().first()
+
+    async def get_all(
+        self,
+        *,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[${Entity}]:
+        """Get all ${entities} with pagination."""
+        query = (
+            select(${Entity})
+            .order_by(${Entity}.created_at.desc())
+            .limit(limit)
+            .offset(offset)
+        )
+        result = await self.session.execute(query)
+        return list(result.scalars().all())
+
+    async def create(self, entity: ${Entity}) -> ${Entity}:
+        """Create a new ${entity}."""
+        self.session.add(entity)
+        await self.session.flush()
+        await self.session.refresh(entity)
+        return entity
+
+    async def update(self, entity: ${Entity}) -> ${Entity}:
+        """Update an existing ${entity}."""
+        await self.session.flush()
+        await self.session.refresh(entity)
+        return entity
+
+    async def delete(self, entity: ${Entity}) -> None:
+        """Delete a ${entity}."""
+        await self.session.delete(entity)
+        await self.session.flush()

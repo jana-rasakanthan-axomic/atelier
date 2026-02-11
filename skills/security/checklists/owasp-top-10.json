@@ -1,0 +1,306 @@
+{
+  "name": "OWASP Top 10 (2021)",
+  "version": "2021",
+  "categories": [
+    {
+      "id": "A01",
+      "name": "Broken Access Control",
+      "description": "Restrictions on authenticated users not properly enforced",
+      "checks": [
+        {
+          "id": "A01.1",
+          "check": "Access control enforced server-side",
+          "severity": "critical"
+        },
+        {
+          "id": "A01.2",
+          "check": "Deny by default (except public resources)",
+          "severity": "critical"
+        },
+        {
+          "id": "A01.3",
+          "check": "CORS properly configured",
+          "severity": "high"
+        },
+        {
+          "id": "A01.4",
+          "check": "Record ownership enforced",
+          "severity": "critical"
+        },
+        {
+          "id": "A01.5",
+          "check": "Rate limiting on API endpoints",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "A02",
+      "name": "Cryptographic Failures",
+      "description": "Failures related to cryptography leading to exposure",
+      "checks": [
+        {
+          "id": "A02.1",
+          "check": "Data classified (PII, sensitive, public)",
+          "severity": "high"
+        },
+        {
+          "id": "A02.2",
+          "check": "Sensitive data encrypted at rest",
+          "severity": "critical"
+        },
+        {
+          "id": "A02.3",
+          "check": "Data encrypted in transit (TLS)",
+          "severity": "critical"
+        },
+        {
+          "id": "A02.4",
+          "check": "Strong algorithms used (no MD5, SHA1, DES)",
+          "severity": "critical"
+        },
+        {
+          "id": "A02.5",
+          "check": "Passwords hashed with bcrypt/Argon2",
+          "severity": "critical"
+        },
+        {
+          "id": "A02.6",
+          "check": "Keys managed securely (not hardcoded)",
+          "severity": "critical"
+        }
+      ]
+    },
+    {
+      "id": "A03",
+      "name": "Injection",
+      "description": "User-supplied data not validated/sanitized",
+      "checks": [
+        {
+          "id": "A03.1",
+          "check": "Parameterized queries for database access",
+          "severity": "critical"
+        },
+        {
+          "id": "A03.2",
+          "check": "Input validation (type, length, format)",
+          "severity": "high"
+        },
+        {
+          "id": "A03.3",
+          "check": "Output encoding for context",
+          "severity": "high"
+        },
+        {
+          "id": "A03.4",
+          "check": "No dynamic queries with user input",
+          "severity": "critical"
+        },
+        {
+          "id": "A03.5",
+          "check": "ORM used for database operations",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "A04",
+      "name": "Insecure Design",
+      "description": "Missing or ineffective security controls",
+      "checks": [
+        {
+          "id": "A04.1",
+          "check": "Threat modeling performed",
+          "severity": "high"
+        },
+        {
+          "id": "A04.2",
+          "check": "Security requirements documented",
+          "severity": "medium"
+        },
+        {
+          "id": "A04.3",
+          "check": "Secure design patterns used",
+          "severity": "medium"
+        },
+        {
+          "id": "A04.4",
+          "check": "Business logic validated server-side",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "A05",
+      "name": "Security Misconfiguration",
+      "description": "Missing hardening or insecure default configurations",
+      "checks": [
+        {
+          "id": "A05.1",
+          "check": "Security headers configured (CSP, HSTS, etc.)",
+          "severity": "medium"
+        },
+        {
+          "id": "A05.2",
+          "check": "Debug mode disabled in production",
+          "severity": "critical"
+        },
+        {
+          "id": "A05.3",
+          "check": "Default credentials changed",
+          "severity": "critical"
+        },
+        {
+          "id": "A05.4",
+          "check": "Unnecessary features disabled",
+          "severity": "medium"
+        },
+        {
+          "id": "A05.5",
+          "check": "Error messages don't expose sensitive info",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "A06",
+      "name": "Vulnerable and Outdated Components",
+      "description": "Using components with known vulnerabilities",
+      "checks": [
+        {
+          "id": "A06.1",
+          "check": "Dependency versions tracked",
+          "severity": "medium"
+        },
+        {
+          "id": "A06.2",
+          "check": "Vulnerability scanning in CI/CD",
+          "severity": "high"
+        },
+        {
+          "id": "A06.3",
+          "check": "No components with known critical CVEs",
+          "severity": "critical"
+        },
+        {
+          "id": "A06.4",
+          "check": "Regular dependency updates",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "A07",
+      "name": "Identification and Authentication Failures",
+      "description": "Confirmation of user identity and session management issues",
+      "checks": [
+        {
+          "id": "A07.1",
+          "check": "Strong password policy enforced",
+          "severity": "high"
+        },
+        {
+          "id": "A07.2",
+          "check": "Brute force protection",
+          "severity": "high"
+        },
+        {
+          "id": "A07.3",
+          "check": "MFA available",
+          "severity": "medium"
+        },
+        {
+          "id": "A07.4",
+          "check": "Session IDs not exposed in URL",
+          "severity": "high"
+        },
+        {
+          "id": "A07.5",
+          "check": "Sessions invalidated on logout",
+          "severity": "high"
+        },
+        {
+          "id": "A07.6",
+          "check": "Session timeout implemented",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "A08",
+      "name": "Software and Data Integrity Failures",
+      "description": "Code and infrastructure without integrity verification",
+      "checks": [
+        {
+          "id": "A08.1",
+          "check": "Digital signatures verify updates",
+          "severity": "high"
+        },
+        {
+          "id": "A08.2",
+          "check": "CI/CD pipeline secured",
+          "severity": "high"
+        },
+        {
+          "id": "A08.3",
+          "check": "Serialized data validated",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "A09",
+      "name": "Security Logging and Monitoring Failures",
+      "description": "Insufficient logging, detection, and response",
+      "checks": [
+        {
+          "id": "A09.1",
+          "check": "Login failures logged",
+          "severity": "high"
+        },
+        {
+          "id": "A09.2",
+          "check": "Access control failures logged",
+          "severity": "high"
+        },
+        {
+          "id": "A09.3",
+          "check": "Logs protected from tampering",
+          "severity": "medium"
+        },
+        {
+          "id": "A09.4",
+          "check": "Alerting for suspicious activity",
+          "severity": "medium"
+        },
+        {
+          "id": "A09.5",
+          "check": "Logs don't contain sensitive data",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "A10",
+      "name": "Server-Side Request Forgery (SSRF)",
+      "description": "Fetching remote resources without validating user-supplied URLs",
+      "checks": [
+        {
+          "id": "A10.1",
+          "check": "URL validation for user-supplied URLs",
+          "severity": "high"
+        },
+        {
+          "id": "A10.2",
+          "check": "Allowlist for remote resources",
+          "severity": "high"
+        },
+        {
+          "id": "A10.3",
+          "check": "No raw HTTP responses returned",
+          "severity": "medium"
+        }
+      ]
+    }
+  ]
+}

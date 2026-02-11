@@ -1,0 +1,126 @@
+"""Service for ${entity} business logic."""
+from uuid import UUID, uuid4
+
+from src.db.uow import UnitOfWork
+from src.db.models.${domain} import ${Entity}
+from src.api.${domain}.schemas import Create${Entity}Request, Update${Entity}Request
+from src.api.${domain}.exceptions import ${Entity}NotFoundError, ${Entity}ValidationError
+
+
+class ${Entity}Service:
+    """Service for ${Entity} business logic."""
+
+    def __init__(self, uow: UnitOfWork) -> None:
+        self.uow = uow
+
+    async def get_by_id(self, id: UUID) -> ${Entity}:
+        """Get ${entity} by ID.
+
+        Args:
+            id: The ${entity} ID.
+
+        Returns:
+            The ${entity}.
+
+        Raises:
+            ${Entity}NotFoundError: If ${entity} not found.
+        """
+        entity = await self.uow.${entity}_repo.get_by_id(id)
+        if entity is None:
+            raise ${Entity}NotFoundError(id=id)
+        return entity
+
+    async def get_all(
+        self,
+        *,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> list[${Entity}]:
+        """Get all ${entities} with pagination.
+
+        Args:
+            limit: Maximum number of results.
+            offset: Number of results to skip.
+
+        Returns:
+            List of ${entities}.
+        """
+        return await self.uow.${entity}_repo.get_all(limit=limit, offset=offset)
+
+    async def create(self, request: Create${Entity}Request) -> ${Entity}:
+        """Create a new ${entity}.
+
+        Args:
+            request: The create request.
+
+        Returns:
+            The created ${entity}.
+
+        Raises:
+            ${Entity}ValidationError: If validation fails.
+        """
+        self._validate_create(request)
+
+        entity = ${Entity}(
+            id=uuid4(),
+            **request.model_dump(),
+        )
+
+        entity = await self.uow.${entity}_repo.create(entity)
+        await self.uow.commit()
+
+        return entity
+
+    async def update(
+        self,
+        id: UUID,
+        request: Update${Entity}Request,
+    ) -> ${Entity}:
+        """Update an existing ${entity}.
+
+        Args:
+            id: The ${entity} ID.
+            request: The update request.
+
+        Returns:
+            The updated ${entity}.
+
+        Raises:
+            ${Entity}NotFoundError: If ${entity} not found.
+            ${Entity}ValidationError: If validation fails.
+        """
+        entity = await self.get_by_id(id)
+        self._validate_update(entity, request)
+
+        for field, value in request.model_dump(exclude_unset=True).items():
+            setattr(entity, field, value)
+
+        entity = await self.uow.${entity}_repo.update(entity)
+        await self.uow.commit()
+
+        return entity
+
+    async def delete(self, id: UUID) -> None:
+        """Delete a ${entity}.
+
+        Args:
+            id: The ${entity} ID.
+
+        Raises:
+            ${Entity}NotFoundError: If ${entity} not found.
+        """
+        entity = await self.get_by_id(id)
+        await self.uow.${entity}_repo.delete(entity)
+        await self.uow.commit()
+
+    def _validate_create(self, request: Create${Entity}Request) -> None:
+        """Validate create request."""
+        pass
+
+    def _validate_update(
+        self,
+        entity: ${Entity},
+        request: Update${Entity}Request,
+    ) -> None:
+        """Validate update request against current state."""
+        pass

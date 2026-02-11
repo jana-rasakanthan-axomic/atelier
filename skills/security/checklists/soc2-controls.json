@@ -1,0 +1,239 @@
+{
+  "name": "SOC 2 Type II Controls",
+  "framework": "AICPA Trust Services Criteria",
+  "categories": [
+    {
+      "id": "CC1",
+      "name": "Control Environment",
+      "description": "Commitment to integrity and ethical values",
+      "controls": [
+        {
+          "id": "CC1.1",
+          "control": "Security policies and procedures documented",
+          "evidence": ["Security policy document", "Policy acknowledgment records"]
+        },
+        {
+          "id": "CC1.2",
+          "control": "Board oversight of security",
+          "evidence": ["Board meeting minutes", "Security committee charter"]
+        },
+        {
+          "id": "CC1.3",
+          "control": "Management commitment to competence",
+          "evidence": ["Job descriptions", "Training records"]
+        },
+        {
+          "id": "CC1.4",
+          "control": "Background checks for employees",
+          "evidence": ["Background check policy", "Completed checks"]
+        }
+      ]
+    },
+    {
+      "id": "CC2",
+      "name": "Communication and Information",
+      "description": "Information required to achieve objectives",
+      "controls": [
+        {
+          "id": "CC2.1",
+          "control": "Security awareness training provided",
+          "evidence": ["Training materials", "Completion records"]
+        },
+        {
+          "id": "CC2.2",
+          "control": "External communications regarding security",
+          "evidence": ["Security page", "Incident disclosure process"]
+        },
+        {
+          "id": "CC2.3",
+          "control": "Internal security reporting channels",
+          "evidence": ["Reporting procedures", "Incident logs"]
+        }
+      ]
+    },
+    {
+      "id": "CC3",
+      "name": "Risk Assessment",
+      "description": "Identification and analysis of risks",
+      "controls": [
+        {
+          "id": "CC3.1",
+          "control": "Risk assessment process defined",
+          "evidence": ["Risk assessment methodology", "Risk register"]
+        },
+        {
+          "id": "CC3.2",
+          "control": "Fraud risk considered",
+          "evidence": ["Fraud risk assessment"]
+        },
+        {
+          "id": "CC3.3",
+          "control": "Changes assessed for impact",
+          "evidence": ["Change management process"]
+        },
+        {
+          "id": "CC3.4",
+          "control": "Vulnerability management program",
+          "evidence": ["Scan reports", "Remediation records"]
+        }
+      ]
+    },
+    {
+      "id": "CC4",
+      "name": "Monitoring Activities",
+      "description": "Selection and development of monitoring",
+      "controls": [
+        {
+          "id": "CC4.1",
+          "control": "Security monitoring implemented",
+          "evidence": ["Monitoring tools", "Alert configurations"]
+        },
+        {
+          "id": "CC4.2",
+          "control": "Deficiencies evaluated and corrected",
+          "evidence": ["Issue tracking", "Remediation records"]
+        }
+      ]
+    },
+    {
+      "id": "CC5",
+      "name": "Control Activities",
+      "description": "Actions to mitigate risks",
+      "controls": [
+        {
+          "id": "CC5.1",
+          "control": "Segregation of duties implemented",
+          "evidence": ["Role definitions", "Access reviews"]
+        },
+        {
+          "id": "CC5.2",
+          "control": "Automated controls in place",
+          "evidence": ["Automated control documentation"]
+        },
+        {
+          "id": "CC5.3",
+          "control": "Policies deployed to systems",
+          "evidence": ["Configuration standards", "Deployment records"]
+        }
+      ]
+    },
+    {
+      "id": "CC6",
+      "name": "Logical and Physical Access Controls",
+      "description": "Security of infrastructure and software",
+      "controls": [
+        {
+          "id": "CC6.1",
+          "control": "Logical access security software implemented",
+          "evidence": ["IAM configuration", "MFA records"]
+        },
+        {
+          "id": "CC6.2",
+          "control": "New access authorized before provisioning",
+          "evidence": ["Access request process", "Approval records"]
+        },
+        {
+          "id": "CC6.3",
+          "control": "Access removed when no longer required",
+          "evidence": ["Offboarding process", "Access removal records"]
+        },
+        {
+          "id": "CC6.4",
+          "control": "Access reviewed periodically",
+          "evidence": ["Access review schedule", "Review records"]
+        },
+        {
+          "id": "CC6.5",
+          "control": "Physical access restricted",
+          "evidence": ["Physical security policy", "Access logs"]
+        },
+        {
+          "id": "CC6.6",
+          "control": "Encryption protects data in transit",
+          "evidence": ["TLS configuration", "Certificate records"]
+        },
+        {
+          "id": "CC6.7",
+          "control": "Encryption protects data at rest",
+          "evidence": ["Encryption configuration", "Key management"]
+        },
+        {
+          "id": "CC6.8",
+          "control": "Data destruction procedures implemented",
+          "evidence": ["Data destruction policy", "Destruction records"]
+        }
+      ]
+    },
+    {
+      "id": "CC7",
+      "name": "System Operations",
+      "description": "Detection and response to system events",
+      "controls": [
+        {
+          "id": "CC7.1",
+          "control": "Configuration management process",
+          "evidence": ["Configuration standards", "Baseline documentation"]
+        },
+        {
+          "id": "CC7.2",
+          "control": "Security events detected and analyzed",
+          "evidence": ["SIEM configuration", "Incident logs"]
+        },
+        {
+          "id": "CC7.3",
+          "control": "Incident response process defined",
+          "evidence": ["IR plan", "IR exercise records"]
+        },
+        {
+          "id": "CC7.4",
+          "control": "Recovery procedures tested",
+          "evidence": ["DR plan", "Test results"]
+        },
+        {
+          "id": "CC7.5",
+          "control": "Backup procedures implemented",
+          "evidence": ["Backup configuration", "Restore tests"]
+        }
+      ]
+    },
+    {
+      "id": "CC8",
+      "name": "Change Management",
+      "description": "Changes to infrastructure and software",
+      "controls": [
+        {
+          "id": "CC8.1",
+          "control": "Changes authorized prior to implementation",
+          "evidence": ["Change management process", "Approval records"]
+        },
+        {
+          "id": "CC8.2",
+          "control": "Changes tested before deployment",
+          "evidence": ["Test records", "QA sign-offs"]
+        },
+        {
+          "id": "CC8.3",
+          "control": "Emergency change process defined",
+          "evidence": ["Emergency change procedure"]
+        }
+      ]
+    },
+    {
+      "id": "CC9",
+      "name": "Risk Mitigation",
+      "description": "Risk mitigation through business processes",
+      "controls": [
+        {
+          "id": "CC9.1",
+          "control": "Vendor risk management process",
+          "evidence": ["Vendor assessment process", "Due diligence records"]
+        },
+        {
+          "id": "CC9.2",
+          "control": "Business continuity plan maintained",
+          "evidence": ["BCP document", "BCP test records"]
+        }
+      ]
+    }
+  ]
+}

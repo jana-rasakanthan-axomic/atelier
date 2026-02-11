@@ -1,0 +1,265 @@
+{
+  "name": "GDPR Compliance Checklist",
+  "regulation": "EU General Data Protection Regulation",
+  "categories": [
+    {
+      "id": "data-collection",
+      "name": "Data Collection & Processing",
+      "articles": ["Art. 5", "Art. 6", "Art. 7"],
+      "checks": [
+        {
+          "id": "DC.1",
+          "check": "Legal basis documented for each data processing activity",
+          "article": "Art. 6",
+          "severity": "critical"
+        },
+        {
+          "id": "DC.2",
+          "check": "Consent obtained before processing (where required)",
+          "article": "Art. 7",
+          "severity": "critical"
+        },
+        {
+          "id": "DC.3",
+          "check": "Consent is freely given, specific, informed, unambiguous",
+          "article": "Art. 7",
+          "severity": "critical"
+        },
+        {
+          "id": "DC.4",
+          "check": "Data minimization - only necessary data collected",
+          "article": "Art. 5(1)(c)",
+          "severity": "high"
+        },
+        {
+          "id": "DC.5",
+          "check": "Purpose limitation - data used only for stated purpose",
+          "article": "Art. 5(1)(b)",
+          "severity": "high"
+        },
+        {
+          "id": "DC.6",
+          "check": "Storage limitation - retention periods defined",
+          "article": "Art. 5(1)(e)",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "data-subject-rights",
+      "name": "Data Subject Rights",
+      "articles": ["Art. 15-22"],
+      "checks": [
+        {
+          "id": "DSR.1",
+          "check": "Right to access - users can request their data",
+          "article": "Art. 15",
+          "severity": "critical"
+        },
+        {
+          "id": "DSR.2",
+          "check": "Right to rectification - users can correct data",
+          "article": "Art. 16",
+          "severity": "critical"
+        },
+        {
+          "id": "DSR.3",
+          "check": "Right to erasure - users can delete their data",
+          "article": "Art. 17",
+          "severity": "critical"
+        },
+        {
+          "id": "DSR.4",
+          "check": "Right to data portability - export in machine-readable format",
+          "article": "Art. 20",
+          "severity": "high"
+        },
+        {
+          "id": "DSR.5",
+          "check": "Right to object - users can opt-out of processing",
+          "article": "Art. 21",
+          "severity": "high"
+        },
+        {
+          "id": "DSR.6",
+          "check": "Right to restrict processing",
+          "article": "Art. 18",
+          "severity": "medium"
+        },
+        {
+          "id": "DSR.7",
+          "check": "Requests responded to within 30 days",
+          "article": "Art. 12(3)",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "name": "Security Measures",
+      "articles": ["Art. 32"],
+      "checks": [
+        {
+          "id": "SEC.1",
+          "check": "Personal data encrypted at rest",
+          "article": "Art. 32(1)(a)",
+          "severity": "critical"
+        },
+        {
+          "id": "SEC.2",
+          "check": "Personal data encrypted in transit",
+          "article": "Art. 32(1)(a)",
+          "severity": "critical"
+        },
+        {
+          "id": "SEC.3",
+          "check": "Access control limits who can access personal data",
+          "article": "Art. 32(1)(b)",
+          "severity": "critical"
+        },
+        {
+          "id": "SEC.4",
+          "check": "Ability to restore data availability after incident",
+          "article": "Art. 32(1)(c)",
+          "severity": "high"
+        },
+        {
+          "id": "SEC.5",
+          "check": "Regular testing of security measures",
+          "article": "Art. 32(1)(d)",
+          "severity": "high"
+        },
+        {
+          "id": "SEC.6",
+          "check": "Pseudonymization used where appropriate",
+          "article": "Art. 32(1)(a)",
+          "severity": "medium"
+        }
+      ]
+    },
+    {
+      "id": "breach-notification",
+      "name": "Data Breach Notification",
+      "articles": ["Art. 33", "Art. 34"],
+      "checks": [
+        {
+          "id": "BN.1",
+          "check": "Breach notification process documented",
+          "article": "Art. 33",
+          "severity": "critical"
+        },
+        {
+          "id": "BN.2",
+          "check": "Supervisory authority notified within 72 hours",
+          "article": "Art. 33(1)",
+          "severity": "critical"
+        },
+        {
+          "id": "BN.3",
+          "check": "Affected individuals notified for high-risk breaches",
+          "article": "Art. 34",
+          "severity": "critical"
+        },
+        {
+          "id": "BN.4",
+          "check": "Breach register maintained",
+          "article": "Art. 33(5)",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "privacy-by-design",
+      "name": "Privacy by Design",
+      "articles": ["Art. 25"],
+      "checks": [
+        {
+          "id": "PBD.1",
+          "check": "Privacy considered from design phase",
+          "article": "Art. 25(1)",
+          "severity": "high"
+        },
+        {
+          "id": "PBD.2",
+          "check": "Privacy-friendly defaults (opt-in, not opt-out)",
+          "article": "Art. 25(2)",
+          "severity": "high"
+        },
+        {
+          "id": "PBD.3",
+          "check": "Data protection impact assessment for high-risk processing",
+          "article": "Art. 35",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "transparency",
+      "name": "Transparency & Information",
+      "articles": ["Art. 12", "Art. 13", "Art. 14"],
+      "checks": [
+        {
+          "id": "TR.1",
+          "check": "Privacy policy published and accessible",
+          "article": "Art. 12",
+          "severity": "critical"
+        },
+        {
+          "id": "TR.2",
+          "check": "Identity of data controller provided",
+          "article": "Art. 13(1)(a)",
+          "severity": "critical"
+        },
+        {
+          "id": "TR.3",
+          "check": "Purpose of processing explained",
+          "article": "Art. 13(1)(c)",
+          "severity": "critical"
+        },
+        {
+          "id": "TR.4",
+          "check": "Data subject rights explained",
+          "article": "Art. 13(2)(b)",
+          "severity": "high"
+        },
+        {
+          "id": "TR.5",
+          "check": "Information provided in clear, plain language",
+          "article": "Art. 12(1)",
+          "severity": "high"
+        }
+      ]
+    },
+    {
+      "id": "third-parties",
+      "name": "Third Party Data Sharing",
+      "articles": ["Art. 28", "Art. 44-49"],
+      "checks": [
+        {
+          "id": "TP.1",
+          "check": "Data Processing Agreements with all processors",
+          "article": "Art. 28",
+          "severity": "critical"
+        },
+        {
+          "id": "TP.2",
+          "check": "Processors provide sufficient security guarantees",
+          "article": "Art. 28(1)",
+          "severity": "high"
+        },
+        {
+          "id": "TP.3",
+          "check": "Cross-border transfers have legal basis",
+          "article": "Art. 44",
+          "severity": "critical"
+        },
+        {
+          "id": "TP.4",
+          "check": "Standard Contractual Clauses in place for non-EU transfers",
+          "article": "Art. 46(2)(c)",
+          "severity": "critical"
+        }
+      ]
+    }
+  ]
+}

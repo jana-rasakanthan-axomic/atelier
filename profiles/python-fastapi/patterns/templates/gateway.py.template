@@ -1,0 +1,84 @@
+"""Gateway for ${service} external service."""
+from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
+import httpx
+
+from src.externals.${service}.dto import ${Service}Response, ${Service}Error
+from src.externals.${service}.config import ${Service}Config
+
+
+@dataclass
+class ${Service}Result:
+    """Result wrapper for ${service} operations."""
+
+    success: bool
+    data: ${Service}Response | None = None
+    error: ${Service}Error | None = None
+
+
+class ${Service}GatewayBase(ABC):
+    """Abstract base for ${Service} gateway."""
+
+    @abstractmethod
+    async def do_operation(self, param: str) -> ${Service}Result:
+        """Perform operation on ${service}."""
+        pass
+
+
+class ${Service}Gateway(${Service}GatewayBase):
+    """Gateway for ${Service} external service."""
+
+    def __init__(self, config: ${Service}Config) -> None:
+        self.config = config
+        self.client = httpx.AsyncClient(
+            base_url=config.base_url,
+            timeout=config.timeout,
+            headers={"Authorization": f"Bearer {config.api_key}"},
+        )
+
+    async def do_operation(self, param: str) -> ${Service}Result:
+        """Perform operation on ${service}.
+
+        Args:
+            param: The operation parameter.
+
+        Returns:
+            ${Service}Result with success status and data or error.
+        """
+        try:
+            response = await self.client.post(
+                "/endpoint",
+                json={"param": param},
+            )
+            response.raise_for_status()
+
+            data = response.json()
+            return ${Service}Result(
+                success=True,
+                data=${Service}Response(
+                    id=data["id"],
+                    status=data["status"],
+                ),
+            )
+
+        except httpx.HTTPStatusError as e:
+            return ${Service}Result(
+                success=False,
+                error=${Service}Error(
+                    code=e.response.status_code,
+                    message=str(e),
+                ),
+            )
+        except httpx.RequestError as e:
+            return ${Service}Result(
+                success=False,
+                error=${Service}Error(
+                    code=0,
+                    message=f"Request failed: {e}",
+                ),
+            )
+
+    async def close(self) -> None:
+        """Close the HTTP client."""
+        await self.client.aclose()
