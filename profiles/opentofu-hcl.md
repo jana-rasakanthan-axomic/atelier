@@ -173,20 +173,9 @@ naming:
 
 ## Code Patterns
 
-> See [patterns/module.md](./opentofu-hcl/patterns/module.md) for reusable module patterns and examples.
+See `opentofu-hcl/patterns/` for layer-specific patterns: [module.md](./opentofu-hcl/patterns/module.md), [resource.md](./opentofu-hcl/patterns/resource.md), [variables.md](./opentofu-hcl/patterns/variables.md), [outputs.md](./opentofu-hcl/patterns/outputs.md).
 
-> See [patterns/resource.md](./opentofu-hcl/patterns/resource.md) for resource definitions with lifecycle and depends_on.
-
-> See [patterns/variables.md](./opentofu-hcl/patterns/variables.md) for variable definitions with type constraints and validation.
-
-> See [patterns/outputs.md](./opentofu-hcl/patterns/outputs.md) for output definitions with sensitivity and splat expressions.
-
-### Key Rules Summary
-
-- **Root Module:** Pin `required_version`, use `required_providers` with version constraints, enable `default_tags`, wire modules via outputs
-- **Modules:** Own `main.tf` + `variables.tf` + `outputs.tf`, no hardcoded values, tag every resource
-- **Variables:** Every variable has `description` and `type`, add `validation` for constrained values, mark sensitive values
-- **Outputs:** Every output has `description`, mark sensitive with `sensitive = true`, use splat for lists
+**Key rules:** Pin `required_version` and provider versions. Modules own `main.tf` + `variables.tf` + `outputs.tf` with no hardcoded values. Every variable has `description` and `type`. Every output has `description`. Tag every resource. Mark sensitive values.
 
 ---
 

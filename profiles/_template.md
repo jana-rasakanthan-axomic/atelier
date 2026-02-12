@@ -29,15 +29,9 @@
 
 ```yaml
 markers:
-  required: []          # Files that MUST exist for this profile to match
-                        # e.g., ["pyproject.toml"], ["pubspec.yaml"], ["package.json"]
-
-  optional: []          # Files that help confirm the match but are not required
-                        # e.g., ["alembic.ini", "src/main.py"], ["lib/main.dart"]
-
-  content_match: []     # Content patterns found inside marker files
-                        # Format: "pattern" in filename
-                        # e.g., ["fastapi" in "pyproject.toml", "flutter" in "pubspec.yaml"]
+  required: []          # Files that MUST exist (e.g., ["pyproject.toml"], ["pubspec.yaml"])
+  optional: []          # Files that help confirm the match (e.g., ["alembic.ini"])
+  content_match: []     # Content patterns: "pattern" in filename (e.g., ["fastapi" in "pyproject.toml"])
 ```
 
 ---
@@ -188,16 +182,8 @@ naming:
 ```yaml
 patterns_dir: "profiles/[name]/patterns/"
   # TODO: Replace [name] with the profile name.
-  #
-  # Expected pattern files (create the ones relevant to your stack):
-  #   router.md       — API endpoint / route handler patterns
-  #   service.md      — Business logic / use-case patterns
-  #   repository.md   — Data access / query patterns
-  #   model.md        — ORM entity / data model patterns
-  #   schema.md       — Request/response schema patterns
-  #   widget.md       — UI component patterns (mobile/frontend)
-  #   bloc.md         — State management patterns (mobile/frontend)
-  #   external.md     — Third-party integration / gateway patterns
+  # Create pattern files relevant to your stack: router.md, service.md,
+  # repository.md, model.md, schema.md, widget.md, bloc.md, external.md
 ```
 
 ---

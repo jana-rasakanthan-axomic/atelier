@@ -21,66 +21,21 @@ Commands never hardcode tools. They read the active profile to learn which linte
 
 ```
 atelier/
-├── CLAUDE.md                    # Process-only entry point (~250 lines)
-├── commands/                    # 15 slash commands (lifecycle pipeline)
-│   ├── braindump.md            # Raw ideas -> PRD draft
-│   ├── gather.md               # Fetch context from external tools
-│   ├── specify.md              # Business rules + BDD for PM review
-│   ├── design.md               # Technical design + tickets
-│   ├── plan.md                 # Implementation planning
-│   ├── build.md                # TDD feature implementation
-│   ├── test.md                 # Standalone test command
-│   ├── fix.md                  # Fix quality issues
-│   ├── review.md               # Multi-persona code review
-│   ├── commit.md               # Generate commit messages
-│   ├── iterate.md              # Self-correcting loops
-│   ├── workstream.md           # Batch orchestration
-│   ├── deploy.md               # Deployment orchestration
-│   ├── init.md                 # Project initialization
-│   └── author.md               # Create/improve toolkit components
-├── agents/                      # 7 core agents
-│   ├── specifier.md            # Business rules + BDD extraction
-│   ├── designer.md             # Technical design documents
-│   ├── planner.md              # Implementation plans
-│   ├── builder.md              # TDD code implementation
-│   ├── reviewer.md             # Multi-persona review
-│   ├── verifier.md             # Test execution + quality gates
-│   └── author.md               # Toolkit component creation
-├── skills/                      # 10 skill areas
-│   ├── building/               # Process-only build patterns
-│   ├── testing/                # Process-only test patterns (AAA)
-│   ├── design/                 # Design ticket creation
-│   ├── specify/                # Business rules + BDD
-│   ├── review/                 # Review personas + checklists
-│   ├── analysis/               # Coverage, gaps, risks
-│   ├── security/               # STRIDE, OWASP
-│   ├── git-workflow/           # Worktree, branch naming
-│   ├── iterative-dev/          # Loop prompt templates
-│   └── authoring/              # Agent/skill/command creation
-├── profiles/                    # Stack-specific configurations
-│   ├── _template.md            # Template for new profiles
-│   ├── python-fastapi.md       # Python + FastAPI + SQLAlchemy
-│   ├── python-fastapi/         # Patterns, tests, style
-│   ├── flutter-dart.md         # Flutter + Dart + Riverpod
-│   ├── flutter-dart/
-│   ├── react-typescript.md     # React + TypeScript
-│   ├── react-typescript/
-│   └── opentofu-hcl.md        # OpenTofu infrastructure
-│       └── opentofu-hcl/
-├── scripts/                     # Shared bash scripts
-│   ├── resolve-profile.sh     # Profile auto-detection
-│   ├── worktree-manager.sh    # Git worktree lifecycle
-│   ├── session-manager.sh     # Session tracking
-│   ├── generate-branch-name.sh
-│   └── quality-gate.sh        # Profile-aware quality checks
-├── templates/                   # Document templates
-│   ├── plan-template.md
-│   ├── ticket-template.md
-│   └── adr-template.md
-└── docs/                        # Documentation
-    ├── ARCHITECTURE.md          # This file
-    ├── CONTRIBUTING.md
-    └── PROFILES.md
+├── CLAUDE.md              # Process-only entry point (~250 lines)
+├── commands/              # 15 slash commands (braindump, gather, specify, design,
+│                          #   plan, build, test, fix, review, commit, iterate,
+│                          #   workstream, deploy, init, author)
+├── agents/                # 7 agents (specifier, designer, planner, builder,
+│                          #   reviewer, verifier, author)
+├── skills/                # 10 skill areas (building, testing, design, specify,
+│                          #   review, analysis, security, git-workflow,
+│                          #   iterative-dev, authoring)
+├── profiles/              # Stack configs (_template, python-fastapi,
+│                          #   flutter-dart, react-typescript, opentofu-hcl)
+├── scripts/               # resolve-profile, worktree-manager, session-manager,
+│                          #   generate-branch-name, quality-gate
+├── templates/             # plan-template, ticket-template, adr-template
+└── docs/                  # ARCHITECTURE (this file), CONTRIBUTING, PROFILES
 ```
 
 ---
@@ -414,44 +369,6 @@ Scripts read the active profile to determine which tools to invoke. `quality-gat
 
 ## Design Decisions
 
-### Why Profiles, Not Plugins?
+Key architectural decisions and their rationale: profiles over plugins, markdown over YAML, process/stack separation, outside-in build order, 3-attempt escalation, and slash commands over chat.
 
-Profiles are simpler. They are markdown files that commands read. There is no plugin API, no hooks, no extension points, no runtime registration. Adding a new stack means writing one markdown file following `_template.md`. The barrier to entry is reading a template and filling in sections.
-
-### Why Markdown, Not YAML/JSON?
-
-LLMs read markdown natively. Profiles are consumed by Claude, not by compiled programs. Markdown with structured sections (headers, tables, code blocks) is the most natural format for LLM consumption while remaining human-readable and version-control-friendly.
-
-YAML is used only for `.atelier/config.yaml` where machine parsing is required (profile resolution, workspace configuration).
-
-### Why Process and Stack Separation?
-
-Same workflow, any language. The TDD loop (RED -> GREEN -> REFACTOR) is universal. The quality gate (lint + type + test) is universal. Only the specific tool invocations change per stack. Maintaining ONE process and N profiles means:
-
-- Process improvements benefit all stacks immediately
-- New stacks require zero process changes
-- Testing a process change requires testing it once, not once per stack
-
-### Why Outside-In Build Order?
-
-Contract-first development. Starting from what the user sees (API endpoint, UI screen) and working inward produces several advantages:
-
-- Tests are written against the contract before implementation exists
-- Implementation is driven by requirements, not by database schema
-- Integration points are defined early, reducing late-stage surprises
-- Each layer can be mocked at the boundary below it, enabling true unit tests
-
-### Why 3-Attempt Escalation?
-
-Diminishing returns. If the builder cannot make tests pass in 3 attempts, the problem is likely architectural (wrong approach, missing dependency, circular import) rather than a simple code bug. Continuing to retry wastes time. Escalating with full context (error messages, files affected, attempts made) gives a human the information needed to unblock quickly.
-
-### Why Slash Commands, Not Chat?
-
-Structured invocation. Slash commands provide:
-
-- **Discoverability** -- Users can list available commands
-- **Consistency** -- Same command name always triggers the same workflow
-- **Composability** -- Commands can invoke other commands
-- **Auditability** -- Session logs show exactly which commands were run
-
-Free-form chat is still supported for questions, clarifications, and ad-hoc tasks. Commands handle the structured development workflow.
+See `reference/design-decisions.md` for full rationale on each decision.

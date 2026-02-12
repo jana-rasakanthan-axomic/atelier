@@ -121,43 +121,25 @@ async def test_create_with_valid_input_returns_dto(service, mock_uow):
 
 ## Service with External Dependencies
 
+For services with external dependencies, inject mock via fixture and assert both the external call and the repository call:
+
 ```python
-# tests/unit/api/{domain}/test_service.py
-import pytest
-from uuid import uuid4
-
-
 @pytest.fixture
-def mock_external_service(mocker):
-    """Mock external service."""
-    return mocker.AsyncMock()
-
-
-@pytest.fixture
-def service_with_external(mock_db_manager, mock_external_service):
-    """Service with external dependency."""
-    return {Entity}Service(
-        db_manager=mock_db_manager,
-        external_service=mock_external_service,
-    )
-
+def service_with_external(mock_db_manager, mocker):
+    return {Entity}Service(db_manager=mock_db_manager, external_service=mocker.AsyncMock())
 
 @pytest.mark.asyncio
-async def test_create_with_external_calls_service(
-    service_with_external,
-    mock_uow,
-    mock_external_service,
-):
+async def test_create_with_external_calls_service(service_with_external, mock_uow):
     # Arrange
     request = Create{Entity}Request(name="Test", external_id=uuid4())
-    mock_external_service.get_data.return_value = ExternalDTO(id=uuid4())
+    service_with_external._external_service.get_data.return_value = ExternalDTO(id=uuid4())
     mock_uow.{entity}_repo.create.return_value = {Entity}(id=uuid4(), name="Test")
 
     # Act
     result = await service_with_external.create(request)
 
-    # Assert
-    mock_external_service.get_data.assert_called_once()
+    # Assert - verify both external and repo calls
+    service_with_external._external_service.get_data.assert_called_once()
     mock_uow.{entity}_repo.create.assert_called_once()
 ```
 
