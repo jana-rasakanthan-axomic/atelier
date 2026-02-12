@@ -53,10 +53,10 @@
   <line x1="880" y1="180" x2="1040" y2="180" stroke="#10b981" stroke-width="2.5" fill="none" marker-end="url(#arr-grn)"/>
   <text x="960" y="170" text-anchor="middle" fill="#6ee7b7" font-size="9" font-weight="600">all gates pass</text>
 
-  <!-- Loop-back arrow: VERIFY back to ASSESS (issues remain) -->
-  <path d="M 800 220 L 800 268 Q 800 288 780 288 L 220 288 Q 200 288 200 268 L 200 220"
+  <!-- Loop-back arrow: VERIFY back to DECIDE (issues remain) -->
+  <path d="M 800 220 L 800 268 Q 800 288 780 288 L 420 288 Q 400 288 400 268 L 400 220"
         stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arr-red)"/>
-  <text x="500" y="283" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">issues remain — loop back</text>
+  <text x="600" y="283" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">issues remain — loop back to DECIDE</text>
 
   <!-- State 1: ASSESS -->
   <g filter="url(#shadow)">

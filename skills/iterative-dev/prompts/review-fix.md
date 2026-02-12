@@ -21,9 +21,9 @@ You are fixing review findings on an existing branch. Each iteration you review,
 ### ASSESS
 
 1. Run self-review using all relevant personas from `$TOOLKIT_DIR/skills/review/`:
-   - Engineering persona: architecture, quality, performance
-   - Security persona: OWASP, auth, data handling
-   - PR persona: merge readiness, size, test coverage
+   - Security persona: OWASP, STRIDE, auth, crypto
+   - Engineering persona: architecture, quality, performance, merge readiness
+   - Product persona: requirements, UX, edge cases
 2. Collect findings with severity and file:line references.
 3. Run all quality gates (tests, lint, type checker) to establish baseline.
 
