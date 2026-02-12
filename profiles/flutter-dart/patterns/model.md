@@ -40,14 +40,9 @@ class Recipe with _$Recipe {
 }
 ```
 
-After defining the model, run code generation:
-```bash
-dart run build_runner build --delete-conflicting-outputs
-```
+After defining the model, run: `dart run build_runner build --delete-conflicting-outputs`
 
 ## Request/Response DTOs
-
-Use separate DTOs when the API request shape differs from the domain model.
 
 ```dart
 // lib/features/recipes/data/recipe_dto.dart
@@ -66,72 +61,36 @@ class CreateRecipeRequest with _$CreateRecipeRequest {
   factory CreateRecipeRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateRecipeRequestFromJson(json);
 }
-
-@freezed
-class UpdateRecipeRequest with _$UpdateRecipeRequest {
-  const factory UpdateRecipeRequest({
-    String? title,
-    String? description,
-  }) = _UpdateRecipeRequest;
-
-  factory UpdateRecipeRequest.fromJson(Map<String, dynamic> json) =>
-      _$UpdateRecipeRequestFromJson(json);
-}
 ```
 
 ## JSON Field Name Mapping
-
-When API field names differ from Dart conventions:
 
 ```dart
 @freezed
 class Recipe with _$Recipe {
   const factory Recipe({
     required String id,
-    required String title,
     @JsonKey(name: 'created_at') required DateTime createdAt,
-    @JsonKey(name: 'updated_at') DateTime? updatedAt,
     @JsonKey(name: 'author_name') required String authorName,
   }) = _Recipe;
 
-  factory Recipe.fromJson(Map<String, dynamic> json) =>
-      _$RecipeFromJson(json);
+  factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 }
 ```
 
-For project-wide snake_case to camelCase conversion, configure `build.yaml`:
-
-```yaml
-# build.yaml
-targets:
-  $default:
-    builders:
-      json_serializable:
-        options:
-          field_rename: snake
-```
+For project-wide snake_case conversion, set `field_rename: snake` in `build.yaml` under `json_serializable` options.
 
 ## Sealed Class for Union Types
 
-Use freezed union types for states or polymorphic data:
-
 ```dart
-// lib/features/recipes/domain/recipe_status.dart
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'recipe_status.freezed.dart';
-
 @freezed
 sealed class RecipeStatus with _$RecipeStatus {
   const factory RecipeStatus.draft() = RecipeStatusDraft;
   const factory RecipeStatus.published({required DateTime publishedAt}) = RecipeStatusPublished;
   const factory RecipeStatus.archived({required String reason}) = RecipeStatusArchived;
 }
-```
 
-Usage with pattern matching:
-
-```dart
+// Pattern matching usage:
 final label = switch (recipe.status) {
   RecipeStatusDraft() => 'Draft',
   RecipeStatusPublished(:final publishedAt) => 'Published on $publishedAt',
@@ -141,22 +100,12 @@ final label = switch (recipe.status) {
 
 ## JsonSerializable (Simple DTOs)
 
-When you do not need `copyWith`, union types, or value equality, use `@JsonSerializable` directly:
+When you do not need `copyWith`, union types, or value equality:
 
 ```dart
-// lib/features/recipes/data/paginated_response.dart
-import 'package:json_annotation/json_annotation.dart';
-
-part 'paginated_response.g.dart';
-
 @JsonSerializable(genericArgumentFactories: true)
 class PaginatedResponse<T> {
-  PaginatedResponse({
-    required this.items,
-    required this.total,
-    required this.limit,
-    required this.offset,
-  });
+  PaginatedResponse({required this.items, required this.total, required this.limit, required this.offset});
 
   final List<T> items;
   final int total;
@@ -164,8 +113,7 @@ class PaginatedResponse<T> {
   final int offset;
 
   factory PaginatedResponse.fromJson(
-    Map<String, dynamic> json,
-    T Function(Object? json) fromJsonT,
+    Map<String, dynamic> json, T Function(Object? json) fromJsonT,
   ) => _$PaginatedResponseFromJson(json, fromJsonT);
 
   Map<String, dynamic> toJson(Object? Function(T value) toJsonT) =>
@@ -175,83 +123,37 @@ class PaginatedResponse<T> {
 }
 ```
 
-## Decision Tree: Freezed vs JsonSerializable
+## Decision Tree
 
 ```
-Need a data model?
-  |-- Does it need copyWith?                  --> @freezed
-  |-- Does it need union types?               --> @freezed
-  |-- Does it need value equality?            --> @freezed
-  |-- Is it a domain model (used in UI state)? --> @freezed
-  |-- Is it a simple API request/response DTO? --> @freezed (preferred) or @JsonSerializable
-  |-- Is it a generic container (paginated)?   --> @JsonSerializable
-  |-- Is it a one-off config/internal struct?  --> Plain Dart class or @JsonSerializable
+Need copyWith / union types / value equality / domain model? --> @freezed
+Generic container or one-off struct?                         --> @JsonSerializable
+Default to @freezed unless you have a specific reason not to.
 ```
-
-Default to `@freezed` unless you have a specific reason not to.
 
 ## Unit Test Example
 
 ```dart
-// test/unit/features/recipes/recipe_model_test.dart
-import 'package:flutter_test/flutter_test.dart';
-
 void main() {
   group('Recipe', () {
     test('fromJson parses valid JSON correctly', () {
       final json = {
-        'id': '1',
-        'title': 'Pasta',
-        'description': 'Delicious pasta',
-        'created_at': '2024-01-01T00:00:00.000Z',
-        'updated_at': null,
+        'id': '1', 'title': 'Pasta', 'description': 'Delicious pasta',
+        'created_at': '2024-01-01T00:00:00.000Z', 'updated_at': null,
       };
-
       final recipe = Recipe.fromJson(json);
-
       expect(recipe.id, equals('1'));
       expect(recipe.title, equals('Pasta'));
-      expect(recipe.description, equals('Delicious pasta'));
-      expect(recipe.createdAt, equals(DateTime.utc(2024)));
       expect(recipe.updatedAt, isNull);
-    });
-
-    test('toJson produces valid JSON', () {
-      final recipe = Recipe(
-        id: '1',
-        title: 'Pasta',
-        description: 'Delicious pasta',
-        createdAt: DateTime.utc(2024),
-      );
-
-      final json = recipe.toJson();
-
-      expect(json['id'], equals('1'));
-      expect(json['title'], equals('Pasta'));
     });
 
     test('copyWith creates new instance with updated fields', () {
       final original = Recipe(
-        id: '1',
-        title: 'Pasta',
-        description: 'Delicious pasta',
-        createdAt: DateTime.utc(2024),
+        id: '1', title: 'Pasta', description: 'Delicious', createdAt: DateTime.utc(2024),
       );
-
       final updated = original.copyWith(title: 'Updated Pasta');
-
       expect(updated.title, equals('Updated Pasta'));
-      expect(updated.id, equals(original.id));
       expect(original.title, equals('Pasta'));
-    });
-
-    test('value equality compares all fields', () {
-      final a = Recipe(id: '1', title: 'Pasta', description: 'Good', createdAt: DateTime.utc(2024));
-      final b = Recipe(id: '1', title: 'Pasta', description: 'Good', createdAt: DateTime.utc(2024));
-      final c = Recipe(id: '2', title: 'Soup', description: 'Warm', createdAt: DateTime.utc(2024));
-
-      expect(a, equals(b));
-      expect(a, isNot(equals(c)));
     });
   });
 }
@@ -261,11 +163,7 @@ void main() {
 
 ```dart
 // BAD: Mutable class with no equality
-class Recipe {
-  String id;
-  String title;
-  Recipe({required this.id, required this.title});
-}
+class Recipe { String id; String title; }
 
 // GOOD: Freezed for immutability and equality
 @freezed
@@ -275,42 +173,12 @@ class Recipe with _$Recipe {
 }
 
 // BAD: Business logic in model
-@freezed
-class Recipe with _$Recipe {
-  const Recipe._();
-  const factory Recipe({required String id, required String title}) = _Recipe;
+bool get isValid => title.length > 3;  // Belongs in notifier
 
-  bool get isValid => title.length > 3;  // This belongs in notifier
-}
-
-// GOOD: Models are pure data
-@freezed
-class Recipe with _$Recipe {
-  const factory Recipe({required String id, required String title}) = _Recipe;
-  factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
-}
-
-// BAD: Missing part directives
-@freezed
-class Recipe with _$Recipe {  // Will fail: no generated code
-  const factory Recipe({required String id}) = _Recipe;
-}
-
-// GOOD: Include part directives
-part 'recipe_model.freezed.dart';
-part 'recipe_model.g.dart';
-
-@freezed
-class Recipe with _$Recipe {
-  const factory Recipe({required String id}) = _Recipe;
-  factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
-}
+// BAD: Missing part directives (will fail: no generated code)
 
 // BAD: Using dynamic for JSON parsing
-final title = json['title'];  // dynamic
-
-// GOOD: Rely on generated fromJson
-final recipe = Recipe.fromJson(json);  // Type-safe
+final title = json['title'];  // Use generated fromJson instead
 ```
 
 ## Cross-References

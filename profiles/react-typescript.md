@@ -102,8 +102,6 @@ All three must pass before a layer is considered complete.
 
 ## Allowed Bash Tools
 
-For use in command and agent frontmatter `allowed-tools` fields:
-
 ```
 Bash(npx:*), Bash(npm:*), Bash(node:*), Bash(git:*), Bash(uuidgen)
 ```
@@ -133,39 +131,14 @@ Service Tests   --> Mock fetch/axios (MSW or vi.mock)
 
 ### Test Organization
 
-```yaml
-test_patterns:
-  unit:
-    location: "src/__tests__/" or co-located "*.test.ts"
-    naming: "*.test.ts, *.test.tsx"
-    pattern: "describe-it with AAA (Arrange, Act, Assert)"
-    markers: []
-  component:
-    location: "src/__tests__/components/" or co-located
-    naming: "*.test.tsx"
-    markers: []
-  integration:
-    location: "src/__tests__/integration/"
-    naming: "*.integration.test.ts"
-    markers: []
-  e2e:
-    location: "e2e/" or "cypress/"
-    naming: "*.spec.ts"
-    markers: []
-```
+| Type | Location | Naming |
+|------|----------|--------|
+| Unit | `src/__tests__/` or co-located | `*.test.ts`, `*.test.tsx` |
+| Component | `src/__tests__/components/` or co-located | `*.test.tsx` |
+| Integration | `src/__tests__/integration/` | `*.integration.test.ts` |
+| E2E | `e2e/` or `cypress/` | `*.spec.ts` |
 
-### Test Function Naming
-
-```
-describe('{ComponentOrModule}', () => {
-  it('should {expected behavior} when {scenario}', () => { ... });
-});
-```
-
-Examples:
-- `it('should render recipe title when recipe is loaded')`
-- `it('should show error message when API call fails')`
-- `it('should call createRecipe when form is submitted')`
+Pattern: `describe-it` with AAA (Arrange, Act, Assert). Naming: `it('should {behavior} when {scenario}')`
 
 ---
 
@@ -188,116 +161,15 @@ naming:
 
 ## Code Patterns
 
-### Component Pattern
+> See [patterns/component.md](patterns/component.md) for the Component pattern with examples.
 
-```tsx
-// src/features/recipes/components/RecipeCard.tsx
-interface RecipeCardProps {
-  recipe: Recipe;
-  onDelete: (id: string) => void;
-}
+> See [patterns/hook.md](patterns/hook.md) for the Hook pattern with examples.
 
-export function RecipeCard({ recipe, onDelete }: RecipeCardProps) {
-  return (
-    <div className="recipe-card">
-      <h3>{recipe.title}</h3>
-      <p>{recipe.description}</p>
-      <button onClick={() => onDelete(recipe.id)}>Delete</button>
-    </div>
-  );
-}
-```
+> See [patterns/service.md](patterns/service.md) for the Service pattern with examples.
 
-Rules:
-- Props interface defined above component in same file
-- Named exports (not default exports)
-- Functional components only (no class components)
-- Destructure props in function signature
-- Keep components focused: one responsibility per component
+> See [patterns/types.md](patterns/types.md) for the Types pattern with examples.
 
-### Hook Pattern
-
-```tsx
-// src/features/recipes/hooks/useRecipes.ts
-import { useQuery } from '@tanstack/react-query';
-import { getRecipes } from '../services/recipeService';
-import type { Recipe } from '../types/recipe.types';
-
-export function useRecipes() {
-  return useQuery<Recipe[]>({
-    queryKey: ['recipes'],
-    queryFn: getRecipes,
-  });
-}
-```
-
-Rules:
-- Prefix with `use` (React convention)
-- One hook per file for feature-specific hooks
-- Return typed values from TanStack Query
-- Encapsulate query keys (consumers should not construct keys manually)
-
-### Service Pattern
-
-```tsx
-// src/features/recipes/services/recipeService.ts
-import type { Recipe, CreateRecipeRequest } from '../types/recipe.types';
-
-const API_BASE = '/api/v1';
-
-export async function getRecipes(): Promise<Recipe[]> {
-  const response = await fetch(`${API_BASE}/recipes`);
-  if (!response.ok) throw new Error('Failed to fetch recipes');
-  return response.json();
-}
-
-export async function createRecipe(data: CreateRecipeRequest): Promise<Recipe> {
-  const response = await fetch(`${API_BASE}/recipes`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
-  if (!response.ok) throw new Error('Failed to create recipe');
-  return response.json();
-}
-```
-
-Rules:
-- Pure async functions (no React hooks or state)
-- Accept and return typed data (TypeScript interfaces)
-- Handle HTTP errors with descriptive messages
-- Base URL configurable via environment variable or constant
-- No direct DOM or React dependencies
-
-### Types Pattern
-
-```tsx
-// src/features/recipes/types/recipe.types.ts
-export interface Recipe {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface CreateRecipeRequest {
-  title: string;
-  description: string;
-}
-
-export interface UpdateRecipeRequest {
-  title?: string;
-  description?: string;
-}
-```
-
-Rules:
-- Use `interface` for object shapes (extendable)
-- Use `type` for unions, intersections, and computed types
-- Suffix API types with `Request` / `Response`
-- Use `string` for dates coming from APIs (parse at the boundary)
-- Co-locate types with the feature that owns them
+Commands and agents reference these patterns by path: `$PROFILE_DIR/patterns/{layer}.md`
 
 ---
 
@@ -331,73 +203,15 @@ dependencies:
 
 ## Project Structure
 
-```yaml
-structure:
-  source_root: "src/"
-  test_root: "src/__tests__/"
-  config_files:
-    - package.json
-    - tsconfig.json
-    - vite.config.ts
-  entry_point: "src/main.tsx"
-```
-
-### Expected Directory Layout
+Source root: `src/` | Test root: `src/__tests__/` | Entry: `src/main.tsx` | Config: `package.json`, `tsconfig.json`, `vite.config.ts`
 
 ```
 project-root/
-  package.json
-  tsconfig.json
-  vite.config.ts
   src/
-    main.tsx
-    App.tsx
-    features/
-      {feature}/
-        components/
-          {Feature}Page.tsx
-          {Feature}Card.tsx
-        hooks/
-          use{Feature}.ts
-          use{Feature}List.ts
-        services/
-          {feature}Service.ts
-        types/
-          {feature}.types.ts
-        __tests__/
-          {Feature}Page.test.tsx
-          use{Feature}.test.ts
-          {feature}Service.test.ts
-    shared/
-      components/
-      hooks/
-      types/
-      utils/
+    main.tsx, App.tsx
+    features/{feature}/ -> components/, hooks/, services/, types/, __tests__/
+    shared/ -> components/, hooks/, types/, utils/
 ```
-
----
-
-## Pattern Files Reference
-
-Detailed pattern files live alongside this profile for use by code-generation skills:
-
-```
-profiles/react-typescript/patterns/
-  component.md    # Full component pattern with examples
-  hook.md         # Full hook pattern with examples
-  service.md      # Full service pattern with examples
-  types.md        # Full types pattern with examples
-```
-
-Commands and agents reference these patterns by path:
-```
-$PROFILE_DIR/patterns/component.md
-$PROFILE_DIR/patterns/hook.md
-$PROFILE_DIR/patterns/service.md
-$PROFILE_DIR/patterns/types.md
-```
-
-Where `$PROFILE_DIR` resolves to `profiles/react-typescript/` for this profile.
 
 ---
 
