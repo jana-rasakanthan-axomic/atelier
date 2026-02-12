@@ -2,6 +2,9 @@
 # Hook: PreToolUse (Write, Edit)
 # Purpose: Enforce TDD — test files must be modified before implementation files.
 # Blocks writes to implementation files if no corresponding test file was modified first.
+#
+# Design: ALLOWLIST approach — only enforce for known source code extensions.
+# Everything else (docs, configs, SVGs, templates, scripts) passes through freely.
 
 set -euo pipefail
 
@@ -11,28 +14,42 @@ FILE_PATH=$(echo "$INPUT" | jq -r '.tool_input.file_path // .tool_input.file // 
 
 [[ -z "$FILE_PATH" ]] && exit 0
 
-# Skip if this IS a test file
+# --- Skip: bypass flag ---
+if [[ -f ".claude/skip-tdd" ]]; then
+  exit 0
+fi
+
+# --- Skip: test files (always allowed) ---
 if [[ "$FILE_PATH" == *test_* ]] || [[ "$FILE_PATH" == *_test.* ]] || \
    [[ "$FILE_PATH" == */tests/* ]] || [[ "$FILE_PATH" == */test/* ]] || \
    [[ "$FILE_PATH" == *.test.* ]] || [[ "$FILE_PATH" == *.spec.* ]]; then
   exit 0
 fi
 
-# Skip non-source files (configs, docs, templates, etc.)
-if [[ "$FILE_PATH" == *.md ]] || [[ "$FILE_PATH" == *.yaml ]] || \
-   [[ "$FILE_PATH" == *.yml ]] || [[ "$FILE_PATH" == *.json ]] || \
-   [[ "$FILE_PATH" == *.toml ]] || [[ "$FILE_PATH" == *.cfg ]] || \
-   [[ "$FILE_PATH" == *.txt ]] || [[ "$FILE_PATH" == *.sh ]] || \
-   [[ "$FILE_PATH" == *Makefile* ]] || [[ "$FILE_PATH" == *.lock ]]; then
+# --- Skip: toolkit authoring (commands, skills, agents, templates, profiles, docs, scripts) ---
+if [[ "$FILE_PATH" == */commands/* ]] || [[ "$FILE_PATH" == */skills/* ]] || \
+   [[ "$FILE_PATH" == */agents/* ]] || [[ "$FILE_PATH" == */templates/* ]] || \
+   [[ "$FILE_PATH" == */profiles/* ]] || [[ "$FILE_PATH" == */docs/* ]] || \
+   [[ "$FILE_PATH" == */scripts/* ]] || [[ "$FILE_PATH" == */.claude/* ]] || \
+   [[ "$FILE_PATH" == */.atelier/* ]]; then
   exit 0
 fi
 
-# Skip if --skip-tests mode is active
-if [[ -f ".claude/skip-tdd" ]]; then
-  exit 0
-fi
+# --- ALLOWLIST: only enforce TDD for actual source code ---
+# Extract file extension
+EXT="${FILE_PATH##*.}"
 
-# Check if any test file has been modified in the current git session
+case "$EXT" in
+  py|ts|tsx|js|jsx|dart|go|java|kt|kts|rs|rb|swift|c|cpp|h|hpp|cs|tf|hcl)
+    # This is source code — enforce TDD below
+    ;;
+  *)
+    # Not source code (md, yaml, json, toml, svg, png, sh, css, html, lock, etc.)
+    exit 0
+    ;;
+esac
+
+# --- Enforce: check if test files were modified first ---
 TEST_FILES_MODIFIED=$(git diff --name-only HEAD 2>/dev/null | grep -E '(test_|_test\.|\.test\.|\.spec\.|/tests/|/test/)' || true)
 
 if [[ -z "$TEST_FILES_MODIFIED" ]]; then
@@ -43,7 +60,7 @@ if [[ -z "$TEST_FILES_MODIFIED" ]]; then
   echo "Write the corresponding test file first, run it to confirm RED,"
   echo "then implement. See CLAUDE.md TDD State Machine."
   echo ""
-  echo "To skip (prototyping only): touch .claude/skip-tdd"
+  echo "To skip (non-code work): touch .claude/skip-tdd"
   exit 2
 fi
 

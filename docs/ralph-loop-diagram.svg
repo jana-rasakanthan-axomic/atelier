@@ -1,0 +1,387 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 1050" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
+    </marker>
+    <marker id="arr-grn" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#10b981"/>
+    </marker>
+    <marker id="arr-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#ef4444"/>
+    </marker>
+    <marker id="arr-cyn" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#06b6d4"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="1050" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.03">
+    <line x1="120" y1="0" x2="120" y2="1050" stroke="#fff"/>
+    <line x1="360" y1="0" x2="360" y2="1050" stroke="#fff"/>
+    <line x1="600" y1="0" x2="600" y2="1050" stroke="#fff"/>
+    <line x1="840" y1="0" x2="840" y2="1050" stroke="#fff"/>
+    <line x1="1080" y1="0" x2="1080" y2="1050" stroke="#fff"/>
+    <line x1="1320" y1="0" x2="1320" y2="1050" stroke="#fff"/>
+  </g>
+
+  <!-- ==================== TITLE ==================== -->
+  <text x="720" y="42" text-anchor="middle" fill="#f8fafc" font-size="28" font-weight="700" letter-spacing="1">Ralph Loop — Self-Correcting Development Cycle</text>
+  <text x="720" y="66" text-anchor="middle" fill="#94a3b8" font-size="13" letter-spacing="2">AUTOMATED TDD, QUALITY CONVERGENCE, AND REVIEW-FIX CYCLES</text>
+  <line x1="250" y1="82" x2="1190" y2="82" stroke="#334155" stroke-width="1"/>
+
+  <!-- ==================== STATE MACHINE ==================== -->
+  <text x="720" y="110" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" letter-spacing="3">THE UNIFIED STATE MACHINE</text>
+
+  <!-- Forward arrows between states -->
+  <g stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <line x1="280" y1="180" x2="320" y2="180"/>
+    <line x1="480" y1="180" x2="520" y2="180"/>
+    <line x1="680" y1="180" x2="720" y2="180"/>
+  </g>
+
+  <!-- Branch arrow: VERIFY to COMPLETE (success path) -->
+  <line x1="880" y1="180" x2="1040" y2="180" stroke="#10b981" stroke-width="2.5" fill="none" marker-end="url(#arr-grn)"/>
+  <text x="960" y="170" text-anchor="middle" fill="#6ee7b7" font-size="9" font-weight="600">all gates pass</text>
+
+  <!-- Loop-back arrow: VERIFY back to ASSESS (issues remain) -->
+  <path d="M 800 220 L 800 268 Q 800 288 780 288 L 220 288 Q 200 288 200 268 L 200 220"
+        stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="6,3" marker-end="url(#arr-red)"/>
+  <text x="500" y="283" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="600">issues remain — loop back</text>
+
+  <!-- State 1: ASSESS -->
+  <g filter="url(#shadow)">
+    <rect x="120" y="130" width="160" height="90" rx="12" fill="#2563eb" opacity="0.85"/>
+    <text x="200" y="158" text-anchor="middle" fill="#dbeafe" font-size="10" font-weight="600" letter-spacing="1">STATE 1</text>
+    <text x="200" y="180" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">ASSESS</text>
+    <text x="200" y="200" text-anchor="middle" fill="#93c5fd" font-size="9">Run all 3 quality gates</text>
+    <text x="200" y="212" text-anchor="middle" fill="#93c5fd" font-size="9">Record pass/fail counts</text>
+  </g>
+
+  <!-- State 2: DECIDE -->
+  <g filter="url(#shadow)">
+    <rect x="320" y="130" width="160" height="90" rx="12" fill="#7c3aed" opacity="0.85"/>
+    <text x="400" y="158" text-anchor="middle" fill="#ede9fe" font-size="10" font-weight="600" letter-spacing="1">STATE 2</text>
+    <text x="400" y="180" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">DECIDE</text>
+    <text x="400" y="200" text-anchor="middle" fill="#c4b5fd" font-size="9">Pick highest-priority fix</text>
+    <text x="400" y="212" text-anchor="middle" fill="#c4b5fd" font-size="9">Pattern-specific priorities</text>
+  </g>
+
+  <!-- State 3: ACT -->
+  <g filter="url(#shadow)">
+    <rect x="520" y="130" width="160" height="90" rx="12" fill="#059669" opacity="0.85"/>
+    <text x="600" y="158" text-anchor="middle" fill="#d1fae5" font-size="10" font-weight="600" letter-spacing="1">STATE 3</text>
+    <text x="600" y="180" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">ACT</text>
+    <text x="600" y="200" text-anchor="middle" fill="#6ee7b7" font-size="9">Execute ONE fix/action</text>
+    <text x="600" y="212" text-anchor="middle" fill="#6ee7b7" font-size="9">Minimal, targeted change</text>
+  </g>
+
+  <!-- State 4: VERIFY -->
+  <g filter="url(#shadow)">
+    <rect x="720" y="130" width="160" height="90" rx="12" fill="#0891b2" opacity="0.85"/>
+    <text x="800" y="158" text-anchor="middle" fill="#cffafe" font-size="10" font-weight="600" letter-spacing="1">STATE 4</text>
+    <text x="800" y="180" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">VERIFY</text>
+    <text x="800" y="200" text-anchor="middle" fill="#67e8f9" font-size="9">Re-run ALL 3 gates</text>
+    <text x="800" y="212" text-anchor="middle" fill="#67e8f9" font-size="9">Catch cross-gate regressions</text>
+  </g>
+
+  <!-- State 5: COMPLETE -->
+  <g filter="url(#shadow)">
+    <rect x="1040" y="130" width="180" height="90" rx="12" fill="#0d9488" opacity="0.85"/>
+    <text x="1130" y="155" text-anchor="middle" fill="#ccfbf1" font-size="10" font-weight="600" letter-spacing="1">EXIT</text>
+    <text x="1130" y="178" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">COMPLETE</text>
+    <text x="1130" y="198" text-anchor="middle" fill="#5eead4" font-size="9">Commit, push, create PR</text>
+    <text x="1130" y="210" text-anchor="middle" fill="#5eead4" font-size="9">Output completion promise</text>
+  </g>
+
+  <!-- Quality gates callout -->
+  <g transform="translate(1060, 240)">
+    <rect x="0" y="0" width="310" height="70" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="155" y="20" text-anchor="middle" fill="#f8fafc" font-size="10" font-weight="700">QUALITY GATES (always run all 3)</text>
+    <line x1="20" y1="28" x2="290" y2="28" stroke="#334155" stroke-width="0.5"/>
+
+    <rect x="15" y="36" width="80" height="22" rx="4" fill="#2563eb" opacity="0.2" stroke="#3b82f6" stroke-width="0.5"/>
+    <text x="55" y="51" text-anchor="middle" fill="#93c5fd" font-size="9" font-weight="600">tests</text>
+
+    <rect x="110" y="36" width="80" height="22" rx="4" fill="#f59e0b" opacity="0.2" stroke="#f59e0b" stroke-width="0.5"/>
+    <text x="150" y="51" text-anchor="middle" fill="#fcd34d" font-size="9" font-weight="600">linter</text>
+
+    <rect x="205" y="36" width="90" height="22" rx="4" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="0.5"/>
+    <text x="250" y="51" text-anchor="middle" fill="#c4b5fd" font-size="9" font-weight="600">type checker</text>
+  </g>
+
+  <!-- Key rule callout -->
+  <text x="1215" y="328" text-anchor="middle" fill="#475569" font-size="8" font-style="italic">resolved from active profile</text>
+
+  <!-- ==================== THREE PATTERNS ==================== -->
+
+  <line x1="60" y1="345" x2="1380" y2="345" stroke="#334155" stroke-width="1"/>
+  <text x="720" y="372" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" letter-spacing="3">THREE PATTERNS — SAME MACHINE, DIFFERENT PRIORITIES</text>
+
+  <!-- Column dividers -->
+  <line x1="470" y1="385" x2="470" y2="730" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="950" y1="385" x2="950" y2="730" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ===== PATTERN 1: BUILD ===== -->
+  <g transform="translate(60, 390)">
+    <!-- Header -->
+    <rect x="0" y="0" width="390" height="32" rx="8" fill="#059669" opacity="0.15" stroke="#10b981" stroke-width="1"/>
+    <text x="195" y="21" text-anchor="middle" fill="#6ee7b7" font-size="13" font-weight="700">BUILD PATTERN</text>
+
+    <rect x="0" y="42" width="390" height="22" rx="4" fill="#059669" opacity="0.06"/>
+    <text x="195" y="57" text-anchor="middle" fill="#6ee7b7" font-size="10">/build plan.md  (with loop flag)</text>
+
+    <!-- DECIDE priorities -->
+    <text x="10" y="86" fill="#f8fafc" font-size="10" font-weight="700">DECIDE priority (top to bottom):</text>
+
+    <rect x="10" y="96" width="16" height="16" rx="3" fill="#dc2626" opacity="0.6"/>
+    <text x="18" y="108" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">1</text>
+    <text x="34" y="108" fill="#fca5a5" font-size="9" font-weight="600">Next layer needs tests</text>
+    <text x="220" y="108" fill="#64748b" font-size="9">Write tests (TDD RED)</text>
+
+    <rect x="10" y="118" width="16" height="16" rx="3" fill="#059669" opacity="0.6"/>
+    <text x="18" y="130" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+    <text x="34" y="130" fill="#6ee7b7" font-size="9" font-weight="600">Tests failing</text>
+    <text x="220" y="130" fill="#64748b" font-size="9">Write implementation (TDD GREEN)</text>
+
+    <rect x="10" y="140" width="16" height="16" rx="3" fill="#f59e0b" opacity="0.6"/>
+    <text x="18" y="152" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">3</text>
+    <text x="34" y="152" fill="#fcd34d" font-size="9" font-weight="600">GREEN failing, retries &lt; 3</text>
+    <text x="220" y="152" fill="#64748b" font-size="9">Fix and retry</text>
+
+    <rect x="10" y="162" width="16" height="16" rx="3" fill="#dc2626" opacity="0.8"/>
+    <text x="18" y="174" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">4</text>
+    <text x="34" y="174" fill="#fca5a5" font-size="9" font-weight="600">GREEN failing, retries = 3</text>
+    <text x="220" y="174" fill="#ef4444" font-size="9" font-weight="700">ESCALATE + STOP</text>
+
+    <rect x="10" y="184" width="16" height="16" rx="3" fill="#64748b" opacity="0.4"/>
+    <text x="18" y="196" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">5</text>
+    <text x="34" y="196" fill="#94a3b8" font-size="9" font-weight="600">Lint/type/review errors</text>
+    <text x="220" y="196" fill="#64748b" font-size="9">Fix remaining issues</text>
+
+    <rect x="10" y="206" width="16" height="16" rx="3" fill="#0d9488" opacity="0.6"/>
+    <text x="18" y="218" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">6</text>
+    <text x="34" y="218" fill="#5eead4" font-size="9" font-weight="600">All clean</text>
+    <text x="220" y="218" fill="#0d9488" font-size="9" font-weight="700">COMPLETE</text>
+
+    <!-- TDD cycle visualization -->
+    <rect x="10" y="240" width="370" height="76" rx="8" fill="#059669" opacity="0.04" stroke="#10b981" stroke-width="0.5"/>
+    <text x="195" y="258" text-anchor="middle" fill="#6ee7b7" font-size="9" font-weight="600">PER-LAYER TDD CYCLE</text>
+
+    <rect x="30" y="268" width="80" height="28" rx="6" fill="#dc2626" opacity="0.3"/>
+    <text x="70" y="286" text-anchor="middle" fill="#fca5a5" font-size="10" font-weight="700">RED</text>
+    <line x1="110" y1="282" x2="140" y2="282" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <rect x="142" y="268" width="80" height="28" rx="6" fill="#059669" opacity="0.3"/>
+    <text x="182" y="286" text-anchor="middle" fill="#6ee7b7" font-size="10" font-weight="700">GREEN</text>
+    <line x1="222" y1="282" x2="252" y2="282" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+    <rect x="254" y="268" width="100" height="28" rx="6" fill="#0891b2" opacity="0.3"/>
+    <text x="304" y="286" text-anchor="middle" fill="#67e8f9" font-size="10" font-weight="700">NEXT LAYER</text>
+
+    <text x="195" y="308" text-anchor="middle" fill="#475569" font-size="8">repeat for each layer in the plan</text>
+
+    <!-- Completion promise -->
+    <rect x="90" y="324" width="200" height="20" rx="4" fill="#0d9488" opacity="0.12" stroke="#14b8a6" stroke-width="1"/>
+    <text x="190" y="338" text-anchor="middle" fill="#5eead4" font-size="10" font-weight="700">BUILD COMPLETE</text>
+  </g>
+
+  <!-- ===== PATTERN 2: QUALITY ===== -->
+  <g transform="translate(490, 390)">
+    <!-- Header -->
+    <rect x="0" y="0" width="440" height="32" rx="8" fill="#dc2626" opacity="0.15" stroke="#ef4444" stroke-width="1"/>
+    <text x="220" y="21" text-anchor="middle" fill="#fca5a5" font-size="13" font-weight="700">QUALITY PATTERN</text>
+
+    <rect x="0" y="42" width="440" height="22" rx="4" fill="#dc2626" opacity="0.06"/>
+    <text x="220" y="57" text-anchor="middle" fill="#fca5a5" font-size="10">/fix  (with loop flag)</text>
+
+    <!-- DECIDE priorities -->
+    <text x="10" y="86" fill="#f8fafc" font-size="10" font-weight="700">DECIDE priority (strict order):</text>
+
+    <rect x="10" y="96" width="16" height="16" rx="3" fill="#dc2626" opacity="0.7"/>
+    <text x="18" y="108" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">1</text>
+    <text x="34" y="108" fill="#fca5a5" font-size="9" font-weight="600">Test failures</text>
+    <text x="220" y="108" fill="#64748b" font-size="9">Fix first (blocks development)</text>
+
+    <rect x="10" y="118" width="16" height="16" rx="3" fill="#8b5cf6" opacity="0.6"/>
+    <text x="18" y="130" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+    <text x="34" y="130" fill="#c4b5fd" font-size="9" font-weight="600">Type errors</text>
+    <text x="220" y="130" fill="#64748b" font-size="9">Fix second (logic bugs)</text>
+
+    <rect x="10" y="140" width="16" height="16" rx="3" fill="#f59e0b" opacity="0.6"/>
+    <text x="18" y="152" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">3</text>
+    <text x="34" y="152" fill="#fcd34d" font-size="9" font-weight="600">Lint errors</text>
+    <text x="220" y="152" fill="#64748b" font-size="9">Fix third (style issues)</text>
+
+    <rect x="10" y="162" width="16" height="16" rx="3" fill="#0d9488" opacity="0.6"/>
+    <text x="18" y="174" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">4</text>
+    <text x="34" y="174" fill="#5eead4" font-size="9" font-weight="600">All gates pass</text>
+    <text x="220" y="174" fill="#0d9488" font-size="9" font-weight="700">COMPLETE</text>
+
+    <!-- Convergence visual -->
+    <rect x="10" y="200" width="420" height="116" rx="8" fill="#dc2626" opacity="0.04" stroke="#ef4444" stroke-width="0.5"/>
+    <text x="220" y="218" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">CONVERGENCE BEHAVIOR</text>
+
+    <!-- Show iteration narrowing -->
+    <text x="30" y="240" fill="#64748b" font-size="9">Iteration 1:</text>
+    <rect x="110" y="228" width="200" height="14" rx="2" fill="#ef4444" opacity="0.2"/>
+    <text x="210" y="240" text-anchor="middle" fill="#fca5a5" font-size="8">12 test + 8 type + 15 lint = 35 errors</text>
+
+    <text x="30" y="260" fill="#64748b" font-size="9">Iteration 5:</text>
+    <rect x="110" y="248" width="130" height="14" rx="2" fill="#f59e0b" opacity="0.2"/>
+    <text x="175" y="260" text-anchor="middle" fill="#fcd34d" font-size="8">0 test + 2 type + 6 lint = 8 errors</text>
+
+    <text x="30" y="280" fill="#64748b" font-size="9">Iteration 9:</text>
+    <rect x="110" y="268" width="60" height="14" rx="2" fill="#f59e0b" opacity="0.15"/>
+    <text x="140" y="280" text-anchor="middle" fill="#fcd34d" font-size="8">0 + 0 + 2 = 2</text>
+
+    <text x="30" y="300" fill="#64748b" font-size="9">Iteration 11:</text>
+    <rect x="110" y="288" width="20" height="14" rx="2" fill="#10b981" opacity="0.3"/>
+    <text x="140" y="300" fill="#6ee7b7" font-size="8" font-weight="700">0 errors</text>
+
+    <!-- Completion promise -->
+    <rect x="110" y="324" width="210" height="20" rx="4" fill="#0d9488" opacity="0.12" stroke="#14b8a6" stroke-width="1"/>
+    <text x="215" y="338" text-anchor="middle" fill="#5eead4" font-size="10" font-weight="700">QUALITY COMPLETE</text>
+  </g>
+
+  <!-- ===== PATTERN 3: REVIEW-FIX ===== -->
+  <g transform="translate(970, 390)">
+    <!-- Header -->
+    <rect x="0" y="0" width="400" height="32" rx="8" fill="#0891b2" opacity="0.15" stroke="#06b6d4" stroke-width="1"/>
+    <text x="200" y="21" text-anchor="middle" fill="#67e8f9" font-size="13" font-weight="700">REVIEW-FIX PATTERN</text>
+
+    <rect x="0" y="42" width="400" height="22" rx="4" fill="#0891b2" opacity="0.06"/>
+    <text x="200" y="57" text-anchor="middle" fill="#67e8f9" font-size="10">review phase inside /build (with loop flag)</text>
+
+    <!-- DECIDE priorities -->
+    <text x="10" y="86" fill="#f8fafc" font-size="10" font-weight="700">DECIDE priority (by severity):</text>
+
+    <rect x="10" y="96" width="16" height="16" rx="3" fill="#dc2626" opacity="0.7"/>
+    <text x="18" y="108" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">1</text>
+    <text x="34" y="108" fill="#fca5a5" font-size="9" font-weight="600">Critical / high findings</text>
+    <text x="220" y="108" fill="#64748b" font-size="9">Fix immediately</text>
+
+    <rect x="10" y="118" width="16" height="16" rx="3" fill="#f59e0b" opacity="0.6"/>
+    <text x="18" y="130" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">2</text>
+    <text x="34" y="130" fill="#fcd34d" font-size="9" font-weight="600">Medium findings</text>
+    <text x="220" y="130" fill="#64748b" font-size="9">Fix if straightforward</text>
+
+    <rect x="10" y="140" width="16" height="16" rx="3" fill="#2563eb" opacity="0.6"/>
+    <text x="18" y="152" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">3</text>
+    <text x="34" y="152" fill="#93c5fd" font-size="9" font-weight="600">Quality gate failure</text>
+    <text x="220" y="152" fill="#64748b" font-size="9">Fix gate issue first</text>
+
+    <rect x="10" y="162" width="16" height="16" rx="3" fill="#64748b" opacity="0.4"/>
+    <text x="18" y="174" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">4</text>
+    <text x="34" y="174" fill="#94a3b8" font-size="9" font-weight="600">Low findings</text>
+    <text x="220" y="174" fill="#64748b" font-size="9">Fix if no regression risk</text>
+
+    <rect x="10" y="184" width="16" height="16" rx="3" fill="#0d9488" opacity="0.6"/>
+    <text x="18" y="196" text-anchor="middle" fill="#fff" font-size="8" font-weight="700">5</text>
+    <text x="34" y="196" fill="#5eead4" font-size="9" font-weight="600">All clean</text>
+    <text x="220" y="196" fill="#0d9488" font-size="9" font-weight="700">COMPLETE</text>
+
+    <!-- Review personas -->
+    <rect x="10" y="220" width="380" height="96" rx="8" fill="#0891b2" opacity="0.04" stroke="#06b6d4" stroke-width="0.5"/>
+    <text x="200" y="238" text-anchor="middle" fill="#67e8f9" font-size="9" font-weight="600">REVIEW PERSONAS</text>
+
+    <rect x="25" y="250" width="100" height="30" rx="6" fill="#dc2626" opacity="0.12" stroke="#dc2626" stroke-width="0.5"/>
+    <text x="75" y="265" text-anchor="middle" fill="#fca5a5" font-size="9" font-weight="600">Security</text>
+    <text x="75" y="276" text-anchor="middle" fill="#64748b" font-size="7">auth, injection, secrets</text>
+
+    <rect x="145" y="250" width="110" height="30" rx="6" fill="#2563eb" opacity="0.12" stroke="#2563eb" stroke-width="0.5"/>
+    <text x="200" y="265" text-anchor="middle" fill="#93c5fd" font-size="9" font-weight="600">Engineering</text>
+    <text x="200" y="276" text-anchor="middle" fill="#64748b" font-size="7">patterns, perf, edge cases</text>
+
+    <rect x="275" y="250" width="100" height="30" rx="6" fill="#8b5cf6" opacity="0.12" stroke="#8b5cf6" stroke-width="0.5"/>
+    <text x="325" y="265" text-anchor="middle" fill="#c4b5fd" font-size="9" font-weight="600">Product</text>
+    <text x="325" y="276" text-anchor="middle" fill="#64748b" font-size="7">UX, requirements, edge cases</text>
+
+    <text x="200" y="306" text-anchor="middle" fill="#475569" font-size="8">each finding tagged with severity + affected file</text>
+
+    <!-- Completion promise -->
+    <rect x="90" y="324" width="210" height="20" rx="4" fill="#0d9488" opacity="0.12" stroke="#14b8a6" stroke-width="1"/>
+    <text x="195" y="338" text-anchor="middle" fill="#5eead4" font-size="10" font-weight="700">REVIEW COMPLETE</text>
+  </g>
+
+  <!-- ==================== SAFETY AND CONVERGENCE ==================== -->
+
+  <line x1="60" y1="745" x2="1380" y2="745" stroke="#334155" stroke-width="1"/>
+  <text x="720" y="772" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" letter-spacing="3">SAFETY CAPS AND CONVERGENCE RULES</text>
+
+  <!-- Cap 1: MAX_ITERATIONS -->
+  <g transform="translate(80, 790)">
+    <rect x="0" y="0" width="280" height="100" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+    <text x="140" y="24" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">MAX_ITERATIONS</text>
+    <line x1="20" y1="32" x2="260" y2="32" stroke="#334155" stroke-width="0.5"/>
+    <text x="140" y="52" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700">30</text>
+    <text x="140" y="70" text-anchor="middle" fill="#94a3b8" font-size="9">default iterations per loop</text>
+    <text x="140" y="86" text-anchor="middle" fill="#64748b" font-size="9">hard cap: 50 (prevents runaway)</text>
+  </g>
+
+  <!-- Cap 2: MAX_GREEN_RETRIES -->
+  <g transform="translate(400, 790)">
+    <rect x="0" y="0" width="280" height="100" rx="10" fill="#1e293b" stroke="#dc2626" stroke-width="1"/>
+    <text x="140" y="24" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">MAX_GREEN_RETRIES</text>
+    <line x1="20" y1="32" x2="260" y2="32" stroke="#334155" stroke-width="0.5"/>
+    <text x="140" y="52" text-anchor="middle" fill="#f8fafc" font-size="22" font-weight="700">3</text>
+    <text x="140" y="70" text-anchor="middle" fill="#94a3b8" font-size="9">retries per layer before escalation</text>
+    <text x="140" y="86" text-anchor="middle" fill="#64748b" font-size="9">hard cap: 5 (then stops + asks user)</text>
+  </g>
+
+  <!-- Rule 3: Cross-gate regression -->
+  <g transform="translate(720, 790)">
+    <rect x="0" y="0" width="320" height="100" rx="10" fill="#1e293b" stroke="#0891b2" stroke-width="1"/>
+    <text x="160" y="24" text-anchor="middle" fill="#67e8f9" font-size="11" font-weight="700">CROSS-GATE REGRESSION</text>
+    <line x1="20" y1="32" x2="300" y2="32" stroke="#334155" stroke-width="0.5"/>
+    <text x="160" y="52" text-anchor="middle" fill="#f8fafc" font-size="11" font-weight="600">After EVERY fix, re-run ALL gates</text>
+    <text x="160" y="70" text-anchor="middle" fill="#94a3b8" font-size="9">Never run just the gate you fixed</text>
+    <text x="160" y="86" text-anchor="middle" fill="#64748b" font-size="9">Catches: fix lint breaks test, fix type adds lint error</text>
+  </g>
+
+  <!-- Rule 4: Escalation -->
+  <g transform="translate(1080, 790)">
+    <rect x="0" y="0" width="280" height="100" rx="10" fill="#1e293b" stroke="#ef4444" stroke-width="1"/>
+    <text x="140" y="24" text-anchor="middle" fill="#fca5a5" font-size="11" font-weight="700">ESCALATION</text>
+    <line x1="20" y1="32" x2="260" y2="32" stroke="#334155" stroke-width="0.5"/>
+    <text x="140" y="52" text-anchor="middle" fill="#f8fafc" font-size="11" font-weight="600">Stop + ask user when:</text>
+    <text x="140" y="70" text-anchor="middle" fill="#94a3b8" font-size="9">GREEN retries exhausted on a layer</text>
+    <text x="140" y="86" text-anchor="middle" fill="#94a3b8" font-size="9">MAX_ITERATIONS reached without converging</text>
+  </g>
+
+  <!-- ==================== KEY RULE ==================== -->
+
+  <g transform="translate(200, 910)">
+    <rect x="0" y="0" width="1040" height="44" rx="8" fill="#f59e0b" opacity="0.04" stroke="#f59e0b" stroke-width="1"/>
+    <text x="520" y="18" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">CORE PRINCIPLE: ONE FIX PER ITERATION</text>
+    <text x="520" y="35" text-anchor="middle" fill="#94a3b8" font-size="10">Each loop iteration fixes exactly ONE issue, then re-verifies ALL gates. Small steps prevent cascading regressions.</text>
+  </g>
+
+  <!-- ==================== FOOTER ==================== -->
+
+  <g transform="translate(370, 975)">
+    <rect x="0" y="0" width="105" height="18" rx="9" fill="#059669" opacity="0.25" stroke="#10b981" stroke-width="0.5"/>
+    <text x="53" y="13" text-anchor="middle" fill="#6ee7b7" font-size="8" font-weight="600">/build (with loop)</text>
+
+    <rect x="115" y="0" width="90" height="18" rx="9" fill="#dc2626" opacity="0.25" stroke="#ef4444" stroke-width="0.5"/>
+    <text x="160" y="13" text-anchor="middle" fill="#fca5a5" font-size="8" font-weight="600">/fix (with loop)</text>
+
+    <rect x="215" y="0" width="100" height="18" rx="9" fill="#0891b2" opacity="0.25" stroke="#06b6d4" stroke-width="0.5"/>
+    <text x="265" y="13" text-anchor="middle" fill="#67e8f9" font-size="8" font-weight="600">review-fix phase</text>
+
+    <rect x="330" y="0" width="120" height="18" rx="9" fill="#334155" opacity="0.5" stroke="#475569" stroke-width="0.5"/>
+    <text x="390" y="13" text-anchor="middle" fill="#94a3b8" font-size="8" font-weight="600">profile-driven gates</text>
+  </g>
+
+  <text x="720" y="1020" text-anchor="middle" fill="#334155" font-size="10" letter-spacing="1">github.com/axomic/atelier</text>
+
+</svg>
