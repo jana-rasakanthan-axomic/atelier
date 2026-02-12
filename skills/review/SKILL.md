@@ -32,9 +32,8 @@ Load the appropriate persona based on review scope:
 | Persona | File | Focus |
 |---------|------|-------|
 | Security | `personas/security.md` | OWASP, STRIDE, auth, crypto |
-| Engineering | `personas/engineering.md` | Architecture, quality, perf |
+| Engineering | `personas/engineering.md` | Architecture, quality, perf, merge readiness |
 | Product | `personas/product.md` | Requirements, UX, edge cases |
-| PR | `personas/pr.md` | Merge readiness, size, tests |
 
 ## Checklists
 
@@ -43,7 +42,6 @@ Each persona has a corresponding checklist:
 - `checklists/security-checklist.md`
 - `checklists/engineering-checklist.md`
 - `checklists/product-checklist.md`
-- `checklists/pr-checklist.md`
 
 ## Workflow
 

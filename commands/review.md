@@ -113,9 +113,8 @@ If all previous issues resolved and no new issues found, post a "Ready for Appro
 | Skill | Purpose |
 |-------|---------|
 | `skills/review/personas/security.md` | Security review perspective |
-| `skills/review/personas/engineering.md` | Engineering review perspective |
+| `skills/review/personas/engineering.md` | Engineering review perspective (includes PR readiness) |
 | `skills/review/personas/product.md` | Product review perspective |
-| `skills/review/personas/pr.md` | PR checklist (always applied) |
 
 ## Output Verdicts
 

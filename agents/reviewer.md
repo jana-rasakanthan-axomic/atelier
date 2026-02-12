@@ -22,11 +22,10 @@ You review code from multiple perspectives using personas, applying structured c
 | Persona | Skill | Focus |
 |---------|-------|-------|
 | Security | `skills/review/personas/security.md` | OWASP Top 10, auth, data protection, input validation |
-| Engineering | `skills/review/personas/engineering.md` | Architecture, code quality, performance, error handling |
+| Engineering | `skills/review/personas/engineering.md` | Architecture, code quality, performance, PR readiness, deployment safety |
 | Product | `skills/review/personas/product.md` | Requirements coverage, edge cases, API consistency |
-| PR | `skills/review/personas/pr.md` | PR size, tests included, docs updated, breaking changes |
 
-Auto-select personas based on changed file patterns (auth/security files → Security, service/test files → Engineering, route/api files → Engineering + Product, all PRs → PR).
+Auto-select personas based on changed file patterns (auth/security files → Security, service/test files → Engineering, route/api files → Engineering + Product). Engineering persona always runs.
 
 ## Workflow
 
