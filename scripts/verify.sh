@@ -134,6 +134,8 @@ check_structure() {
     "scripts/hooks"
     "templates"
     "docs"
+    "hooks"
+    ".claude-plugin"
   )
 
   for dir in "${dirs[@]}"; do
@@ -148,6 +150,20 @@ check_structure() {
     pass "CLAUDE.md"
   else
     fail "CLAUDE.md missing"
+  fi
+
+  # Plugin manifest
+  if [[ -f "$TOOLKIT_DIR/.claude-plugin/plugin.json" ]]; then
+    pass ".claude-plugin/plugin.json"
+  else
+    fail ".claude-plugin/plugin.json missing"
+  fi
+
+  # Plugin hooks manifest
+  if [[ -f "$TOOLKIT_DIR/hooks/hooks.json" ]]; then
+    pass "hooks/hooks.json"
+  else
+    fail "hooks/hooks.json missing"
   fi
 }
 
@@ -176,6 +192,38 @@ check_hook_scripts() {
 check_hook_registration() {
   section "Hook Registration"
 
+  local expected_hooks=(
+    "enforce-tdd-order.sh"
+    "protect-main.sh"
+    "regression-reminder.sh"
+  )
+
+  # Check plugin hooks manifest (hooks/hooks.json)
+  local hooks_json="$TOOLKIT_DIR/hooks/hooks.json"
+  if [[ -f "$hooks_json" ]]; then
+    if ! jq empty "$hooks_json" 2>/dev/null; then
+      fail "hooks/hooks.json contains invalid JSON"
+      return
+    fi
+
+    for hook_name in "${expected_hooks[@]}"; do
+      local found
+      found=$(jq -r --arg name "$hook_name" '
+        [.hooks // {} | to_entries[] | .value[] | .hooks[]? | .command // empty]
+        | map(select(contains($name)))
+        | length
+      ' "$hooks_json" 2>/dev/null || echo "0")
+
+      if [[ "$found" -gt 0 ]]; then
+        pass "$hook_name registered in hooks/hooks.json"
+      else
+        fail "$hook_name not registered in hooks/hooks.json"
+      fi
+    done
+    return
+  fi
+
+  # Fallback: check .claude/settings.json (project-specific install)
   local settings_file="$PROJECT_ROOT/.claude/settings.json"
 
   if [[ ! -f "$settings_file" ]]; then
@@ -183,7 +231,7 @@ check_hook_registration() {
       fail ".claude/settings.json not found — hooks not registered"
       detail "Run: $TOOLKIT_DIR/scripts/setup.sh"
     else
-      warn ".claude/settings.json not found (expected when running inside toolkit repo)"
+      fail "No hook registration found (hooks/hooks.json missing, no .claude/settings.json)"
     fi
     return
   fi
@@ -193,22 +241,7 @@ check_hook_registration() {
     return
   fi
 
-  # Compute the expected command prefix
-  local hook_prefix
-  if [[ "$INSTALLED_AS_PROJECT" == true ]]; then
-    hook_prefix="$(python3 -c "import os; print(os.path.relpath('$TOOLKIT_DIR', '$PROJECT_ROOT'))" 2>/dev/null || echo ".atelier")"
-  else
-    hook_prefix="scripts/hooks"
-  fi
-
-  local expected_hooks=(
-    "enforce-tdd-order.sh"
-    "protect-main.sh"
-    "regression-reminder.sh"
-  )
-
   for hook_name in "${expected_hooks[@]}"; do
-    # Search across all hook entries for a command containing this hook script
     local found
     found=$(jq -r --arg name "$hook_name" '
       [.hooks // {} | to_entries[] | .value[] | .hooks[]? | .command // empty]

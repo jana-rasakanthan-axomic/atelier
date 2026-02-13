@@ -349,7 +349,13 @@ main() {
   # Summary
   echo ""
   echo "---"
-  echo "Setup complete. Next steps:"
+  echo "Project setup complete (hooks registered in .claude/settings.json)."
+  echo ""
+  echo "NOTE: For global installation, prefer the plugin method instead:"
+  echo "  claude plugins install axomic/atelier"
+  echo "  # or: scripts/dev-setup.sh (for local development)"
+  echo ""
+  echo "Next steps:"
   echo "  1. Verify:  $TOOLKIT_DIR/scripts/verify.sh"
   echo "  2. Start:   /gather to begin a workflow"
 }

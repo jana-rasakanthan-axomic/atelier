@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "atelier-marketplace",
+  "description": "Atelier — Process-agnostic development toolkit",
+  "owner": {
+    "name": "Axomic"
+  },
+  "plugins": [
+    {
+      "name": "atelier",
+      "description": "Process-agnostic development toolkit with TDD, outside-in workflows, and profile-based stack support",
+      "author": {
+        "name": "Axomic"
+      },
+      "source": {
+        "source": "directory",
+        "path": ".."
+      },
+      "category": "development",
+      "homepage": "https://github.com/axomic/atelier"
+    }
+  ]
+}
