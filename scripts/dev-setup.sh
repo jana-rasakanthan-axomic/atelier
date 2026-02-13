@@ -238,9 +238,9 @@ do_install_github() {
     "name": "atelier",
     "description": "Process-agnostic development toolkit with TDD, outside-in workflows, and profile-based stack support",
     "author": { "name": "Axomic" },
-    "source": { "source": "url", "url": "https://github.com/axomic/atelier.git" },
+    "source": { "source": "url", "url": "https://github.com/jana-rasakanthan-axomic/atelier.git" },
     "category": "development",
-    "homepage": "https://github.com/axomic/atelier"
+    "homepage": "https://github.com/jana-rasakanthan-axomic/atelier"
   }]
 }
 MKJSON
@@ -249,7 +249,7 @@ MKJSON
   # Register marketplace from GitHub
   echo ""
   echo "Registering marketplace..."
-  claude plugin marketplace add "github:axomic/atelier/.claude-marketplace"
+  claude plugin marketplace add "github:jana-rasakanthan-axomic/atelier/.claude-marketplace"
 
   # Install the plugin
   echo ""

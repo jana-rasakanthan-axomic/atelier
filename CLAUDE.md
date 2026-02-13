@@ -10,9 +10,9 @@ Atelier encodes **how** you build software (TDD, outside-in, PR review) while pr
 
 | Method | Command |
 |--------|---------|
-| **Plugin** (recommended) | `claude plugins install axomic/atelier` |
-| **Global** (~/.claude) | `git clone https://github.com/axomic/atelier.git ~/.claude/plugins/atelier` |
-| **Project-specific** | `git clone https://github.com/axomic/atelier.git .atelier` |
+| **Plugin** (recommended) | `claude plugins install jana-rasakanthan-axomic/atelier` |
+| **Global** (~/.claude) | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git ~/.claude/plugins/atelier` |
+| **Project-specific** | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git .atelier` |
 
 For project-specific installs, add to `.claude/settings.json`: `{ "plugins": [".atelier"] }`
 

@@ -3,5 +3,5 @@
   "description": "Process-agnostic development toolkit with TDD, outside-in workflows, and profile-based stack support",
   "version": "0.1.0",
   "author": { "name": "Axomic" },
-  "repository": "https://github.com/axomic/atelier"
+  "repository": "https://github.com/jana-rasakanthan-axomic/atelier"
 }
