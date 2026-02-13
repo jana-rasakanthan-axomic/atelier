@@ -96,13 +96,12 @@ When `mergeable: CONFLICTING`:
 
 When `reviewDecision: CHANGES_REQUESTED`:
 
-1. Fetch review comments:
-   ```bash
-   gh api repos/<owner>/<repo>/pulls/<pr_number>/comments
-   ```
-2. Invoke `/fix --loop` to address feedback
-3. Push updated commits
-4. Update `status.json` with new commit SHA
+1. Invoke `/review --self --loop <pr_number>` to address feedback
+   - The self-review loop fetches external comments from the PR automatically
+   - Runs multi-persona self-review alongside external comment resolution
+   - Fixes all findings iteratively via ASSESS -> FIX -> VERIFY loop
+   - Pushes fixes and replies to resolved comment threads with commit SHAs
+2. Update `status.json` with new commit SHA
 
 ### Handle CI Failures
 
@@ -153,7 +152,7 @@ Manually retry a failed or escalated ticket.
 2. Determine failure type from status:
    - `build_status: failed` -> Re-run `/build` for the ticket
    - `pr_status: failing_checks` -> Re-run `/workstream pr-check` for the ticket
-   - `pr_status: changes_requested` -> Re-run `/fix --loop` for the ticket
+   - `pr_status: changes_requested` -> Re-run `/review --self --loop` for the ticket
    - `pr_status: merge_conflicts` -> Attempt rebase
 3. Update status based on outcome
 

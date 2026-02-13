@@ -21,7 +21,7 @@ Multi-persona code review with structured checklists.
 **Only for code review and audits.** Do not use for implementation or test execution.
 
 - Test execution → use Verifier agent
-- Self-review of just-written code → run tests first
+- Self-review of just-written code → use `/review --self`
 - Generating fixes → use Builder agent
 - Simple formatting issues → use linter
 
