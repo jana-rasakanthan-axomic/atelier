@@ -51,7 +51,7 @@ Omitting log entries is a process violation. If you forget, add retroactive entr
 
 Follow the TDD State Machine in CLAUDE.md. Per layer:
 
-1. **WRITE_TESTS** — Read contract specs, read pattern from `skills/testing/unit-tests.md`, write test file
+1. **WRITE_TESTS** — Read contract specs, read pattern from `skills/testing/`, write test file
 2. **CONFIRM_RED** — Run `${profile.tools.test_runner.single_file}`. Tests MUST fail. If they pass, delete and rewrite.
 3. **WRITE_IMPL** — Read pattern from `${profile.patterns_dir}/{layer}.md`, write minimum code
 4. **CONFIRM_GREEN** — Run tests. Must pass. Max 3 fix attempts, then escalate.
@@ -82,7 +82,7 @@ Read `$TOOLKIT_DIR/profiles/{active_profile}.md` for specific layer names and or
 | `${profile.patterns_dir}/service.md` | Business logic patterns |
 | `${profile.patterns_dir}/repository.md` | Data access patterns |
 | `${profile.patterns_dir}/external-integration.md` | Third-party integration patterns |
-| `skills/testing/unit-tests.md` | Unit test generation (AAA pattern) |
+| `skills/testing/` | Unit test generation (AAA pattern) |
 
 ## PR Feedback Response
 
@@ -101,6 +101,19 @@ Use `$TOOLKIT_DIR/scripts/reply-to-pr-thread.sh` with `--general` flag for overa
 - Max files: 20 new + 10 modified = 30 total
 - Max 3 fix attempts per layer before escalating
 - If plan exceeds limits: split or escalate
+
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Read | Examine plans, patterns, existing code |
+| Write | Create new source and test files |
+| Edit | Modify existing source and test files |
+| Grep | Search patterns in codebase |
+| Glob | Find files by pattern |
+| Bash(${profile.tools.test_runner.command}) | Run tests |
+| Bash(${profile.tools.linter.command}) | Run linter |
+| Bash(${profile.tools.type_checker.command}) | Run type checker |
 
 ## Strict Compliance (MANDATORY)
 

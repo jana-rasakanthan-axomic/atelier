@@ -1,6 +1,24 @@
+---
+name: workstream
+description: Workstream subcommand procedures for batch ticket lifecycle. Use when orchestrating parallel workstreams, managing build queues, or tracking PR status.
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash(git:*), Bash(gh:*)
+---
+
 # Workstream Skill
 
 Orchestrate batch ticket lifecycle: creation, planning, building, and PR management across parallel workstreams.
+
+## When to Use
+
+- Orchestrating batch ticket lifecycle (create, plan, build)
+- Managing parallel workstreams across multiple tickets
+- Tracking build queue status and PR management
+
+## When NOT to Use
+
+- Single ticket work → use `/build` or `/fix` directly
+- Manual, interactive development → use individual commands
+- Read-only analysis → use `/audit` or `/analyze`
 
 ## Subcommand Reference
 

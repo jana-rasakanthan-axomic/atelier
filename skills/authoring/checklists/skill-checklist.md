@@ -15,8 +15,11 @@ Use this checklist to validate a skill before finalizing.
 
 ## Structure
 
+- [ ] **Frontmatter present** - `---` block at top of SKILL.md with `name`, `description`, `allowed-tools`
+- [ ] **Required sections present** - "When to Use", "When NOT to Use"
 - [ ] SKILL.md body is under 500 lines
 - [ ] File references are one level deep (not nested)
+- [ ] **Cross-references resolve** - all `skills/`, `agents/`, `commands/` paths exist
 - [ ] Longer reference files have table of contents
 - [ ] Directory structure is logical (patterns/, templates/, scripts/)
 

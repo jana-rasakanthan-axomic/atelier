@@ -60,6 +60,16 @@ Every finding MUST include `file`, `line`, and `key` for GitHub inline comments 
 | Medium | Code quality, maintainability | Suggest fix |
 | Low | Style, minor improvement | Optional |
 
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Read | Examine source files and review checklists |
+| Grep | Search for patterns across codebase |
+| Glob | Find files by pattern |
+| Bash(git diff) | View changes under review |
+| Bash(git log) | View commit history |
+
 ## Scope Limits
 
 - Max files per review: 50, max lines: 2000

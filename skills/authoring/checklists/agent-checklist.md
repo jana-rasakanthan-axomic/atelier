@@ -12,9 +12,12 @@ Based on Anthropic's "Building Effective Agents" best practices.
 
 ## Structure
 
+- [ ] **Frontmatter present** - `---` block with `name`, `description`, `allowed-tools`
+- [ ] **`name` is lowercase with hyphens** - e.g., `builder`, not `Builder`
+- [ ] **Required sections present** - "When to Use", "When NOT to Use", "Workflow", "Tools Used"
 - [ ] **Under 500 lines** - split into supporting files if longer
 - [ ] **References one level deep** - no nested file chains
-- [ ] **Table of contents** - for files over 100 lines
+- [ ] **Cross-references resolve** - all `skills/`, `agents/`, `commands/` paths exist
 - [ ] **Consistent terminology** - one term per concept throughout
 
 ## Content Guidelines
