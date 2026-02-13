@@ -83,28 +83,28 @@ resource "aws_db_instance" "main" {
 }
 ```
 
-### Resource with depends_on
+### Resource with for_each
 
 ```hcl
-resource "aws_ecs_service" "api" {
-  name            = "${var.project_name}-api"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.api.arn
-  desired_count   = var.desired_count
+resource "aws_s3_bucket" "assets" {
+  for_each = toset(var.bucket_names)
 
-  network_configuration {
-    subnets         = var.private_subnet_ids
-    security_groups = [aws_security_group.ecs_tasks.id]
+  bucket = "${var.project_name}-${var.environment}-${each.value}"
+
+  tags = {
+    Name    = each.value
+    Purpose = each.value
   }
+}
 
-  load_balancer {
-    target_group_arn = aws_lb_target_group.api.arn
-    container_name   = "api"
-    container_port   = 8000
+resource "aws_s3_bucket_versioning" "assets" {
+  for_each = aws_s3_bucket.assets
+
+  bucket = each.value.id
+
+  versioning_configuration {
+    status = "Enabled"
   }
-
-  # ALB listener rule must exist before the service can register targets
-  depends_on = [aws_lb_listener_rule.api]
 }
 ```
 
@@ -127,31 +127,6 @@ resource "aws_cloudwatch_metric_alarm" "high_cpu" {
 
   dimensions = {
     InstanceId = aws_instance.api_server.id
-  }
-}
-```
-
-### Resource with for_each
-
-```hcl
-resource "aws_s3_bucket" "assets" {
-  for_each = toset(var.bucket_names)
-
-  bucket = "${var.project_name}-${var.environment}-${each.value}"
-
-  tags = {
-    Name    = each.value
-    Purpose = each.value
-  }
-}
-
-resource "aws_s3_bucket_versioning" "assets" {
-  for_each = aws_s3_bucket.assets
-
-  bucket = each.value.id
-
-  versioning_configuration {
-    status = "Enabled"
   }
 }
 ```
@@ -186,65 +161,14 @@ data "aws_ami" "ubuntu" {
 
 ## Common Mistakes
 
-```hcl
-# BAD: Generic resource name
-resource "aws_instance" "instance1" { ... }
+Key mistakes to avoid:
+- Generic resource names (`instance1` instead of `api_server`)
+- Using `count` for distinct items (reordering breaks state) -- use `for_each` instead
+- Redundant `depends_on` when implicit dependency through references already exists
+- Unencrypted storage volumes
+- Missing tags on resources
 
-# GOOD: Descriptive resource name
-resource "aws_instance" "api_server" { ... }
-
-# BAD: Using count for a map of distinct items (reordering breaks state)
-resource "aws_subnet" "private" {
-  count = length(var.subnet_configs)
-  cidr_block = var.subnet_configs[count.index].cidr
-}
-
-# GOOD: Using for_each for distinct items (stable keys)
-resource "aws_subnet" "private" {
-  for_each          = { for s in var.subnet_configs : s.name => s }
-  cidr_block        = each.value.cidr
-  availability_zone = each.value.az
-}
-
-# BAD: depends_on when implicit dependency exists
-resource "aws_instance" "web" {
-  subnet_id  = aws_subnet.main.id        # Implicit dependency already exists
-  depends_on = [aws_subnet.main]          # Redundant
-}
-
-# GOOD: Let implicit dependencies work
-resource "aws_instance" "web" {
-  subnet_id = aws_subnet.main.id          # Tofu infers the dependency
-}
-
-# BAD: Unencrypted storage
-resource "aws_ebs_volume" "data" {
-  size = 100
-}
-
-# GOOD: Encrypted by default
-resource "aws_ebs_volume" "data" {
-  size      = 100
-  encrypted = true
-}
-
-# BAD: No tags
-resource "aws_instance" "web" {
-  ami           = "ami-12345"
-  instance_type = "t3.micro"
-}
-
-# GOOD: Tagged with Name and Environment at minimum
-resource "aws_instance" "web" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
-
-  tags = {
-    Name        = "${var.project_name}-${var.environment}-web"
-    Environment = var.environment
-  }
-}
-```
+See `reference/resource-examples.md` for detailed common mistake examples.
 
 ## Cross-References
 

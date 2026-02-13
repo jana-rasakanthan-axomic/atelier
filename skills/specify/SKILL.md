@@ -1,3 +1,9 @@
+---
+name: specify
+description: User story format and acceptance criteria. Use when extracting business rules from PRDs or generating BDD scenarios for PM review.
+allowed-tools: Read, Write, Edit, AskUserQuestion
+---
+
 # Specify Skill
 
 PM-facing behavioral specification before engineering design. Extracts business rules and generates BDD scenarios in business language for Product Manager review and approval.
@@ -38,7 +44,7 @@ Support the **specification phase** by:
 ## When NOT to Use
 
 - **Engineering-facing extraction** — Use `skills/design/business-rules-extraction.md` via `/design` (includes Enforcement field)
-- **Technical BDD scenarios** — Use `skills/testing/bdd-scenario-generation.md` via `/design` (all patterns, technical language)
+- **Technical BDD scenarios** — Use `skills/testing/` via `/design` (all patterns, technical language)
 - **Implementation planning** — Use `/plan`
 - **Simple, obvious features** — Skip straight to `/design` or `/plan`
 
@@ -113,4 +119,4 @@ This creates a clean handoff:
 - **Agent:** [agents/specifier.md](../../agents/specifier.md)
 - **Command:** [commands/specify.md](../../commands/specify.md)
 - **Engineering rules:** [skills/design/business-rules-extraction.md](../design/business-rules-extraction.md) (includes Enforcement field)
-- **Engineering BDD:** [skills/testing/bdd-scenario-generation.md](../testing/bdd-scenario-generation.md) (all patterns, technical language)
+- **Engineering BDD:** `skills/testing/` (all patterns, technical language)

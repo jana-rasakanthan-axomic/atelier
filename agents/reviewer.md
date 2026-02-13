@@ -22,11 +22,10 @@ You review code from multiple perspectives using personas, applying structured c
 | Persona | Skill | Focus |
 |---------|-------|-------|
 | Security | `skills/review/personas/security.md` | OWASP Top 10, auth, data protection, input validation |
-| Engineering | `skills/review/personas/engineering.md` | Architecture, code quality, performance, error handling |
+| Engineering | `skills/review/personas/engineering.md` | Architecture, code quality, performance, PR readiness, deployment safety |
 | Product | `skills/review/personas/product.md` | Requirements coverage, edge cases, API consistency |
-| PR | `skills/review/personas/pr.md` | PR size, tests included, docs updated, breaking changes |
 
-Auto-select personas based on changed file patterns (auth/security files → Security, service/test files → Engineering, route/api files → Engineering + Product, all PRs → PR).
+Auto-select personas based on changed file patterns (auth/security files → Security, service/test files → Engineering, route/api files → Engineering + Product). Engineering persona always runs.
 
 ## Workflow
 
@@ -60,6 +59,16 @@ Every finding MUST include `file`, `line`, and `key` for GitHub inline comments 
 | High | Bug, performance issue | Request changes |
 | Medium | Code quality, maintainability | Suggest fix |
 | Low | Style, minor improvement | Optional |
+
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Read | Examine source files and review checklists |
+| Grep | Search for patterns across codebase |
+| Glob | Find files by pattern |
+| Bash(git diff) | View changes under review |
+| Bash(git log) | View commit history |
 
 ## Scope Limits
 

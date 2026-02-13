@@ -98,8 +98,6 @@ All three must pass before a layer is considered complete.
 
 ## Allowed Bash Tools
 
-For use in command and agent frontmatter `allowed-tools` fields:
-
 ```
 Bash(pytest:*), Bash(ruff:*), Bash(mypy:*), Bash(git:*), Bash(uuidgen), Bash(alembic:*)
 ```
@@ -133,154 +131,48 @@ External Service Tests --> Mock HTTP Client (httpx / aiohttp)
 
 ### Test Organization
 
-```yaml
-test_patterns:
-  unit:
-    location: "tests/unit/"
-    naming: "test_*.py"
-    pattern: "AAA (Arrange, Act, Assert)"
-    markers: []
-  integration:
-    location: "tests/integration/"
-    naming: "test_*.py"
-    markers: ["integration"]
-  e2e:
-    location: "tests/e2e/"
-    naming: "test_*.py"
-    markers: ["e2e"]
-```
+| Type | Location | Naming | Markers |
+|------|----------|--------|---------|
+| Unit | `tests/unit/` | `test_*.py` | -- |
+| Integration | `tests/integration/` | `test_*.py` | `integration` |
+| E2E | `tests/e2e/` | `test_*.py` | `e2e` |
 
-### Test Function Naming
-
-```
-test_{method}_{scenario}_{expected}
-```
-
-Examples:
-- `test_create_recipe_with_valid_data_returns_recipe`
-- `test_create_recipe_with_duplicate_title_raises_conflict`
-- `test_get_recipe_when_not_found_raises_not_found`
+Pattern: AAA (Arrange, Act, Assert). Naming: `test_{method}_{scenario}_{expected}`
 
 ---
 
 ## Naming Conventions
 
-```yaml
-naming:
-  files: "snake_case.py"
-  classes: "PascalCase"
-  functions: "snake_case"
-  constants: "UPPER_SNAKE_CASE"
-  test_files: "test_{module}.py"
-  test_functions: "test_{method}_{scenario}_{expected}"
-  schemas: "{Entity}Create, {Entity}Update, {Entity}Response"
-  services: "{Entity}Service"
-  repositories: "{Entity}Repository"
-  routers: "{entity}_routes.py"
-```
+| Element | Convention | Example |
+|---------|-----------|---------|
+| Files | `snake_case.py` | `user_service.py` |
+| Classes | `PascalCase` | `UserService` |
+| Functions | `snake_case` | `create_user` |
+| Constants | `UPPER_SNAKE_CASE` | `MAX_RETRIES` |
+| Test files | `test_{module}.py` | `test_service.py` |
+| Test functions | `test_{method}_{scenario}_{expected}` | `test_create_user_with_valid_data_returns_user` |
+| Schemas | `{Entity}Create`, `{Entity}Update`, `{Entity}Response` | `RecipeCreate` |
+| Services | `{Entity}Service` | `RecipeService` |
+| Repositories | `{Entity}Repository` | `RecipeRepository` |
+| Routers | `{entity}_routes.py` | `recipe_routes.py` |
 
 ---
 
 ## Code Patterns
 
-### Repository Pattern
+> See [patterns/router.md](profiles/python-fastapi/patterns/router.md) for the Router pattern with examples.
 
-```python
-class RecipeRepository:
-    def __init__(self, session: AsyncSession) -> None:
-        self._session = session
+> See [patterns/service.md](profiles/python-fastapi/patterns/service.md) for the Service pattern with examples.
 
-    async def get_by_id(self, recipe_id: UUID) -> Recipe | None:
-        stmt = select(Recipe).where(Recipe.id == recipe_id)
-        result = await self._session.execute(stmt)
-        return result.scalar_one_or_none()
+> See [patterns/repository.md](profiles/python-fastapi/patterns/repository.md) for the Repository pattern with examples.
 
-    async def get_all(self, *, limit: int = 50, offset: int = 0) -> list[Recipe]:
-        stmt = select(Recipe).limit(limit).offset(offset)
-        result = await self._session.execute(stmt)
-        return list(result.scalars().all())
+> See [patterns/external.md](profiles/python-fastapi/patterns/external.md) for the External integration pattern.
 
-    async def create(self, recipe: Recipe) -> Recipe:
-        self._session.add(recipe)
-        await self._session.flush()
-        return recipe
-```
+> See [patterns/exceptions.md](profiles/python-fastapi/patterns/exceptions.md) for the Exception pattern.
 
-Rules:
-- Use `select()` not `query()` (SQLAlchemy 2.0 style)
-- Use `flush()` not `commit()` (UnitOfWork owns the transaction)
-- Return `Entity | None` for single lookups, `list[Entity]` for collections
-- Accept and return ORM entities, not Pydantic models
+> See [patterns/models.md](profiles/python-fastapi/patterns/models.md) for the ORM entity pattern.
 
-### Service Pattern
-
-```python
-class RecipeService:
-    def __init__(self, db_manager: DBManager) -> None:
-        self._db_manager = db_manager
-
-    async def create_recipe(self, data: RecipeCreate) -> Recipe:
-        async with self._db_manager.uow() as uow:
-            existing = await uow.recipes.get_by_title(data.title)
-            if existing:
-                raise RecipeAlreadyExistsError(title=data.title)
-
-            recipe = Recipe(**data.model_dump())
-            created = await uow.recipes.create(recipe)
-            return created
-```
-
-Rules:
-- Constructor injection of UnitOfWork (DBManager)
-- Use `async with db_manager.uow()` for transaction scope
-- Raise domain exceptions for business rule violations
-- Return entities; let routers transform to Pydantic response models
-- Never import or return Pydantic schemas
-
-### Router Pattern
-
-```python
-router = APIRouter(prefix="/recipes", tags=["recipes"])
-
-@router.post("", response_model=RecipeResponse, status_code=status.HTTP_201_CREATED)
-async def create_recipe(
-    data: RecipeCreate,
-    service: RecipeServiceDep,
-) -> RecipeResponse:
-    recipe = await service.create_recipe(data)
-    return RecipeResponse.model_validate(recipe)
-```
-
-Rules:
-- Dependency injection via `Depends()`
-- Return Pydantic response models (never raw entities)
-- Map domain exceptions to HTTP status codes via global exception handlers
-- Use type aliases for dependencies: `RecipeServiceDep = Annotated[RecipeService, Depends(get_recipe_service)]`
-- Keep route functions thin (delegate to service)
-
-### Exception Pattern
-
-```python
-class ServiceError(Exception):
-    """Base for all service-layer exceptions."""
-    def __init__(self, message: str, detail: str, context: dict[str, Any] | None = None) -> None:
-        super().__init__(message)
-        self.detail = detail        # Returned in API response
-        self.context = context or {} # Used for structured logging / log filtering
-
-class RecipeNotFoundError(ServiceError):
-    def __init__(self, recipe_id: UUID) -> None:
-        super().__init__(
-            message=f"Recipe {recipe_id} not found",
-            detail="Recipe not found",
-            context={"recipe_id": str(recipe_id)},
-        )
-```
-
-Rules:
-- Three-part structure: `message` (logs), `detail` (API response), `context` (log filtering)
-- Hierarchy: `ServiceError` -> `CategoryError` -> `SpecificError`
-- Never expose internal IDs or stack traces in `detail`
+Commands and agents reference these patterns by path: `$PROFILE_DIR/patterns/{layer}.md`
 
 ---
 
@@ -315,75 +207,20 @@ dependencies:
 
 ## Project Structure
 
-```yaml
-structure:
-  source_root: "src/"
-  test_root: "tests/"
-  config_files:
-    - pyproject.toml
-    - alembic.ini
-  migration_dir: "alembic/versions/"
-```
-
-### Expected Directory Layout
+Source root: `src/` | Test root: `tests/` | Config: `pyproject.toml`, `alembic.ini` | Migrations: `alembic/versions/`
 
 ```
 project-root/
-  pyproject.toml
-  alembic.ini
-  alembic/
-    env.py
-    versions/
   src/
-    main.py
-    config.py
-    db/
-      session.py
-      repositories/
-        __init__.py
-    api/
-      {domain}/
-        routes.py
-        schemas.py
-        service.py
-        repository.py
-        exceptions.py
-    models/
-      {domain}.py
+    main.py, config.py
+    db/session.py, db/repositories/
+    api/{domain}/ -> routes.py, schemas.py, service.py, repository.py, exceptions.py
+    models/{domain}.py
   tests/
     conftest.py
-    unit/
-      api/
-        {domain}/
-          test_routes.py
-          test_service.py
-          test_repository.py
-    integration/
-    e2e/
+    unit/api/{domain}/ -> test_routes.py, test_service.py, test_repository.py
+    integration/, e2e/
 ```
-
----
-
-## Pattern Files Reference
-
-Detailed pattern files live alongside this profile for use by code-generation skills:
-
-```
-profiles/python-fastapi/patterns/
-  router.md        # Full router pattern with examples
-  service.md       # Full service pattern with examples
-  repository.md    # Full repository pattern with examples
-  external.md      # External integration pattern with examples
-  models.md        # ORM entity pattern with examples
-```
-
-Commands and agents reference these patterns by path:
-```
-$PROFILE_DIR/patterns/router.md
-$PROFILE_DIR/patterns/service.md
-```
-
-Where `$PROFILE_DIR` resolves to `profiles/python-fastapi/` for this profile.
 
 ---
 

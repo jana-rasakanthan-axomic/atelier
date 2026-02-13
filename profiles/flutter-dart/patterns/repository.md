@@ -68,12 +68,8 @@ class RecipeRepository {
 ## Error Handling with Typed Exceptions
 
 ```dart
-// lib/features/recipes/data/recipe_repository.dart
-import 'package:dio/dio.dart';
-
 class RecipeRepository {
   RecipeRepository({required Dio dio}) : _dio = dio;
-
   final Dio _dio;
 
   Future<Recipe> getById(String id) async {
@@ -86,9 +82,7 @@ class RecipeRepository {
   }
 
   AppException _mapException(DioException e) {
-    if (e.response == null) {
-      return const NetworkException();
-    }
+    if (e.response == null) return const NetworkException();
     return switch (e.response!.statusCode) {
       404 => NotFoundException(resource: 'Recipe', id: ''),
       409 => ConflictException(message: 'Recipe already exists'),
@@ -99,52 +93,7 @@ class RecipeRepository {
 }
 ```
 
-## Repository with Local Cache
-
-```dart
-// lib/features/recipes/data/recipe_repository.dart
-class RecipeRepository {
-  RecipeRepository({
-    required Dio dio,
-    required SharedPreferences prefs,
-  })  : _dio = dio,
-        _prefs = prefs;
-
-  final Dio _dio;
-  final SharedPreferences _prefs;
-  static const _cacheKey = 'cached_recipes';
-
-  Future<List<Recipe>> getAll() async {
-    try {
-      final response = await _dio.get<Map<String, dynamic>>('/recipes');
-      final items = response.data!['items'] as List<dynamic>;
-      final recipes = items
-          .cast<Map<String, dynamic>>()
-          .map(Recipe.fromJson)
-          .toList();
-      await _cacheRecipes(recipes);
-      return recipes;
-    } on DioException {
-      return _getCachedRecipes();
-    }
-  }
-
-  Future<void> _cacheRecipes(List<Recipe> recipes) async {
-    final json = recipes.map((r) => r.toJson()).toList();
-    await _prefs.setString(_cacheKey, jsonEncode(json));
-  }
-
-  List<Recipe> _getCachedRecipes() {
-    final cached = _prefs.getString(_cacheKey);
-    if (cached == null) return [];
-    final list = jsonDecode(cached) as List<dynamic>;
-    return list
-        .cast<Map<String, dynamic>>()
-        .map(Recipe.fromJson)
-        .toList();
-  }
-}
-```
+> See [repository-caching.md](repository-caching.md) for the local cache pattern with SharedPreferences fallback.
 
 ## Common Methods
 
@@ -169,40 +118,17 @@ Dio createDio({required String baseUrl, required String Function() tokenProvider
     receiveTimeout: const Duration(seconds: 10),
     headers: {'Content-Type': 'application/json'},
   ));
-
   dio.interceptors.addAll([
     _AuthInterceptor(tokenProvider),
     LogInterceptor(requestBody: true, responseBody: true),
   ]);
-
   return dio;
-}
-
-class _AuthInterceptor extends Interceptor {
-  _AuthInterceptor(this._tokenProvider);
-
-  final String Function() _tokenProvider;
-
-  @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    final token = _tokenProvider();
-    if (token.isNotEmpty) {
-      options.headers['Authorization'] = 'Bearer $token';
-    }
-    handler.next(options);
-  }
 }
 ```
 
 ## Unit Test Example
 
 ```dart
-// test/unit/features/recipes/recipe_repository_test.dart
-import 'package:dio/dio.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-
 @GenerateMocks([Dio])
 import 'recipe_repository_test.mocks.dart';
 
@@ -221,51 +147,25 @@ void main() {
         '/recipes',
         queryParameters: anyNamed('queryParameters'),
       )).thenAnswer((_) async => Response(
-        data: {
-          'items': [
-            {'id': '1', 'title': 'Pasta', 'description': 'Good', 'created_at': '2024-01-01T00:00:00Z'},
-          ],
-        },
+        data: {'items': [{'id': '1', 'title': 'Pasta', 'description': 'Good', 'created_at': '2024-01-01T00:00:00Z'}]},
         statusCode: 200,
         requestOptions: RequestOptions(path: '/recipes'),
       ));
 
       final result = await repository.getAll();
-
       expect(result, hasLength(1));
       expect(result.first.title, equals('Pasta'));
-    });
-
-    test('getById returns single recipe', () async {
-      when(mockDio.get<Map<String, dynamic>>('/recipes/1')).thenAnswer(
-        (_) async => Response(
-          data: {'id': '1', 'title': 'Pasta', 'description': 'Good', 'created_at': '2024-01-01T00:00:00Z'},
-          statusCode: 200,
-          requestOptions: RequestOptions(path: '/recipes/1'),
-        ),
-      );
-
-      final result = await repository.getById('1');
-
-      expect(result.id, equals('1'));
-      expect(result.title, equals('Pasta'));
     });
 
     test('getById throws NotFoundException for 404', () async {
       when(mockDio.get<Map<String, dynamic>>('/recipes/999')).thenThrow(
         DioException(
-          response: Response(
-            statusCode: 404,
-            requestOptions: RequestOptions(path: '/recipes/999'),
-          ),
+          response: Response(statusCode: 404, requestOptions: RequestOptions(path: '/recipes/999')),
           requestOptions: RequestOptions(path: '/recipes/999'),
         ),
       );
 
-      expect(
-        () => repository.getById('999'),
-        throwsA(isA<NotFoundException>()),
-      );
+      expect(() => repository.getById('999'), throwsA(isA<NotFoundException>()));
     });
   });
 }
@@ -273,61 +173,12 @@ void main() {
 
 ## Anti-Patterns
 
-```dart
-// BAD: Creating Dio instance inside repository
-class RecipeRepository {
-  final _dio = Dio(BaseOptions(baseUrl: 'https://api.example.com'));
-}
-
-// GOOD: Constructor injection
-class RecipeRepository {
-  RecipeRepository({required Dio dio}) : _dio = dio;
-  final Dio _dio;
-}
-
-// BAD: Returning raw Response
-Future<Response> getAll() async {
-  return _dio.get('/recipes');
-}
-
-// GOOD: Return typed domain models
-Future<List<Recipe>> getAll() async {
-  final response = await _dio.get<Map<String, dynamic>>('/recipes');
-  return (response.data!['items'] as List).cast<Map<String, dynamic>>().map(Recipe.fromJson).toList();
-}
-
-// BAD: Business logic in repository
-Future<List<Recipe>> getFiltered(String category) async {
-  final all = await getAll();
-  return all.where((r) => r.category == category).toList();
-}
-
-// GOOD: Filtering is notifier/service responsibility
-Future<List<Recipe>> getAll({String? category}) async {
-  final params = <String, dynamic>{};
-  if (category != null) params['category'] = category;
-  final response = await _dio.get<Map<String, dynamic>>('/recipes', queryParameters: params);
-  // ...
-}
-
-// BAD: Swallowing errors
-Future<List<Recipe>> getAll() async {
-  try {
-    // ...
-  } catch (_) {
-    return [];
-  }
-}
-
-// GOOD: Let errors propagate or throw typed exceptions
-Future<List<Recipe>> getAll() async {
-  try {
-    // ...
-  } on DioException catch (e) {
-    throw _mapException(e);
-  }
-}
-```
+| Anti-Pattern | Correct Approach |
+|-------------|-----------------|
+| Creating Dio inside repository | Constructor injection: `RecipeRepository({required Dio dio})` |
+| Returning raw `Response` | Return typed domain models: `Future<List<Recipe>>` |
+| Business logic in repository (e.g., client-side filtering) | Pass filters as query params, let server filter |
+| Swallowing errors with empty catch | Rethrow as typed exceptions via `_mapException` |
 
 ## Cross-References
 

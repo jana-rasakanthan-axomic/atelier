@@ -18,6 +18,17 @@ You are implementing a plan through iterative TDD cycles. Each iteration you ass
 2. Read the plan from `$PLAN_FILE`. Identify all layers to implement and their order.
 3. If `$WORKTREE_PATH` does not exist yet, create it from `$BASE_BRANCH`.
 
+## Pre-Analysis (First Iteration Only, Before ASSESS)
+
+Before entering the ASSESS -> DECIDE -> ACT -> VERIFY loop:
+
+1. Read the plan from `$PLAN_FILE`
+2. Generate a pre-analysis report following `$TOOLKIT_DIR/skills/building/templates/pre-analysis-report.md`
+3. Write to `.claude/builds/<BRANCH_NAME>/pre-analysis.md`
+4. Create the build log header at `.claude/builds/<BRANCH_NAME>/build.log.md`
+
+This is a read-only analysis step. No code is written.
+
 ## State Machine: ASSESS -> DECIDE -> ACT -> VERIFY -> COMPLETE
 
 ### ASSESS
@@ -34,8 +45,8 @@ Determine current state by running all gates:
 
 Based on assessment, pick the highest-priority action:
 
-1. **Next layer needs tests** -> Write tests for the next unimplemented layer (TDD RED phase)
-2. **Tests written but failing (RED confirmed)** -> Write implementation to make tests pass (TDD GREEN phase)
+1. **Next layer needs tests AND no layer is in RED state** -> Write tests for the next unimplemented layer (TDD RED phase)
+2. **A layer is in RED state (tests written, failing)** -> Write implementation for THAT SAME LAYER to make tests pass (TDD GREEN phase). Do NOT write tests for another layer while one is in RED.
 3. **GREEN attempt failing** (attempt < MAX_GREEN_RETRIES) -> Fix implementation and retry
 4. **GREEN attempt failing** (attempt = MAX_GREEN_RETRIES) -> Escalate to user and stop
 5. **All layers done, lint errors** -> Fix lint issues
@@ -43,6 +54,18 @@ Based on assessment, pick the highest-priority action:
 7. **All layers done, test failures** -> Fix failing tests
 8. **All gates pass, review has findings** -> Fix review findings
 9. **All gates pass, review is clean** -> Proceed to COMPLETE
+
+### Layer-by-Layer Rule (STRICT)
+
+Each layer completes its full cycle before the next begins:
+```
+Layer 1: WRITE_TESTS -> CONFIRM_RED -> WRITE_IMPL -> CONFIRM_GREEN -> VERIFY
+Layer 2: WRITE_TESTS -> CONFIRM_RED -> WRITE_IMPL -> CONFIRM_GREEN -> VERIFY
+...
+```
+
+PROHIBITED: Writing tests for Layer 2 before Layer 1 has reached CONFIRM_GREEN.
+PROHIBITED: Batching all test files first, then batching all implementations.
 
 ### ACT
 
@@ -52,6 +75,8 @@ Execute the decided action:
 - **TDD GREEN:** Write minimum implementation to pass the failing tests. Follow the layer pattern from the profile.
 - **Quality fix:** Fix the specific lint, type, or test error. Make the smallest change possible.
 - **Review fix:** Address the finding, re-run affected gates to ensure no regressions.
+
+**After every ACT, append an entry to `.claude/builds/<BRANCH_NAME>/build.log.md`** with: timestamp, phase (RED/GREEN/VERIFY/FIX), layer name, action taken, files affected, and test/lint/type results.
 
 ### VERIFY
 
@@ -74,6 +99,7 @@ When all layers are implemented, all gates pass, and self-review is clean:
 3. Push the branch to the remote
 4. Create a PR against `$BASE_BRANCH` using `gh pr create`
 5. Output the PR URL
+6. Append the summary table and plan alignment checklist to the build log
 
 **Output the following line to signal completion:**
 

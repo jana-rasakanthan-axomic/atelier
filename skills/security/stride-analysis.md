@@ -50,142 +50,39 @@ For each asset and entry point combination:
 
 **Question**: Can an attacker impersonate a legitimate user or system?
 
-**Mitigations**:
-- Strong authentication (MFA, WebAuthn)
-- Certificate pinning
-- API key rotation
-- Session management
-
-```python
-# Example: Verify JWT signature
-from jose import jwt, JWTError
-
-def verify_token(token: str) -> dict:
-    try:
-        payload = jwt.decode(
-            token,
-            SECRET_KEY,
-            algorithms=[ALGORITHM],
-        )
-        return payload
-    except JWTError:
-        raise InvalidTokenError()
-```
+**Mitigations**: Strong authentication (MFA, WebAuthn), certificate pinning, API key rotation, session management
 
 #### Tampering
 
 **Question**: Can an attacker modify data in transit or at rest?
 
-**Mitigations**:
-- HTTPS for transport
-- Input validation
-- Parameterized queries
-- Integrity checks (HMAC)
-
-```python
-# Example: Parameterized query (prevent SQL injection)
-# BAD
-query = f"SELECT * FROM users WHERE id = '{user_id}'"
-
-# GOOD
-query = select(User).where(User.id == user_id)
-```
+**Mitigations**: HTTPS for transport, input validation, parameterized queries, integrity checks (HMAC)
 
 #### Repudiation
 
 **Question**: Can a user deny performing an action?
 
-**Mitigations**:
-- Comprehensive audit logging
-- Non-repudiation signatures
-- Immutable logs
-- Timestamps
-
-```python
-# Example: Audit logging
-import structlog
-
-logger = structlog.get_logger()
-
-async def delete_user(user_id: UUID, actor_id: UUID) -> None:
-    logger.info(
-        "user_deleted",
-        user_id=str(user_id),
-        actor_id=str(actor_id),
-        timestamp=datetime.utcnow().isoformat(),
-    )
-    await repository.delete(user_id)
-```
+**Mitigations**: Comprehensive audit logging, non-repudiation signatures, immutable logs, timestamps
 
 #### Information Disclosure
 
 **Question**: Can sensitive data be exposed?
 
-**Mitigations**:
-- Encryption at rest and transit
-- Access control
-- Data masking
-- Secure error handling
-
-```python
-# Example: Don't expose internal errors
-# BAD
-except Exception as e:
-    return {"error": str(e)}  # May expose stack trace
-
-# GOOD
-except Exception as e:
-    logger.exception("Internal error")
-    return {"error": "An internal error occurred"}
-```
+**Mitigations**: Encryption at rest and transit, access control, data masking, secure error handling
 
 #### Denial of Service
 
 **Question**: Can an attacker disrupt service availability?
 
-**Mitigations**:
-- Rate limiting
-- Input validation (size limits)
-- Resource quotas
-- Auto-scaling
-
-```python
-# Example: Rate limiting
-from slowapi import Limiter
-
-limiter = Limiter(key_func=get_remote_address)
-
-@router.post("/login")
-@limiter.limit("5/minute")
-async def login(request: Request):
-    ...
-```
+**Mitigations**: Rate limiting, input validation (size limits), resource quotas, auto-scaling
 
 #### Elevation of Privilege
 
 **Question**: Can a user gain unauthorized access?
 
-**Mitigations**:
-- Principle of least privilege
-- Role-based access control
-- Input validation
-- Authorization checks
+**Mitigations**: Principle of least privilege, role-based access control, input validation, authorization checks
 
-```python
-# Example: Authorization check
-async def delete_resource(
-    resource_id: UUID,
-    current_user: User = Depends(get_current_user),
-) -> None:
-    resource = await repository.get(resource_id)
-
-    # Check ownership
-    if resource.owner_id != current_user.id:
-        if not current_user.is_admin:
-            raise ForbiddenError()
-
-    await repository.delete(resource_id)
-```
+See `reference/stride-code-examples.md` for implementation examples of each mitigation category.
 
 ### 4. Document Findings
 
@@ -216,29 +113,6 @@ Risk Score:
 
 ## Template Output
 
-```json
-{
-  "analysis_date": "2024-01-15",
-  "feature": "User Authentication",
-  "assets": [...],
-  "entry_points": [...],
-  "threats": [
-    {
-      "id": "T-001",
-      "category": "Spoofing",
-      "asset": "User credentials",
-      "description": "Credential stuffing attack",
-      "likelihood": 3,
-      "impact": 4,
-      "risk_score": 12,
-      "risk_level": "Critical",
-      "mitigations": [
-        "Implement MFA",
-        "Add rate limiting",
-        "Use breach detection"
-      ]
-    }
-  ],
-  "recommendations": [...]
-}
-```
+Output a JSON document with `analysis_date`, `feature`, `assets`, `entry_points`, `threats` (each with id, category, asset, description, likelihood, impact, risk_score, risk_level, mitigations), and `recommendations`.
+
+See `reference/stride-code-examples.md` for the full JSON template.

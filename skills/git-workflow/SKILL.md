@@ -1,10 +1,25 @@
+---
+name: git-workflow
+description: Branching, worktrees, and PR conventions. Use when creating worktrees, managing branches, or tracking sessions for code-modifying commands.
+allowed-tools: Read, Bash(git:*), Bash(scripts/worktree-manager.sh:*), Bash(scripts/generate-branch-name.sh:*), Bash(scripts/session-manager.sh:*)
+---
+
 # Git Workflow Skill
 
-**Purpose:** Manage isolated git worktrees for safe, parallel command execution.
+Manage isolated git worktrees for safe, parallel command execution. Used by `/build` and `/fix` commands.
 
-**Used By:** `/build`, `/fix` commands
+## When to Use
 
----
+- Command modifies code (e.g., `/build`, `/fix`)
+- Need isolated workspace (don't disturb user's working directory)
+- Want parallel execution (multiple commands at once)
+- Need rollback capability (if command fails)
+
+## When NOT to Use
+
+- Command is read-only (e.g., `/review`, `/analyze`)
+- Command doesn't touch code (e.g., `/gather`)
+- One-off script execution (use temporary directory instead)
 
 ## Overview
 
@@ -16,21 +31,6 @@ The git workflow skill provides worktree management for commands that modify cod
 2. **Branch Management** - Generate and create properly-named branches
 3. **Session Tracking** - Track command state across execution
 4. **Cleanup** - Remove worktrees and clean up state
-
----
-
-## When to Use This Skill
-
-**Use this skill when:**
-- ✅ Command modifies code (e.g., `/build`, `/fix`)
-- ✅ Need isolated workspace (don't disturb user's working directory)
-- ✅ Want parallel execution (multiple commands at once)
-- ✅ Need rollback capability (if command fails)
-
-**Don't use this skill when:**
-- ❌ Command is read-only (e.g., `/review`, `/analyze`)
-- ❌ Command doesn't touch code (e.g., `/gather`)
-- ❌ One-off script execution (use temporary directory instead)
 
 ---
 

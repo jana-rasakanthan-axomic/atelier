@@ -79,6 +79,23 @@ If existing PR has unresolved feedback threads, address them before building:
 
 Read input, extract implementation phases and contract specs. For context files or descriptions, create quick internal plan.
 
+### Stage 1.5: Pre-Analysis (Dry Run)
+
+**Agent:** Builder
+
+Generate a pre-analysis report following `skills/building/templates/pre-analysis-report.md`.
+
+1. Read the plan and map each implementation phase to concrete files, layers, and test cases
+2. Check contract alignment for every endpoint/function
+3. Identify all permissions needed
+4. Write the report to `.claude/builds/<BRANCH_NAME>/pre-analysis.md`
+5. Present the report to the user
+6. **WAIT for explicit user approval before proceeding**
+
+In `--batch` mode: write the pre-analysis but check `batch_approval.json` for pre-approval.
+
+This stage produces NO code changes -- it is read-only analysis.
+
 ### Stage 2: Request Permissions
 
 Analyze plan to determine operations needed. Present permission summary. **Wait for user approval** via `ExitPlanMode` before proceeding.
@@ -124,6 +141,8 @@ Follow `skills/git-workflow/templates/completion-stage.md`
 3. Check permissions from `skills/iterative-dev/configs/permissions.md`
 4. Hydrate prompt template from `skills/iterative-dev/prompts/build.md`
 5. Launch `/ralph-loop` with hydrated prompt, `--completion-promise "BUILD COMPLETE"`, `--max-iterations N`
+
+**STRICT ENFORCEMENT:** When `--loop` is specified, the build command MUST launch `/ralph-loop`. Running the TDD cycle manually (interactive mode) when `--loop` was requested is a PROCESS VIOLATION. If ralph-loop cannot be launched (e.g., plugin not available), STOP and report the error to the user -- do NOT fall back to interactive mode silently.
 
 ---
 

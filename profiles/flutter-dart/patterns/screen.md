@@ -2,6 +2,8 @@
 
 Flutter screen/page widgets with GoRouter integration and Riverpod state consumption.
 
+> See [screen-forms.md](screen-forms.md) for form screen patterns.
+
 ## Location
 
 - `lib/features/{feature}/presentation/screens/{feature}_screen.dart` - Screen widgets
@@ -19,9 +21,7 @@ Flutter screen/page widgets with GoRouter integration and Riverpod state consump
 
 ## Contract-First Workflow
 
-When implementing from wireframes/contract specifications:
-
-1. **Define route** (`app_router.dart`) - Add GoRoute entry for the screen
+1. **Define route** (`app_router.dart`) - Add GoRoute entry
 2. **Write screen tests** (`test/widget/features/{feature}/`) - Mock providers, verify widget tree
 3. **Implement screen** (`{feature}_screen.dart`) - Build the widget, consume state
 4. **Run tests** - Validate widget contract
@@ -29,23 +29,15 @@ When implementing from wireframes/contract specifications:
 ## GoRouter Route Definition
 
 ```dart
-// lib/router/app_router.dart
-import 'package:go_router/go_router.dart';
-
 final appRouter = GoRouter(
   routes: [
     GoRoute(
-      path: '/recipes',
-      name: 'recipes',
+      path: '/recipes', name: 'recipes',
       builder: (context, state) => const RecipeListScreen(),
       routes: [
         GoRoute(
-          path: ':id',
-          name: 'recipe-detail',
-          builder: (context, state) {
-            final id = state.pathParameters['id']!;
-            return RecipeDetailScreen(recipeId: id);
-          },
+          path: ':id', name: 'recipe-detail',
+          builder: (context, state) => RecipeDetailScreen(recipeId: state.pathParameters['id']!),
         ),
       ],
     ),
@@ -56,18 +48,12 @@ final appRouter = GoRouter(
 ## Screen with AsyncValue Pattern Matching
 
 ```dart
-// lib/features/recipes/presentation/screens/recipe_list_screen.dart
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-
 class RecipeListScreen extends ConsumerWidget {
   const RecipeListScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(recipeListProvider);
-
     return Scaffold(
       appBar: AppBar(title: const Text('Recipes')),
       body: switch (state) {
@@ -95,15 +81,12 @@ class RecipeListScreen extends ConsumerWidget {
 ```dart
 class _RecipeList extends StatelessWidget {
   const _RecipeList({required this.recipes, required this.onTap});
-
   final List<Recipe> recipes;
   final ValueChanged<String> onTap;
 
   @override
   Widget build(BuildContext context) {
-    if (recipes.isEmpty) {
-      return const Center(child: Text('No recipes yet'));
-    }
+    if (recipes.isEmpty) return const Center(child: Text('No recipes yet'));
     return ListView.builder(
       itemCount: recipes.length,
       itemBuilder: (context, index) {
@@ -120,7 +103,6 @@ class _RecipeList extends StatelessWidget {
 
 class _ErrorView extends StatelessWidget {
   const _ErrorView({required this.error, required this.onRetry});
-
   final Object error;
   final VoidCallback onRetry;
 
@@ -132,10 +114,7 @@ class _ErrorView extends StatelessWidget {
         children: [
           Text('Error: $error'),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: const Text('Retry'),
-          ),
+          ElevatedButton(onPressed: onRetry, child: const Text('Retry')),
         ],
       ),
     );
@@ -143,100 +122,18 @@ class _ErrorView extends StatelessWidget {
 }
 ```
 
-## Form Screen Pattern
-
-```dart
-// lib/features/recipes/presentation/screens/create_recipe_screen.dart
-class CreateRecipeScreen extends ConsumerStatefulWidget {
-  const CreateRecipeScreen({super.key});
-
-  @override
-  ConsumerState<CreateRecipeScreen> createState() => _CreateRecipeScreenState();
-}
-
-class _CreateRecipeScreenState extends ConsumerState<CreateRecipeScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _descriptionController = TextEditingController();
-
-  @override
-  void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    final request = CreateRecipeRequest(
-      title: _titleController.text,
-      description: _descriptionController.text,
-    );
-    await ref.read(recipeListProvider.notifier).addRecipe(request);
-    if (mounted) context.pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('New Recipe')),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-              validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
-            ),
-            const SizedBox(height: 16),
-            TextFormField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-              maxLines: 3,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _submit,
-        child: const Icon(Icons.save),
-      ),
-    );
-  }
-}
-```
-
-Rules for form screens:
-- Use `ConsumerStatefulWidget` when managing `TextEditingController` or `FormState`
-- Always dispose controllers in `dispose()`
-- Validate form before submitting
-- Use `ref.read()` (not `ref.watch()`) for one-shot mutation actions
-- Check `mounted` before navigating after async operations
-
 ## Widget Test Example
 
 ```dart
-// test/widget/features/recipes/recipe_list_screen_test.dart
-import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 void main() {
   group('RecipeListScreen', () {
     testWidgets('shows loading indicator while fetching', (tester) async {
       await tester.pumpWidget(
         ProviderScope(
-          overrides: [
-            recipeListProvider.overrideWith(
-              () => _LoadingNotifier(),
-            ),
-          ],
+          overrides: [recipeListProvider.overrideWith(() => _LoadingNotifier())],
           child: const MaterialApp(home: RecipeListScreen()),
         ),
       );
-
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
@@ -244,34 +141,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            recipeListProvider.overrideWith(
-              () => _DataNotifier([
-                Recipe(id: '1', title: 'Pasta', description: 'Tasty', createdAt: DateTime.now()),
-              ]),
-            ),
+            recipeListProvider.overrideWith(() => _DataNotifier([
+              Recipe(id: '1', title: 'Pasta', description: 'Tasty', createdAt: DateTime.now()),
+            ])),
           ],
           child: const MaterialApp(home: RecipeListScreen()),
         ),
       );
       await tester.pumpAndSettle();
-
       expect(find.text('Pasta'), findsOneWidget);
-    });
-
-    testWidgets('shows error view and retry button on failure', (tester) async {
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            recipeListProvider.overrideWith(
-              () => _ErrorNotifier(),
-            ),
-          ],
-          child: const MaterialApp(home: RecipeListScreen()),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Retry'), findsOneWidget);
     });
   });
 }
@@ -281,31 +159,17 @@ void main() {
 
 ```dart
 // BAD: Business logic in screen
-onPressed: () async {
-  final repo = RecipeRepository(dio: Dio());
-  await repo.create(request);
-}
-
+onPressed: () async { final repo = RecipeRepository(dio: Dio()); await repo.create(request); }
 // GOOD: Delegate to notifier
 onPressed: () => ref.read(recipeListProvider.notifier).addRecipe(request)
 
 // BAD: Navigator.push directly
 Navigator.push(context, MaterialPageRoute(builder: (_) => DetailScreen()));
-
 // GOOD: GoRouter named routes
 context.goNamed('recipe-detail', pathParameters: {'id': recipe.id})
 
-// BAD: Stateful widget for reading providers
-class MyScreen extends StatefulWidget { ... }
-
-// GOOD: ConsumerWidget for provider reads
-class MyScreen extends ConsumerWidget { ... }
-
-// BAD: ref.watch() for mutation actions
-onPressed: () => ref.watch(provider.notifier).doAction()
-
-// GOOD: ref.read() for one-shot actions
-onPressed: () => ref.read(provider.notifier).doAction()
+// BAD: StatefulWidget for provider reads    // GOOD: ConsumerWidget
+// BAD: ref.watch() for mutation actions     // GOOD: ref.read() for one-shot actions
 ```
 
 ## Cross-References

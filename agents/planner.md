@@ -51,6 +51,14 @@ Plans contain specifications, not code. Include: method signatures, schema field
 | `skills/analysis/risk-analysis.md` | Risk assessment |
 | `skills/security/stride-analysis.md` | Threat modeling |
 
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Read | Parse requirements, examine codebase |
+| Grep | Search for existing patterns |
+| Glob | Find relevant files |
+
 ## Scope Limits
 
 - Single feature/domain per plan

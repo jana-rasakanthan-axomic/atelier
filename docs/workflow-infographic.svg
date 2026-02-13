@@ -1,0 +1,423 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 930" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000" flood-opacity="0.25"/>
+    </filter>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1440" height="960" fill="url(#bgGrad)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.03">
+    <line x1="120" y1="0" x2="120" y2="960" stroke="#fff"/>
+    <line x1="360" y1="0" x2="360" y2="960" stroke="#fff"/>
+    <line x1="600" y1="0" x2="600" y2="960" stroke="#fff"/>
+    <line x1="840" y1="0" x2="840" y2="960" stroke="#fff"/>
+    <line x1="1080" y1="0" x2="1080" y2="960" stroke="#fff"/>
+    <line x1="1320" y1="0" x2="1320" y2="960" stroke="#fff"/>
+  </g>
+
+  <!-- ==================== TITLE ==================== -->
+  <text x="720" y="46" text-anchor="middle" fill="#f8fafc" font-size="30" font-weight="700" letter-spacing="1">Atelier — Claude Toolkit</text>
+  <text x="720" y="70" text-anchor="middle" fill="#94a3b8" font-size="14" letter-spacing="2">OPINIONATED DEV WORKFLOWS FOR CLAUDE CODE</text>
+  <line x1="300" y1="85" x2="1140" y2="85" stroke="#334155" stroke-width="1"/>
+
+  <!-- ==================== PHASE GROUP HEADERS ==================== -->
+  <rect x="60" y="96" width="220" height="22" rx="4" fill="#3b82f6" opacity="0.06"/>
+  <text x="170" y="112" text-anchor="middle" fill="#3b82f6" font-size="10" font-weight="700" letter-spacing="2">UNDERSTAND</text>
+
+  <rect x="300" y="96" width="380" height="22" rx="4" fill="#8b5cf6" opacity="0.06"/>
+  <text x="490" y="112" text-anchor="middle" fill="#8b5cf6" font-size="10" font-weight="700" letter-spacing="2">SPECIFY + DESIGN</text>
+
+  <rect x="700" y="96" width="460" height="22" rx="4" fill="#f59e0b" opacity="0.06"/>
+  <text x="930" y="112" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="700" letter-spacing="2">PLAN + BUILD</text>
+
+  <rect x="1180" y="96" width="200" height="22" rx="4" fill="#06b6d4" opacity="0.06"/>
+  <text x="1280" y="112" text-anchor="middle" fill="#06b6d4" font-size="10" font-weight="700" letter-spacing="2">REVIEW + SHIP</text>
+
+  <!-- Phase dividers -->
+  <line x1="290" y1="96" x2="290" y2="398" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="690" y1="96" x2="690" y2="398" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+  <line x1="1170" y1="96" x2="1170" y2="398" stroke="#334155" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ==================== HUMAN ACTION ROW ==================== -->
+  <text x="170" y="142" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="600">Point to sources</text>
+  <text x="170" y="156" text-anchor="middle" fill="#64748b" font-size="9">Jira, GitHub, Confluence, brain dumps</text>
+
+  <text x="400" y="142" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="600">PM reviews rules + BDD</text>
+  <text x="400" y="156" text-anchor="middle" fill="#64748b" font-size="9">Approve before any code exists</text>
+
+  <text x="600" y="142" text-anchor="middle" fill="#f9a8d4" font-size="11" font-weight="600">Engineer reviews design</text>
+  <text x="600" y="156" text-anchor="middle" fill="#64748b" font-size="9">TDD contracts + endpoint tickets</text>
+
+  <text x="930" y="142" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="600">Review + approve plans</text>
+  <text x="930" y="156" text-anchor="middle" fill="#64748b" font-size="9">Quick scan — plans are human-readable</text>
+
+  <text x="1280" y="142" text-anchor="middle" fill="#67e8f9" font-size="11" font-weight="600">Review PRs + merge</text>
+  <text x="1280" y="156" text-anchor="middle" fill="#64748b" font-size="9">Each PR is tested + branch-isolated</text>
+
+  <!-- Dashed handoff arrows down -->
+  <g stroke="#475569" stroke-width="1" stroke-dasharray="3,3">
+    <line x1="170" y1="162" x2="170" y2="180"/>
+    <line x1="400" y1="162" x2="400" y2="180"/>
+    <line x1="600" y1="162" x2="600" y2="180"/>
+    <line x1="930" y1="162" x2="930" y2="180"/>
+    <line x1="1280" y1="162" x2="1280" y2="180"/>
+  </g>
+
+  <!-- ==================== PIPELINE CARDS ==================== -->
+
+  <!-- Arrows: gather→specify, specify→design -->
+  <g stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <line x1="260" y1="240" x2="306" y2="240"/>
+    <line x1="490" y1="240" x2="510" y2="240"/>
+  </g>
+
+  <!-- Step 1: GATHER -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="185" width="180" height="108" rx="10" fill="#2563eb" opacity="0.9"/>
+    <text x="170" y="210" text-anchor="middle" fill="#dbeafe" font-size="10" font-weight="600" letter-spacing="1">STEP 1</text>
+    <text x="170" y="234" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">/gather</text>
+    <line x1="110" y1="244" x2="230" y2="244" stroke="#93c5fd" stroke-width="0.5" opacity="0.3"/>
+    <text x="170" y="262" text-anchor="middle" fill="#bfdbfe" font-size="10">Fetch + normalize</text>
+    <text x="170" y="278" text-anchor="middle" fill="#93c5fd" font-size="9">into single context file</text>
+  </g>
+
+  <!-- Step 2: SPECIFY -->
+  <g filter="url(#shadow)">
+    <rect x="310" y="185" width="180" height="108" rx="10" fill="#7c3aed" opacity="0.9"/>
+    <text x="400" y="210" text-anchor="middle" fill="#ede9fe" font-size="10" font-weight="600" letter-spacing="1">STEP 2</text>
+    <text x="400" y="234" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">/specify</text>
+    <line x1="340" y1="244" x2="460" y2="244" stroke="#c4b5fd" stroke-width="0.5" opacity="0.3"/>
+    <text x="400" y="262" text-anchor="middle" fill="#ddd6fe" font-size="10">Business rules</text>
+    <text x="400" y="278" text-anchor="middle" fill="#c4b5fd" font-size="9">+ BDD scenarios</text>
+  </g>
+
+  <!-- Step 3: DESIGN -->
+  <g filter="url(#shadow)">
+    <rect x="514" y="185" width="175" height="108" rx="10" fill="#db2777" opacity="0.9"/>
+    <text x="602" y="210" text-anchor="middle" fill="#fce7f3" font-size="10" font-weight="600" letter-spacing="1">STEP 3</text>
+    <text x="602" y="234" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">/design</text>
+    <line x1="544" y1="244" x2="660" y2="244" stroke="#f9a8d4" stroke-width="0.5" opacity="0.3"/>
+    <text x="602" y="262" text-anchor="middle" fill="#fbcfe8" font-size="10">TDD contracts + tickets</text>
+    <text x="602" y="278" text-anchor="middle" fill="#f9a8d4" font-size="9">endpoint-level decomposition</text>
+  </g>
+
+  <!-- Arrow from design to workstream box -->
+  <g stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <line x1="689" y1="240" x2="718" y2="240"/>
+  </g>
+
+  <!-- ==================== WORKSTREAM ORCHESTRATOR BOX ==================== -->
+  <!-- This is the key visual: /workstream wraps /plan and /build -->
+  <rect x="722" y="175" width="440" height="128" rx="12" fill="#f59e0b" opacity="0.06" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="942" y="194" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="600" letter-spacing="1">/workstream — orchestrates batch execution</text>
+
+  <!-- /workstream create (small) -->
+  <rect x="735" y="205" width="110" height="48" rx="8" fill="#d97706" opacity="0.7" filter="url(#shadow)"/>
+  <text x="790" y="225" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">create</text>
+  <text x="790" y="241" text-anchor="middle" fill="#fef3c7" font-size="8">group into</text>
+  <text x="790" y="251" text-anchor="middle" fill="#fef3c7" font-size="8">workstreams</text>
+
+  <!-- Arrow -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+    <line x1="845" y1="229" x2="866" y2="229"/>
+  </g>
+
+  <!-- /plan (inside workstream) -->
+  <g filter="url(#shadow)">
+    <rect x="870" y="205" width="120" height="48" rx="8" fill="#d97706" opacity="0.85"/>
+    <text x="930" y="224" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">/plan</text>
+    <text x="930" y="240" text-anchor="middle" fill="#fef3c7" font-size="8">for each ticket</text>
+    <text x="930" y="250" text-anchor="middle" fill="#fef3c7" font-size="8">(parallel)</text>
+  </g>
+
+  <!-- Arrow -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+    <line x1="990" y1="229" x2="1005" y2="229"/>
+  </g>
+
+  <!-- /build (inside workstream) -->
+  <g filter="url(#shadow)">
+    <rect x="1009" y="205" width="140" height="48" rx="8" fill="#059669" opacity="0.85"/>
+    <text x="1079" y="224" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">/build</text>
+    <text x="1079" y="240" text-anchor="middle" fill="#d1fae5" font-size="8">TDD red-green</text>
+    <text x="1079" y="250" text-anchor="middle" fill="#d1fae5" font-size="8">isolated worktrees</text>
+  </g>
+
+  <!-- "approve" label between plan and build -->
+  <text x="930" y="270" text-anchor="middle" fill="#fcd34d" font-size="8" font-style="italic">human approves plans before build</text>
+
+  <!-- Arrow from workstream to review -->
+  <g stroke="#475569" stroke-width="2" fill="none" marker-end="url(#arr)">
+    <line x1="1162" y1="240" x2="1185" y2="240"/>
+  </g>
+
+  <!-- Step 6: REVIEW -->
+  <g filter="url(#shadow)">
+    <rect x="1190" y="185" width="180" height="108" rx="10" fill="#0891b2" opacity="0.9"/>
+    <text x="1280" y="210" text-anchor="middle" fill="#cffafe" font-size="10" font-weight="600" letter-spacing="1">STEP 6</text>
+    <text x="1280" y="234" text-anchor="middle" fill="#fff" font-size="17" font-weight="700">/review</text>
+    <line x1="1220" y1="244" x2="1340" y2="244" stroke="#67e8f9" stroke-width="0.5" opacity="0.3"/>
+    <text x="1280" y="262" text-anchor="middle" fill="#a5f3fc" font-size="10">3-persona review</text>
+    <text x="1280" y="278" text-anchor="middle" fill="#67e8f9" font-size="9">security, engineering, product</text>
+  </g>
+
+  <!-- ==================== OUTPUT ARTIFACTS ==================== -->
+  <g stroke="#334155" stroke-width="1" stroke-dasharray="3,3">
+    <line x1="170" y1="293" x2="170" y2="312"/>
+    <line x1="400" y1="293" x2="400" y2="312"/>
+    <line x1="602" y1="293" x2="602" y2="312"/>
+    <line x1="790" y1="253" x2="790" y2="314"/>
+    <line x1="930" y1="253" x2="930" y2="314"/>
+    <line x1="1079" y1="253" x2="1079" y2="314"/>
+    <line x1="1280" y1="293" x2="1280" y2="312"/>
+  </g>
+
+  <rect x="115" y="314" width="110" height="18" rx="3" fill="#2563eb" opacity="0.12" stroke="#3b82f6" stroke-width="0.5"/>
+  <text x="170" y="327" text-anchor="middle" fill="#93c5fd" font-size="8">context.md</text>
+
+  <rect x="340" y="314" width="120" height="18" rx="3" fill="#7c3aed" opacity="0.12" stroke="#8b5cf6" stroke-width="0.5"/>
+  <text x="400" y="327" text-anchor="middle" fill="#c4b5fd" font-size="8">rules.md + .feature</text>
+
+  <rect x="545" y="314" width="114" height="18" rx="3" fill="#db2777" opacity="0.12" stroke="#ec4899" stroke-width="0.5"/>
+  <text x="602" y="327" text-anchor="middle" fill="#f9a8d4" font-size="8">tickets/*.md</text>
+
+  <rect x="732" y="316" width="116" height="18" rx="3" fill="#d97706" opacity="0.12" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="790" y="329" text-anchor="middle" fill="#fcd34d" font-size="8">WORKSTREAMS.md</text>
+
+  <rect x="870" y="316" width="120" height="18" rx="3" fill="#d97706" opacity="0.12" stroke="#f59e0b" stroke-width="0.5"/>
+  <text x="930" y="329" text-anchor="middle" fill="#fcd34d" font-size="8">plans/*.md</text>
+
+  <rect x="1019" y="316" width="120" height="18" rx="3" fill="#059669" opacity="0.12" stroke="#10b981" stroke-width="0.5"/>
+  <text x="1079" y="329" text-anchor="middle" fill="#6ee7b7" font-size="8">feature branches</text>
+
+  <rect x="1220" y="314" width="120" height="18" rx="3" fill="#0891b2" opacity="0.12" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="1280" y="327" text-anchor="middle" fill="#67e8f9" font-size="8">merged PRs</text>
+
+  <!-- ==================== SINGLE TICKET PATH (small note) ==================== -->
+  <text x="942" y="350" text-anchor="middle" fill="#475569" font-size="9">Single ticket? Skip /workstream — use /plan + /build + /review directly</text>
+
+  <!-- ==================== CONVERGENCE → DIVERGENCE ==================== -->
+
+  <line x1="60" y1="380" x2="1380" y2="380" stroke="#334155" stroke-width="1"/>
+  <text x="720" y="408" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" letter-spacing="3">THE SHAPE: MANY INPUTS CONVERGE, THEN FAN OUT</text>
+
+  <!-- Scattered sources on left -->
+  <g opacity="0.8">
+    <rect x="80" y="432" width="55" height="20" rx="3" fill="#3b82f6" opacity="0.5"/>
+    <text x="108" y="446" text-anchor="middle" fill="#dbeafe" font-size="8">Jira</text>
+    <rect x="80" y="460" width="55" height="20" rx="3" fill="#3b82f6" opacity="0.4"/>
+    <text x="108" y="474" text-anchor="middle" fill="#dbeafe" font-size="8">GitHub</text>
+    <rect x="80" y="488" width="75" height="20" rx="3" fill="#3b82f6" opacity="0.3"/>
+    <text x="118" y="502" text-anchor="middle" fill="#dbeafe" font-size="8">Confluence</text>
+    <rect x="80" y="516" width="75" height="20" rx="3" fill="#3b82f6" opacity="0.25"/>
+    <text x="118" y="530" text-anchor="middle" fill="#dbeafe" font-size="8">Brain dump</text>
+    <line x1="135" y1="442" x2="230" y2="478" stroke="#3b82f6" stroke-width="1" opacity="0.25"/>
+    <line x1="135" y1="470" x2="230" y2="480" stroke="#3b82f6" stroke-width="1" opacity="0.25"/>
+    <line x1="155" y1="498" x2="230" y2="482" stroke="#3b82f6" stroke-width="1" opacity="0.25"/>
+    <line x1="155" y1="526" x2="230" y2="486" stroke="#3b82f6" stroke-width="1" opacity="0.25"/>
+  </g>
+
+  <!-- 1 context -->
+  <rect x="230" y="470" width="80" height="26" rx="6" fill="#8b5cf6" opacity="0.6" stroke="#8b5cf6" stroke-width="1"/>
+  <text x="270" y="487" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">1 context</text>
+  <line x1="310" y1="483" x2="355" y2="483" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Rules + BDD -->
+  <rect x="355" y="467" width="105" height="32" rx="6" fill="#ec4899" opacity="0.5" stroke="#ec4899" stroke-width="1"/>
+  <text x="408" y="481" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">rules + BDD</text>
+  <text x="408" y="493" text-anchor="middle" fill="#fce7f3" font-size="8">PM approved</text>
+  <line x1="460" y1="483" x2="510" y2="483" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Tickets -->
+  <rect x="510" y="460" width="115" height="46" rx="6" fill="#f59e0b" opacity="0.4" stroke="#f59e0b" stroke-width="1"/>
+  <text x="568" y="480" text-anchor="middle" fill="#fff" font-size="9" font-weight="600">N tickets</text>
+  <text x="568" y="494" text-anchor="middle" fill="#fef3c7" font-size="8">with deps + TDD</text>
+
+  <line x1="625" y1="483" x2="700" y2="483" stroke="#475569" stroke-width="1.5"/>
+
+  <!-- Multiple parallel builds -->
+  <rect x="700" y="432" width="95" height="22" rx="4" fill="#10b981" opacity="0.5" stroke="#10b981" stroke-width="0.5"/>
+  <text x="748" y="447" text-anchor="middle" fill="#d1fae5" font-size="8">build ticket 1</text>
+  <rect x="700" y="462" width="95" height="22" rx="4" fill="#10b981" opacity="0.45" stroke="#10b981" stroke-width="0.5"/>
+  <text x="748" y="477" text-anchor="middle" fill="#d1fae5" font-size="8">build ticket 2</text>
+  <rect x="700" y="492" width="95" height="22" rx="4" fill="#10b981" opacity="0.4" stroke="#10b981" stroke-width="0.5"/>
+  <text x="748" y="507" text-anchor="middle" fill="#d1fae5" font-size="8">build ticket 3</text>
+  <rect x="700" y="522" width="95" height="22" rx="4" fill="#10b981" opacity="0.35" stroke="#10b981" stroke-width="0.5"/>
+  <text x="748" y="537" text-anchor="middle" fill="#d1fae5" font-size="8">build ticket N</text>
+  <line x1="698" y1="477" x2="700" y2="443" stroke="#10b981" stroke-width="1" opacity="0.25"/>
+  <line x1="698" y1="483" x2="700" y2="473" stroke="#10b981" stroke-width="1" opacity="0.25"/>
+  <line x1="698" y1="489" x2="700" y2="503" stroke="#10b981" stroke-width="1" opacity="0.25"/>
+  <line x1="698" y1="492" x2="700" y2="533" stroke="#10b981" stroke-width="1" opacity="0.25"/>
+
+  <!-- PRs -->
+  <line x1="795" y1="443" x2="840" y2="443" stroke="#475569" stroke-width="0.5" opacity="0.3"/>
+  <line x1="795" y1="473" x2="840" y2="473" stroke="#475569" stroke-width="0.5" opacity="0.3"/>
+  <line x1="795" y1="503" x2="840" y2="503" stroke="#475569" stroke-width="0.5" opacity="0.3"/>
+  <line x1="795" y1="533" x2="840" y2="533" stroke="#475569" stroke-width="0.5" opacity="0.3"/>
+  <rect x="840" y="432" width="65" height="22" rx="4" fill="#06b6d4" opacity="0.4" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="873" y="447" text-anchor="middle" fill="#a5f3fc" font-size="8">PR #1</text>
+  <rect x="840" y="462" width="65" height="22" rx="4" fill="#06b6d4" opacity="0.35" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="873" y="477" text-anchor="middle" fill="#a5f3fc" font-size="8">PR #2</text>
+  <rect x="840" y="492" width="65" height="22" rx="4" fill="#06b6d4" opacity="0.3" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="873" y="507" text-anchor="middle" fill="#a5f3fc" font-size="8">PR #3</text>
+  <rect x="840" y="522" width="65" height="22" rx="4" fill="#06b6d4" opacity="0.25" stroke="#06b6d4" stroke-width="0.5"/>
+  <text x="873" y="537" text-anchor="middle" fill="#a5f3fc" font-size="8">PR #N</text>
+
+  <!-- Annotations -->
+  <g transform="translate(960, 432)">
+    <rect x="0" y="0" width="200" height="50" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="100" y="20" text-anchor="middle" fill="#f8fafc" font-size="11" font-weight="600">Converge First</text>
+    <text x="100" y="36" text-anchor="middle" fill="#94a3b8" font-size="10">N sources become 1 validated design</text>
+  </g>
+  <g transform="translate(960, 496)">
+    <rect x="0" y="0" width="200" height="50" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="100" y="20" text-anchor="middle" fill="#f8fafc" font-size="11" font-weight="600">Then Diverge</text>
+    <text x="100" y="36" text-anchor="middle" fill="#94a3b8" font-size="10">1 design fans out to N parallel PRs</text>
+  </g>
+
+  <!-- Why box -->
+  <g transform="translate(1200, 432)">
+    <rect x="0" y="0" width="170" height="114" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    <text x="85" y="20" text-anchor="middle" fill="#64748b" font-size="9" font-weight="600" letter-spacing="2">WHY IT WORKS</text>
+    <line x1="20" y1="28" x2="150" y2="28" stroke="#334155" stroke-width="0.5"/>
+    <text x="85" y="47" text-anchor="middle" fill="#f8fafc" font-size="10">Single source of truth</text>
+    <text x="85" y="65" text-anchor="middle" fill="#f8fafc" font-size="10">PM gate before code</text>
+    <text x="85" y="83" text-anchor="middle" fill="#f8fafc" font-size="10">Parallel, not serial</text>
+    <text x="85" y="101" text-anchor="middle" fill="#f8fafc" font-size="10">Isolated worktrees</text>
+  </g>
+
+  <!-- ==================== THE RHYTHM ==================== -->
+
+  <line x1="60" y1="578" x2="1380" y2="578" stroke="#334155" stroke-width="1"/>
+  <text x="720" y="606" text-anchor="middle" fill="#64748b" font-size="11" font-weight="600" letter-spacing="3">THE RHYTHM: SLEEP WHILE AGENTS WORK</text>
+
+  <!-- 5 blocks -->
+
+  <!-- Day 0 -->
+  <rect x="72" y="625" width="244" height="125" rx="8" fill="#1e293b" stroke="#3b82f6" stroke-width="1"/>
+  <rect x="72" y="625" width="244" height="26" rx="8" fill="#3b82f6" opacity="0.12"/>
+  <rect x="72" y="649" width="244" height="2" fill="#1e293b"/>
+  <text x="194" y="644" text-anchor="middle" fill="#93c5fd" font-size="11" font-weight="700">DAY 0</text>
+  <text x="194" y="670" text-anchor="middle" fill="#f8fafc" font-size="11">/gather + /specify + /design</text>
+  <text x="194" y="690" text-anchor="middle" fill="#94a3b8" font-size="10">You + PM collaborate interactively</text>
+  <rect x="92" y="702" width="204" height="34" rx="4" fill="#3b82f6" opacity="0.06"/>
+  <text x="194" y="715" text-anchor="middle" fill="#475569" font-size="9">Output: N tickets with TDD contracts</text>
+  <text x="194" y="728" text-anchor="middle" fill="#475569" font-size="9">in .claude/tickets/</text>
+  <text x="300" y="742" text-anchor="end" fill="#3b82f6" font-size="9" opacity="0.6">interactive</text>
+
+  <!-- Arrow -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"><line x1="316" y1="688" x2="328" y2="688"/></g>
+
+  <!-- Night 1 -->
+  <rect x="330" y="625" width="244" height="125" rx="8" fill="#0f172a" stroke="#f59e0b" stroke-width="1"/>
+  <rect x="330" y="625" width="244" height="26" rx="8" fill="#f59e0b" opacity="0.1"/>
+  <rect x="330" y="649" width="244" height="2" fill="#0f172a"/>
+  <text x="452" y="644" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">NIGHT 1</text>
+  <text x="452" y="670" text-anchor="middle" fill="#f8fafc" font-size="11">/workstream create + plan</text>
+  <text x="452" y="690" text-anchor="middle" fill="#94a3b8" font-size="10">Agent calls /plan for each ticket</text>
+  <rect x="350" y="702" width="204" height="34" rx="4" fill="#f59e0b" opacity="0.06"/>
+  <text x="452" y="715" text-anchor="middle" fill="#475569" font-size="9">Output: implementation plans</text>
+  <text x="452" y="728" text-anchor="middle" fill="#475569" font-size="9">in .claude/plans/</text>
+  <text x="558" y="742" text-anchor="end" fill="#f59e0b" font-size="9" opacity="0.6">unattended</text>
+
+  <!-- Arrow -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"><line x1="574" y1="688" x2="586" y2="688"/></g>
+
+  <!-- Day 1 -->
+  <rect x="588" y="625" width="244" height="125" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+  <rect x="588" y="625" width="244" height="26" rx="8" fill="#f59e0b" opacity="0.07"/>
+  <rect x="588" y="649" width="244" height="2" fill="#1e293b"/>
+  <text x="710" y="644" text-anchor="middle" fill="#fcd34d" font-size="11" font-weight="700">DAY 1</text>
+  <text x="710" y="670" text-anchor="middle" fill="#f8fafc" font-size="11">/workstream approve</text>
+  <text x="710" y="690" text-anchor="middle" fill="#94a3b8" font-size="10">Quick scan — plans are readable</text>
+  <rect x="608" y="702" width="204" height="34" rx="4" fill="#f59e0b" opacity="0.06"/>
+  <text x="710" y="715" text-anchor="middle" fill="#475569" font-size="9">Output: approved workstreams</text>
+  <text x="710" y="728" text-anchor="middle" fill="#475569" font-size="9">ready to build</text>
+  <text x="816" y="742" text-anchor="end" fill="#f59e0b" font-size="9" opacity="0.6">~30 min</text>
+
+  <!-- Arrow -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"><line x1="832" y1="688" x2="844" y2="688"/></g>
+
+  <!-- Night 2 -->
+  <rect x="846" y="625" width="244" height="125" rx="8" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+  <rect x="846" y="625" width="244" height="26" rx="8" fill="#10b981" opacity="0.1"/>
+  <rect x="846" y="649" width="244" height="2" fill="#0f172a"/>
+  <text x="968" y="644" text-anchor="middle" fill="#6ee7b7" font-size="11" font-weight="700">NIGHT 2</text>
+  <text x="968" y="670" text-anchor="middle" fill="#f8fafc" font-size="11">/workstream build --approved</text>
+  <text x="968" y="690" text-anchor="middle" fill="#94a3b8" font-size="10">Agent calls /build per ticket</text>
+  <rect x="866" y="702" width="204" height="34" rx="4" fill="#10b981" opacity="0.06"/>
+  <text x="968" y="715" text-anchor="middle" fill="#475569" font-size="9">Output: PRs with passing tests</text>
+  <text x="968" y="728" text-anchor="middle" fill="#475569" font-size="9">each in isolated worktree</text>
+  <text x="1074" y="742" text-anchor="end" fill="#10b981" font-size="9" opacity="0.6">unattended</text>
+
+  <!-- Arrow -->
+  <g stroke="#475569" stroke-width="1.5" fill="none" marker-end="url(#arr)"><line x1="1090" y1="688" x2="1102" y2="688"/></g>
+
+  <!-- Day 2+ -->
+  <rect x="1104" y="625" width="274" height="125" rx="8" fill="#1e293b" stroke="#06b6d4" stroke-width="1"/>
+  <rect x="1104" y="625" width="274" height="26" rx="8" fill="#06b6d4" opacity="0.1"/>
+  <rect x="1104" y="649" width="274" height="2" fill="#1e293b"/>
+  <text x="1241" y="644" text-anchor="middle" fill="#67e8f9" font-size="11" font-weight="700">DAY 2+</text>
+  <text x="1241" y="670" text-anchor="middle" fill="#f8fafc" font-size="11">/review + merge to main</text>
+  <text x="1241" y="690" text-anchor="middle" fill="#94a3b8" font-size="10">3-persona review per PR</text>
+  <rect x="1124" y="702" width="234" height="34" rx="4" fill="#06b6d4" opacity="0.06"/>
+  <text x="1241" y="715" text-anchor="middle" fill="#475569" font-size="9">Output: features on main</text>
+  <text x="1241" y="728" text-anchor="middle" fill="#475569" font-size="9">security + eng + product reviewed</text>
+  <text x="1362" y="742" text-anchor="end" fill="#06b6d4" font-size="9" opacity="0.6">review only</text>
+
+  <!-- ==================== PRINCIPLES STRIP ==================== -->
+
+  <line x1="60" y1="785" x2="1380" y2="785" stroke="#334155" stroke-width="1"/>
+
+  <g transform="translate(80, 805)">
+    <circle cx="8" cy="10" r="6" fill="#3b82f6" opacity="0.4"/>
+    <text x="22" y="10" fill="#f8fafc" font-size="11" font-weight="600">TDD Mandatory</text>
+    <text x="22" y="26" fill="#64748b" font-size="10">Red-green-refactor, always</text>
+  </g>
+  <g transform="translate(320, 805)">
+    <circle cx="8" cy="10" r="6" fill="#8b5cf6" opacity="0.4"/>
+    <text x="22" y="10" fill="#f8fafc" font-size="11" font-weight="600">PM Approval Gate</text>
+    <text x="22" y="26" fill="#64748b" font-size="10">/specify before /design</text>
+  </g>
+  <g transform="translate(570, 805)">
+    <circle cx="8" cy="10" r="6" fill="#ec4899" opacity="0.4"/>
+    <text x="22" y="10" fill="#f8fafc" font-size="11" font-weight="600">Worktree Isolation</text>
+    <text x="22" y="26" fill="#64748b" font-size="10">Never touch working dir</text>
+  </g>
+  <g transform="translate(840, 805)">
+    <circle cx="8" cy="10" r="6" fill="#10b981" opacity="0.4"/>
+    <text x="22" y="10" fill="#f8fafc" font-size="11" font-weight="600">Parallel Execution</text>
+    <text x="22" y="26" fill="#64748b" font-size="10">Plan + build N tickets at once</text>
+  </g>
+  <g transform="translate(1130, 805)">
+    <circle cx="8" cy="10" r="6" fill="#06b6d4" opacity="0.4"/>
+    <text x="22" y="10" fill="#f8fafc" font-size="11" font-weight="600">Overnight Batch</text>
+    <text x="22" y="26" fill="#64748b" font-size="10">Agents work while you sleep</text>
+  </g>
+
+  <!-- Footer -->
+  <!-- Profile badges -->
+  <g transform="translate(460, 860)">
+    <rect x="0" y="0" width="90" height="18" rx="9" fill="#2563eb" opacity="0.25" stroke="#3b82f6" stroke-width="0.5"/>
+    <text x="45" y="13" text-anchor="middle" fill="#93c5fd" font-size="8" font-weight="600">python-fastapi</text>
+    <rect x="100" y="0" width="80" height="18" rx="9" fill="#06b6d4" opacity="0.25" stroke="#22d3ee" stroke-width="0.5"/>
+    <text x="140" y="13" text-anchor="middle" fill="#67e8f9" font-size="8" font-weight="600">flutter-dart</text>
+    <rect x="190" y="0" width="105" height="18" rx="9" fill="#8b5cf6" opacity="0.25" stroke="#a78bfa" stroke-width="0.5"/>
+    <text x="242" y="13" text-anchor="middle" fill="#c4b5fd" font-size="8" font-weight="600">react-typescript</text>
+    <rect x="305" y="0" width="85" height="18" rx="9" fill="#f59e0b" opacity="0.25" stroke="#fbbf24" stroke-width="0.5"/>
+    <text x="348" y="13" text-anchor="middle" fill="#fcd34d" font-size="8" font-weight="600">opentofu-hcl</text>
+  </g>
+
+  <text x="720" y="900" text-anchor="middle" fill="#334155" font-size="10" letter-spacing="1">github.com/axomic/atelier</text>
+
+</svg>

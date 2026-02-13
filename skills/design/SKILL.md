@@ -1,3 +1,9 @@
+---
+name: design
+description: Contract design, schema patterns, and ADRs. Use when converting PRDs into design tickets or defining technical boundaries.
+allowed-tools: Read, Grep, Glob, Write
+---
+
 # Design Skill
 
 Convert product requirements into LLM-optimized design tickets that define WHAT to build and WHY, not HOW.

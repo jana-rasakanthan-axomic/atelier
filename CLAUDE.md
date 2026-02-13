@@ -10,9 +10,9 @@ Atelier encodes **how** you build software (TDD, outside-in, PR review) while pr
 
 | Method | Command |
 |--------|---------|
-| **Plugin** (recommended) | `claude plugins install axomic/atelier` |
-| **Global** (~/.claude) | `git clone https://github.com/axomic/atelier.git ~/.claude/plugins/atelier` |
-| **Project-specific** | `git clone https://github.com/axomic/atelier.git .atelier` |
+| **Plugin** (recommended) | `claude plugins install jana-rasakanthan-axomic/atelier` |
+| **Global** (~/.claude) | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git ~/.claude/plugins/atelier` |
+| **Project-specific** | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git .atelier` |
 
 For project-specific installs, add to `.claude/settings.json`: `{ "plugins": [".atelier"] }`
 
@@ -104,14 +104,14 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `/build` | Implement a plan layer-by-layer (TDD). `--loop` for automated ralph-loop | Build |
 | `/fix` | Fix a bug or failing test. `--loop` for quality convergence | Build |
 | `/test` | Run full verification suite | Verify |
-| `/review` | Review a PR or code change | Review |
+| `/review` | Review a PR or code change. `--self` for self-review, `--self --loop` for automated self-review-fix | Review |
 | `/commit` | Stage, commit, and optionally push | Ship |
 | `/workstream` | Manage parallel workstreams (create/status/next) | Orchestration |
 | `/audit` | Audit codebase for issues | Analysis |
 | `/analyze` | Analyze code structure, dependencies, complexity | Analysis |
 | `/braindump` | Capture unstructured ideas into structured output | Discovery |
 | `/init` | Initialize atelier in a new project | Setup |
-| `/author` | Write or update documentation | Documentation |
+| `/author` | Create or improve toolkit components. `--loop` for automated validation | Documentation |
 
 ## Quick Reference — Skills
 
@@ -125,7 +125,7 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `analysis/` | Code metrics, dependency analysis | Audit, Analyze |
 | `security/` | Auth patterns, input validation, secrets | Reviewer, Builder |
 | `git-workflow/` | Branching, worktrees, PR conventions | All |
-| `iterative-dev/` | Loop prompt templates for ralph-loop (`--loop` mode) | Builder |
+| `iterative-dev/` | Loop prompt templates for ralph-loop (`--loop` mode), including self-review and author | Builder, Reviewer, Author |
 | `workstream/` | Workstream subcommand procedures | Workstream |
 | `authoring/` | Documentation templates, ADR format | Author |
 
@@ -190,6 +190,20 @@ Layer names are defined by your active profile. The table above shows the genera
 
 ---
 
+## Strict Compliance (MANDATORY)
+
+The agent MUST follow all command, agent, and skill procedures EXACTLY as defined.
+
+### Rules
+
+1. **No deviation** -- Execute every stage in the defined order. Do not skip, merge, reorder, or improvise stages unless the user explicitly permits it.
+2. **No silent fallback** -- If a required tool or mode is unavailable (e.g., ralph-loop not installed when `--loop` is requested), STOP and report. Do NOT silently fall back to an alternative mode.
+3. **No batch TDD** -- Each layer completes its full RED -> GREEN -> VERIFY cycle before the next layer begins. Writing tests for multiple layers before implementing any is PROHIBITED.
+4. **Mandatory artifacts** -- When a procedure specifies output artifacts (pre-analysis report, build log), they MUST be generated. Omitting them is a process violation.
+5. **Ask, don't guess** -- If a procedure is ambiguous or a prerequisite is missing, STOP and ask the user. Do not interpret or improvise.
+
+---
+
 ## Tool Permissions
 
 Commands declare their required tool permissions in frontmatter:
@@ -217,9 +231,14 @@ Follow the principle of minimum permissions. A `/review` command should not need
 /gather -> /fix -> /review -> /commit
 ```
 
+### Pre-PR Self-Review
+```
+/build -> /review --self --loop -> (PR created automatically when clean)
+```
+
 ### Single Feature
 ```
-/gather -> /specify -> /design -> /plan -> /build -> /review -> /commit
+/gather -> /specify -> /design -> /plan -> /build -> /review --self --loop -> /commit
 ```
 
 ### Feature Batch

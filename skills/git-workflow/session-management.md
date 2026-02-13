@@ -16,11 +16,10 @@ Session management tracks active command executions, allowing:
 
 ---
 
-## Session State File
+## Session Schema
 
-**Location:** `.claude/sessions.json` (in project root)
+**Location:** `.claude/sessions.json`
 
-**Format:**
 ```json
 {
   "session-abc123": {
@@ -31,340 +30,70 @@ Session management tracks active command executions, allowing:
     "context_file": ".claude/context/SHRED-2119.md",
     "created_at": "2026-01-16T10:30:00Z",
     "updated_at": "2026-01-16T10:45:00Z"
-  },
-  "session-def456": {
-    "command": "/fix",
-    "branch": "JRA_fix-dockerfile_OA-1655",
-    "worktree_path": ".claude/worktrees/session-def456",
-    "status": "completed",
-    "context_file": null,
-    "created_at": "2026-01-16T09:15:00Z",
-    "completed_at": "2026-01-16T09:32:00Z"
   }
 }
 ```
+
+> See [reference/session-examples.md](reference/session-examples.md) for full examples of each state and detailed script usage.
 
 ---
 
 ## Session Lifecycle
 
 ```
-create → active → completed/failed → cleanup
+create --> active --> completed/failed --> cleanup
 ```
 
-### 1. Create Session
-
-**When:** During worktree setup (Stage 0)
-
-```bash
-./scripts/session-manager.sh create \
-    "$SESSION_ID" \
-    "$BRANCH_NAME" \
-    "$WORKTREE_PATH" \
-    "$COMMAND" \
-    "$CONTEXT_FILE"
-
-# Creates entry with status: "active"
-```
-
-**Entry created:**
-```json
-{
-  "session-abc123": {
-    "command": "/build",
-    "branch": "JRA_add-user-export_SHRED-2119",
-    "worktree_path": ".claude/worktrees/session-abc123",
-    "status": "active",
-    "context_file": ".claude/context/SHRED-2119.md",
-    "created_at": "2026-01-16T10:30:00Z",
-    "updated_at": "2026-01-16T10:30:00Z"
-  }
-}
-```
-
----
-
-### 2. Update Session
-
-**When:** During command execution (optional, for progress tracking)
-
-```bash
-./scripts/session-manager.sh update \
-    "$SESSION_ID" \
-    --stage "Stage 2: Generate Tests"
-
-# Updates "updated_at" timestamp and optional stage info
-```
-
----
-
-### 3. Complete Session
-
-**When:** Command finishes successfully
-
-```bash
-./scripts/session-manager.sh complete "$SESSION_ID"
-
-# Updates:
-# - status: "active" → "completed"
-# - completed_at: timestamp
-```
-
-**Updated entry:**
-```json
-{
-  "session-abc123": {
-    "command": "/build",
-    "branch": "JRA_add-user-export_SHRED-2119",
-    "worktree_path": ".claude/worktrees/session-abc123",
-    "status": "completed",
-    "context_file": ".claude/context/SHRED-2119.md",
-    "created_at": "2026-01-16T10:30:00Z",
-    "completed_at": "2026-01-16T11:15:00Z"
-  }
-}
-```
-
----
-
-### 4. Fail Session
-
-**When:** Command fails or is interrupted
-
-```bash
-./scripts/session-manager.sh fail \
-    "$SESSION_ID" \
-    --reason "Tests failed"
-
-# Updates:
-# - status: "active" → "failed"
-# - failed_at: timestamp
-# - failure_reason: message
-```
-
----
-
-### 5. Cleanup Session
-
-**When:** User removes worktree (see [cleanup.md](./cleanup.md))
-
-```bash
-./scripts/session-manager.sh cleanup "$SESSION_ID"
-
-# Removes session entry from sessions.json
-```
+| State | Trigger | Script Command | Key Changes |
+|-------|---------|----------------|-------------|
+| **create** | Worktree setup (Stage 0) | `session-manager.sh create $ID $BRANCH $PATH $CMD $CTX` | status: "active", created_at set |
+| **update** | During execution (optional) | `session-manager.sh update $ID --stage "Stage 2"` | updated_at refreshed |
+| **complete** | Command succeeds | `session-manager.sh complete $ID` | status: "completed", completed_at set |
+| **fail** | Command fails | `session-manager.sh fail $ID --reason "msg"` | status: "failed", failure_reason set |
+| **cleanup** | User removes worktree | `session-manager.sh cleanup $ID` | Entry removed from sessions.json |
 
 ---
 
 ## Session Operations
 
-### List Active Sessions
-
-```bash
-./scripts/session-manager.sh list
-
-# Output:
-# Active Sessions:
-#   session-abc123 (2h 15m ago)
-#     Command:  /build
-#     Branch:   JRA_add-user-export_SHRED-2119
-#     Worktree: .claude/worktrees/session-abc123
-#
-#   session-def456 (30m ago)
-#     Command:  /fix
-#     Branch:   JRA_fix-dockerfile_OA-1655
-#     Worktree: .claude/worktrees/session-def456
-```
-
----
-
-### Get Session Info
-
-```bash
-./scripts/session-manager.sh get "$SESSION_ID"
-
-# Output (JSON):
-{
-  "command": "/build",
-  "branch": "JRA_add-user-export_SHRED-2119",
-  "worktree_path": ".claude/worktrees/session-abc123",
-  "status": "active",
-  "created_at": "2026-01-16T10:30:00Z"
-}
-```
-
----
-
-### Find Session by Branch
-
-```bash
-./scripts/session-manager.sh find --branch "JRA_add-user-export_SHRED-2119"
-
-# Returns session ID: session-abc123
-```
+| Operation | Command | Output |
+|-----------|---------|--------|
+| List active | `session-manager.sh list` | Session IDs with age, command, branch, path |
+| Get details | `session-manager.sh get $ID` | JSON with full session info |
+| Find by branch | `session-manager.sh find --branch $BRANCH` | Session ID |
+| Cleanup stale | `session-manager.sh cleanup-stale` | Removes sessions whose worktree no longer exists |
 
 ---
 
 ## State Validation
 
-**Before command execution:**
+Before creating a session, the script validates:
+
+1. **Session ID is unique** - prevents duplicate sessions
+2. **Branch is not in use** - prevents two sessions on the same branch
+
 ```bash
-# Check if session already exists
 if ./scripts/session-manager.sh exists "$SESSION_ID"; then
     echo "Error: Session '$SESSION_ID' already exists"
     exit 1
 fi
 
-# Check if branch has active session
-EXISTING_SESSION=$(./scripts/session-manager.sh find --branch "$BRANCH_NAME")
-if [ -n "$EXISTING_SESSION" ]; then
-    echo "Error: Branch '$BRANCH_NAME' is already in use by session $EXISTING_SESSION"
+EXISTING=$(./scripts/session-manager.sh find --branch "$BRANCH_NAME")
+if [ -n "$EXISTING" ]; then
+    echo "Error: Branch '$BRANCH_NAME' in use by session $EXISTING"
     exit 1
 fi
-```
-
----
-
-## Cleanup Stale Sessions
-
-**Abandoned sessions** (worktree deleted but session remains):
-
-```bash
-./scripts/session-manager.sh cleanup-stale
-
-# For each active session:
-#   - Check if worktree path still exists
-#   - If not, mark session as "abandoned" or remove it
-```
-
-**Example:**
-```bash
-# Session exists but worktree was manually deleted
-# sessions.json shows:
-{
-  "session-abc123": {
-    "worktree_path": ".claude/worktrees/session-abc123",  # doesn't exist
-    "status": "active"
-  }
-}
-
-# After cleanup-stale:
-# Session removed or marked abandoned
-```
-
----
-
-## Integration with Commands
-
-**In command workflow:**
-
-```markdown
-## Stage 0: Worktree Setup
-
-1. Generate session ID: `SESSION_ID=$(uuidgen)`
-2. Create worktree (see worktree-setup.md)
-3. **Create session:**
-   ```bash
-   ./scripts/session-manager.sh create \
-       "$SESSION_ID" \
-       "$BRANCH_NAME" \
-       "$WORKTREE_PATH" \
-       "/build" \
-       ".claude/context/SHRED-2119.md"
-   ```
-
-## Stage 1-N: Implementation
-
-Optional: Update session progress
-```bash
-./scripts/session-manager.sh update "$SESSION_ID" --stage "Stage 2"
-```
-
-## Stage N+1: Completion
-
-Mark session complete:
-```bash
-./scripts/session-manager.sh complete "$SESSION_ID"
-```
-
-Output next steps to user (see cleanup.md)
 ```
 
 ---
 
 ## Error Handling
 
-### Session Creation Fails
-
-```bash
-if ! ./scripts/session-manager.sh create ...; then
-    echo "Error: Failed to create session"
-    # Clean up worktree before exiting
-    ./scripts/worktree-manager.sh cleanup "$SESSION_ID" --force
-    exit 1
-fi
-```
-
-### Session File Corrupted
-
-```bash
-# If sessions.json is invalid JSON
-if ! jq empty .claude/sessions.json 2>/dev/null; then
-    echo "Error: Session file corrupted"
-    echo "Backup: cp .claude/sessions.json .claude/sessions.json.backup"
-    echo "Fix: Edit .claude/sessions.json to valid JSON or delete it"
-    exit 1
-fi
-```
-
----
-
-## Session State Examples
-
-### Active Session
-```json
-{
-  "session-abc123": {
-    "command": "/build",
-    "branch": "JRA_add-user-export_SHRED-2119",
-    "worktree_path": ".claude/worktrees/session-abc123",
-    "status": "active",
-    "context_file": ".claude/context/SHRED-2119.md",
-    "created_at": "2026-01-16T10:30:00Z",
-    "updated_at": "2026-01-16T10:45:00Z"
-  }
-}
-```
-
-### Completed Session
-```json
-{
-  "session-abc123": {
-    "command": "/build",
-    "branch": "JRA_add-user-export_SHRED-2119",
-    "worktree_path": ".claude/worktrees/session-abc123",
-    "status": "completed",
-    "context_file": ".claude/context/SHRED-2119.md",
-    "created_at": "2026-01-16T10:30:00Z",
-    "completed_at": "2026-01-16T11:15:00Z"
-  }
-}
-```
-
-### Failed Session
-```json
-{
-  "session-def456": {
-    "command": "/fix",
-    "branch": "JRA_fix-dockerfile_OA-1655",
-    "worktree_path": ".claude/worktrees/session-def456",
-    "status": "failed",
-    "failure_reason": "Tests failed after 3 attempts",
-    "created_at": "2026-01-16T09:15:00Z",
-    "failed_at": "2026-01-16T09:32:00Z"
-  }
-}
-```
+| Error | Cause | Recovery |
+|-------|-------|----------|
+| Session creation fails | Disk full, permissions | Clean up worktree: `worktree-manager.sh cleanup $ID --force` |
+| sessions.json corrupted | Invalid JSON | Backup file, validate with `jq empty`, fix or delete |
+| Stale session | Worktree manually deleted | Run `session-manager.sh cleanup-stale` |
 
 ---
 

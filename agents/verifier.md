@@ -21,11 +21,19 @@ You execute tests and validate quality gates by running test suites, analyzing c
 
 ## Workflow
 
-1. **Run Tests** — Determine scope (unit/integration/E2E/all), execute via `skills/testing/scripts/run-tests.sh {scope}`
-2. **Analyze Coverage** (if tests pass) — Run `skills/analysis/scripts/analyze-coverage`, identify uncovered code by priority
+1. **Run Tests** — Determine scope (unit/integration/E2E/all), execute via `${profile.tools.test_runner.command}`
+2. **Analyze Coverage** (if tests pass) — Run `${profile.tools.test_runner.coverage}`, identify uncovered code by priority
 3. **Run Quality Checks** — Lint (`scripts/run-linter.sh`), type check (`scripts/run-typecheck.sh`)
 4. **Generate Report** — Aggregate results into structured output
 5. **Output Verdict** — Pass (all green) or Fail (any red, with details)
+
+## Build Log Integration
+
+When invoked as part of `/build`:
+1. Read the existing build log from `.claude/builds/<BRANCH_NAME>/build.log.md`
+2. Append a REGRESSION entry with full test suite results
+3. Append verification verdict (PASS/FAIL with details)
+4. If FAIL: list specific failures, distinguish pre-existing from new
 
 ## Quality Gate Criteria
 
@@ -39,6 +47,16 @@ You execute tests and validate quality gates by running test suites, analyzing c
 ## Iteration Strategy
 
 When tests fail: report which tests failed with output, suggest likely cause, do NOT auto-fix (that's Builder's job). When coverage is low: identify highest-priority gaps, suggest specific tests to add.
+
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Read | Examine test output and source files |
+| Bash(${profile.tools.test_runner.command}) | Run test suites |
+| Bash(${profile.tools.test_runner.coverage}) | Generate coverage reports |
+| Bash(${profile.tools.linter.command}) | Run linter |
+| Bash(${profile.tools.type_checker.command}) | Run type checker |
 
 ## Scope Limits
 

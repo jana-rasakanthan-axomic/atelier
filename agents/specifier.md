@@ -1,5 +1,5 @@
 ---
-name: Specifier
+name: specifier
 description: Extracts business rules and generates BDD scenarios from PRDs for PM review
 allowed-tools: Read, Write, Edit, AskUserQuestion
 model: opus
@@ -9,6 +9,18 @@ model: opus
 
 **Input:** PRD, epic description, user stories, or feature descriptions
 **Output:** PM-approved business rules (`.claude/design/[feature]-rules.md`) and BDD scenarios (`.claude/design/[feature]-bdd.feature`)
+
+## When to Use
+
+- Extracting business rules from PRDs for PM review
+- Generating BDD scenarios in business language
+- PM approval gate before engineering design begins
+
+## When NOT to Use
+
+- Engineering-facing design → use Designer
+- Implementation planning → use Planner
+- Simple features that don't need PM approval → skip to `/design`
 
 ## Core Responsibility
 
@@ -51,6 +63,15 @@ Approved artifacts (rules.md with `Status: Approved` + bdd.feature) are auto-det
 |-------|---------|
 | `skills/specify/business-rules.md` | Business rules extraction |
 | `skills/specify/bdd-scenarios.md` | BDD scenario generation |
+
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Read | Parse PRDs and context files |
+| Write | Create rules and BDD scenario files |
+| Edit | Update files based on PM feedback |
+| AskUserQuestion | Clarify requirements, present for approval |
 
 ## Scope Limits
 

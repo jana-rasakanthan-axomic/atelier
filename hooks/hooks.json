@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash scripts/hooks/enforce-tdd-order.sh"
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/enforce-tdd-order.sh"
           }
         ]
       },
@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash scripts/hooks/protect-main.sh"
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/protect-main.sh"
           }
         ]
       }
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash scripts/hooks/regression-reminder.sh"
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/regression-reminder.sh"
           }
         ]
       }
