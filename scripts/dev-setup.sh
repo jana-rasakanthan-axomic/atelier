@@ -165,7 +165,6 @@ cleanup_legacy_registry() {
 
 do_install_local() {
   check_claude
-  check_jq
 
   echo "Installing Atelier from local checkout..."
   echo "Toolkit: $TOOLKIT_DIR"
@@ -175,28 +174,7 @@ do_install_local() {
   cleanup_legacy_symlinks
   cleanup_legacy_registry
 
-  # Write marketplace.json with absolute path to this checkout
-  local marketplace_dir="${TOOLKIT_DIR}/.claude-marketplace/.claude-plugin"
-  local marketplace_file="${marketplace_dir}/marketplace.json"
-  mkdir -p "$marketplace_dir"
-
-  jq -n --arg path "$TOOLKIT_DIR" '{
-    "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-    "name": "atelier-marketplace",
-    "description": "Atelier — Process-agnostic development toolkit",
-    "owner": { "name": "Axomic" },
-    "plugins": [{
-      "name": "atelier",
-      "description": "Process-agnostic development toolkit with TDD, outside-in workflows, and profile-based stack support",
-      "author": { "name": "Axomic" },
-      "source": { "source": "directory", "path": $path },
-      "category": "development"
-    }]
-  }' > "$marketplace_file"
-  echo "[OK] Wrote marketplace.json with local path: $TOOLKIT_DIR"
-
-  # Register marketplace from local directory
-  echo ""
+  # Register marketplace from local directory (uses checked-in marketplace.json)
   echo "Registering marketplace..."
   claude plugin marketplace add "${TOOLKIT_DIR}/.claude-marketplace"
 
@@ -209,12 +187,11 @@ do_install_local() {
   echo "Setup complete. Restart Claude Code to activate."
   echo "Commands available as: /atelier:design, /atelier:build, /atelier:plan, ..."
   echo ""
-  echo "To uninstall: scripts/dev-setup.sh --unlink"
+  echo "To uninstall: scripts/uninstall-plugin.sh"
 }
 
 do_install_github() {
   check_claude
-  check_jq
 
   echo "Installing Atelier from GitHub..."
   echo ""
@@ -223,31 +200,7 @@ do_install_github() {
   cleanup_legacy_symlinks
   cleanup_legacy_registry
 
-  # Write marketplace.json with GitHub URL source
-  local marketplace_dir="${TOOLKIT_DIR}/.claude-marketplace/.claude-plugin"
-  local marketplace_file="${marketplace_dir}/marketplace.json"
-  mkdir -p "$marketplace_dir"
-
-  cat > "$marketplace_file" <<'MKJSON'
-{
-  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "atelier-marketplace",
-  "description": "Atelier — Process-agnostic development toolkit",
-  "owner": { "name": "Axomic" },
-  "plugins": [{
-    "name": "atelier",
-    "description": "Process-agnostic development toolkit with TDD, outside-in workflows, and profile-based stack support",
-    "author": { "name": "Axomic" },
-    "source": { "source": "url", "url": "https://github.com/jana-rasakanthan-axomic/atelier.git" },
-    "category": "development",
-    "homepage": "https://github.com/jana-rasakanthan-axomic/atelier"
-  }]
-}
-MKJSON
-  echo "[OK] Wrote marketplace.json with GitHub source"
-
   # Register marketplace from GitHub
-  echo ""
   echo "Registering marketplace..."
   claude plugin marketplace add "github:jana-rasakanthan-axomic/atelier/.claude-marketplace"
 
@@ -260,7 +213,7 @@ MKJSON
   echo "Setup complete. Restart Claude Code to activate."
   echo "Commands available as: /atelier:design, /atelier:build, /atelier:plan, ..."
   echo ""
-  echo "To uninstall: scripts/dev-setup.sh --unlink"
+  echo "To uninstall: scripts/uninstall-plugin.sh"
 }
 
 do_unlink() {
