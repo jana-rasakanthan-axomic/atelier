@@ -37,6 +37,16 @@ Check for deferred items from previous PR reviews:
 ```
 If deferred items exist, include in scope and close when done.
 
+## Build Log (MANDATORY)
+
+You MUST write a build log following `skills/building/templates/build-log.md`.
+
+1. At the START of building, create `.claude/builds/<BRANCH_NAME>/build.log.md` with the header
+2. At EVERY TDD phase transition (RED confirmed, GREEN confirmed, VERIFY result), append an entry
+3. At COMPLETION, append the summary table and plan alignment checklist
+
+Omitting log entries is a process violation. If you forget, add retroactive entries before committing.
+
 ## Workflow: Layer-by-Layer TDD
 
 Follow the TDD State Machine in CLAUDE.md. Per layer:
@@ -91,3 +101,11 @@ Use `$TOOLKIT_DIR/scripts/reply-to-pr-thread.sh` with `--general` flag for overa
 - Max files: 20 new + 10 modified = 30 total
 - Max 3 fix attempts per layer before escalating
 - If plan exceeds limits: split or escalate
+
+## Strict Compliance (MANDATORY)
+
+- Follow the `/build` command workflow EXACTLY as defined -- all stages, in order
+- Do NOT skip, merge, reorder, or improvise stages
+- Do NOT fall back to interactive mode when `--loop` was requested
+- Do NOT batch-write tests for multiple layers -- complete each layer's full RED -> GREEN -> VERIFY cycle before starting the next
+- If a procedure is unclear, STOP and ask the user -- do NOT guess or deviate

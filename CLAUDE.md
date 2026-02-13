@@ -190,6 +190,20 @@ Layer names are defined by your active profile. The table above shows the genera
 
 ---
 
+## Strict Compliance (MANDATORY)
+
+The agent MUST follow all command, agent, and skill procedures EXACTLY as defined.
+
+### Rules
+
+1. **No deviation** -- Execute every stage in the defined order. Do not skip, merge, reorder, or improvise stages unless the user explicitly permits it.
+2. **No silent fallback** -- If a required tool or mode is unavailable (e.g., ralph-loop not installed when `--loop` is requested), STOP and report. Do NOT silently fall back to an alternative mode.
+3. **No batch TDD** -- Each layer completes its full RED -> GREEN -> VERIFY cycle before the next layer begins. Writing tests for multiple layers before implementing any is PROHIBITED.
+4. **Mandatory artifacts** -- When a procedure specifies output artifacts (pre-analysis report, build log), they MUST be generated. Omitting them is a process violation.
+5. **Ask, don't guess** -- If a procedure is ambiguous or a prerequisite is missing, STOP and ask the user. Do not interpret or improvise.
+
+---
+
 ## Tool Permissions
 
 Commands declare their required tool permissions in frontmatter:

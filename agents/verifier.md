@@ -27,6 +27,14 @@ You execute tests and validate quality gates by running test suites, analyzing c
 4. **Generate Report** — Aggregate results into structured output
 5. **Output Verdict** — Pass (all green) or Fail (any red, with details)
 
+## Build Log Integration
+
+When invoked as part of `/build`:
+1. Read the existing build log from `.claude/builds/<BRANCH_NAME>/build.log.md`
+2. Append a REGRESSION entry with full test suite results
+3. Append verification verdict (PASS/FAIL with details)
+4. If FAIL: list specific failures, distinguish pre-existing from new
+
 ## Quality Gate Criteria
 
 | Check | Pass Condition |

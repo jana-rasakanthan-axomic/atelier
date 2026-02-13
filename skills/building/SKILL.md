@@ -77,6 +77,16 @@ Entry Point --> Business Logic --> Data Access --> External --> Models
 
 The profile maps these generic layers to concrete stack concepts.
 
+### Layer-by-Layer TDD (STRICT)
+
+Each layer follows a complete TDD cycle before the next begins:
+
+1. Write tests for Layer 1 -> confirm RED -> implement Layer 1 -> confirm GREEN -> verify
+2. Write tests for Layer 2 -> confirm RED -> implement Layer 2 -> confirm GREEN -> verify
+3. ...repeat for remaining layers
+
+**PROHIBITED:** Batch-writing tests for all layers, then batch-implementing. This makes RED confirmation meaningless (you can't tell which layer's tests are failing) and defeats the purpose of outside-in development.
+
 ## Key Rules Summary
 
 Stack-specific rules (coding conventions, import patterns, config access) live in:
