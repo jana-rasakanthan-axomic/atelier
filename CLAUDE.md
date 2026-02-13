@@ -104,14 +104,14 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `/build` | Implement a plan layer-by-layer (TDD). `--loop` for automated ralph-loop | Build |
 | `/fix` | Fix a bug or failing test. `--loop` for quality convergence | Build |
 | `/test` | Run full verification suite | Verify |
-| `/review` | Review a PR or code change | Review |
+| `/review` | Review a PR or code change. `--self` for self-review, `--self --loop` for automated self-review-fix | Review |
 | `/commit` | Stage, commit, and optionally push | Ship |
 | `/workstream` | Manage parallel workstreams (create/status/next) | Orchestration |
 | `/audit` | Audit codebase for issues | Analysis |
 | `/analyze` | Analyze code structure, dependencies, complexity | Analysis |
 | `/braindump` | Capture unstructured ideas into structured output | Discovery |
 | `/init` | Initialize atelier in a new project | Setup |
-| `/author` | Write or update documentation | Documentation |
+| `/author` | Create or improve toolkit components. `--loop` for automated validation | Documentation |
 
 ## Quick Reference — Skills
 
@@ -125,7 +125,7 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `analysis/` | Code metrics, dependency analysis | Audit, Analyze |
 | `security/` | Auth patterns, input validation, secrets | Reviewer, Builder |
 | `git-workflow/` | Branching, worktrees, PR conventions | All |
-| `iterative-dev/` | Loop prompt templates for ralph-loop (`--loop` mode) | Builder |
+| `iterative-dev/` | Loop prompt templates for ralph-loop (`--loop` mode), including self-review and author | Builder, Reviewer, Author |
 | `workstream/` | Workstream subcommand procedures | Workstream |
 | `authoring/` | Documentation templates, ADR format | Author |
 
@@ -231,9 +231,14 @@ Follow the principle of minimum permissions. A `/review` command should not need
 /gather -> /fix -> /review -> /commit
 ```
 
+### Pre-PR Self-Review
+```
+/build -> /review --self --loop -> (PR created automatically when clean)
+```
+
 ### Single Feature
 ```
-/gather -> /specify -> /design -> /plan -> /build -> /review -> /commit
+/gather -> /specify -> /design -> /plan -> /build -> /review --self --loop -> /commit
 ```
 
 ### Feature Batch
