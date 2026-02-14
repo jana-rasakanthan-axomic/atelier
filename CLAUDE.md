@@ -22,7 +22,7 @@ For project-specific installs, add to `.claude/settings.json`: `{ "plugins": [".
 
 ```
 CLAUDE.md (this file)
-├── commands/     -> 14 slash commands (lifecycle pipeline)
+├── commands/     -> 15 slash commands (lifecycle pipeline)
 ├── agents/       -> 7 core agents (orchestration)
 ├── skills/       -> 10 skills with progressive disclosure
 ├── profiles/     -> Stack-specific configurations
@@ -106,6 +106,7 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `/test` | Run full verification suite | Verify |
 | `/review` | Review a PR or code change. `--self` for self-review, `--self --loop` for automated self-review-fix | Review |
 | `/commit` | Stage, commit, and optionally push | Ship |
+| `/worklog` | Capture session summary and append to work log | Ship |
 | `/workstream` | Manage parallel workstreams (create/status/next) | Orchestration |
 | `/audit` | Audit codebase for issues | Analysis |
 | `/analyze` | Analyze code structure, dependencies, complexity | Analysis |
@@ -252,6 +253,11 @@ Follow the principle of minimum permissions. A `/review` command should not need
 ```
 Review each PR in the morning, then `/fix --loop` to address remaining quality issues.
 
+### Session End
+```
+/worklog -> (compact / clear / exit)
+```
+
 ---
 
 ## Git Workflow
@@ -303,6 +309,19 @@ Atelier registers Claude Code hooks in `.claude/settings.json` for deterministic
 | `regression-reminder.sh` | PostToolUse | Bash | Reminds to run full regression after targeted tests |
 
 Hooks live in `scripts/hooks/`. To temporarily bypass TDD enforcement: `touch .claude/skip-tdd` (remove after).
+
+---
+
+## Session Logging
+
+Before responding to any of the following, run `/worklog --auto` first:
+- **compact** (manual or automatic)
+- **clear** (or `/clear`)
+- **exit** / **quit** / session end
+
+This captures session context before it is lost. `--auto` skips user approval.
+
+**Exception:** Skip if no meaningful work was done (only read-only commands or simple questions).
 
 ---
 

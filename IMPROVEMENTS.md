@@ -45,6 +45,16 @@ Add new items under the appropriate category. When an item becomes real work, mo
 - [DONE] **`/author` command for IMPROVEMENTS.md** — teach `/author` to append structured entries here when improvement ideas surface during work. (Foundation: `validate-toolkit.sh` + `--loop` mode added)
 - [ ] **Workstream pr-check integration test** — verify `/review --self --loop <PR#>` works correctly when invoked from `/workstream pr-check`.
 
+## Config Architecture
+
+- [ ] **User-level config at `~/.config/atelier/`** — Current config is project-only (`.atelier/config.yaml` hardcoded in 13+ files). When installed as a plugin, users have no way to set user-level preferences. Migrate to XDG standard `~/.config/atelier/config.yaml` for user-level config.
+  - **Resolution order**: project `.atelier/config.yaml` > user `~/.config/atelier/config.yaml` > auto-detect
+  - **Files to update**: `resolve-profile.sh`, `setup.sh`, `verify.sh`, `/init` command, all docs referencing `.atelier/config.yaml`
+  - **New capability**: `/init --global` to create user-level config
+  - **Plugin install**: `claude plugins install` should create `~/.config/atelier/config.yaml` with defaults
+  - **Established convention**: `/worklog` already writes to `~/.config/atelier/worklog.md`
+  - **Settings that move to user-level**: default profile, worklog path, default branch naming, preferred model hints
+
 ## Documentation
 
 - [ ] **Human-readable manuals** — `docs/manuals/` with getting-started, design, and workstream guides. Never loaded by agents, just for humans.
@@ -52,4 +62,4 @@ Add new items under the appropriate category. When an item becomes real work, mo
 
 ---
 
-*Last updated: 2026-02-13*
+*Last updated: 2026-02-14*
