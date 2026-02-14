@@ -1,64 +1,103 @@
 # Improvements
 
-Backlog of ideas, observations, and suggestions for atelier. Captured from any project, refined here.
-
-Add new items under the appropriate category. When an item becomes real work, move it to a GitHub issue or `/plan` and mark it `[DONE]` here.
+Single source of truth for all atelier improvement ideas. Items originate from brainstorms, session observations, and gap analysis. When an item becomes real work, update its status here.
 
 ---
 
-## Enforcement & Hooks
+## Status Tracker
 
-- [ ] **Phase guard hook** — `guard_phase.py` blocks writes during read-only phases (plan, specify, review). Reads `.atelier/state.json` to determine current phase.
-- [ ] **TDD verification hook** — `verify_tdd.py` confirms test files were modified before implementation files during `/build`.
-- [ ] **Post-edit auto-lint hook** — `post_edit_lint.py` runs `${profile.linter}` after file edits automatically.
-- [ ] **State machine via `.atelier/state.json`** — simple JSON tracking current phase, feature, ticket, locked files. Hooks read this to enforce gates.
+| ID | Category | Improvement | Priority | Status | Notes |
+|----|----------|-------------|----------|--------|-------|
+| 1 | Hooks | Phase guard hook — block writes during read-only phases | P0 | backlog | Reads `.atelier/state.json`; needs state machine (ID 4) first |
+| 2 | Hooks | TDD verification hook — confirm test files modified before impl | P0 | backlog | `scripts/hooks/verify_tdd.py` |
+| 3 | Hooks | Post-edit auto-lint hook — run `${profile.linter}` after edits | P0 | backlog | `scripts/hooks/post_edit_lint.py` |
+| 4 | State | State machine via `.atelier/state.json` — track phase, feature, locked files | P2 | backlog | Simple JSON FSM; hooks depend on this |
+| 5 | Context | Context diet for `commands/design.md` — 1,708→<200 lines | P1 | backlog | Move splitting rules to `skills/design/reference/`, prose to `docs/manuals/` |
+| 6 | Context | Context diet for `commands/workstream.md` — ~1,000→<150 lines | P1 | backlog | Move dependency resolution to `scripts/workstream_engine.py` |
+| 7 | Context | Context diet for `commands/build.md` — ~500→<150 lines | P1 | backlog | TDD philosophy already in CLAUDE.md; layer details to profiles |
+| 8 | Context | Progressive disclosure for skills — lean SKILL.md + `reference/` on-demand | P4 | backlog | Adopt claude-toolkit's `detailed/` pattern |
+| 9 | Scripts | `scripts/workstream_engine.py` — dependency-aware Python (create, status, next) | P6 | backlog | Replace prose algorithm with real code |
+| 10 | Scripts | `scripts/validate_prd.py` — check PRD sections, flag ambiguous words | P3 | backlog | Run at end of `/specify` |
+| 11 | Scripts | `scripts/validate_design.py` — check tickets have AC, estimates, file targets | P3 | backlog | Run at end of `/design` |
+| 12 | Scripts | `scripts/bootstrap.py` — verify Python, git, profile tools at session start | P3 | backlog | One-command environment check |
+| 13 | State | `scripts/state_manager.py` — init, transition, status, lock subcommands | P2 | backlog | Companion to state machine (ID 4) |
+| 14 | Integration | MCP server config for Jira/Confluence — `.claude/settings.json` MCP block | P5 | backlog | Update `/gather` to detect MCP availability |
+| 15 | Integration | Session persistence — `.atelier/sessions/` with logs and resume | P5 | backlog | Port pattern from claude-toolkit |
+| 16 | Integration | Multi-model hints — `model_hint` in command frontmatter | P5 | backlog | e.g. `opus` for `/design`, `haiku` for `/build` |
+| 17 | Profiles | Flesh out stub profiles — Flutter, React, OpenTofu incomplete | — | backlog | Fix core engine first |
+| 18 | Profiles | Profile validation — check `${profile.tools.*}` references resolve | — | backlog | Script or hook on profile activation |
+| 19 | Testing | `/review --self --loop` end-to-end test on real branch | — | backlog | Validate full pre-PR self-review flow |
+| 20 | Commands | `/author` validate-toolkit.sh + `--loop` mode | — | implemented | Foundation for author quality loop |
+| 21 | Testing | Workstream pr-check integration test | — | backlog | Verify `/review --self --loop <PR#>` from `/workstream pr-check` |
+| 22 | Config | User-level config at `~/.config/atelier/` (XDG standard) | — | backlog | Resolution: project > user > auto-detect; needs `/init --global` |
+| 23 | Docs | Human-readable manuals in `docs/manuals/` | P1 | backlog | Getting-started, design, workstream guides; never loaded by agents |
+| 24 | Docs | Remove fictional `plugins install` — document git clone + symlink | P5 | backlog | Plugin install command doesn't exist in standard Claude Code |
+| 25 | Scripts | Evaluation framework — `evals/*.json` to test agent decisions | P3 | backlog | All commands must include self-check step |
+| 26 | Context | Refactor `commands/braindump.md` — extract user guide to `docs/manuals/` | P1 | backlog | 426 lines; mixes user manual with agent instructions |
+| 27 | Scripts | `scripts/validate_skill.py` — lint new agent files against best practices | P3 | backlog | For `/author` to validate created components |
+| 28 | Scripts | `scripts/detect_source.py` — parse input string, return source type + ID | P3 | backlog | Replace brittle regex URL detection in `/gather` |
+| 29 | Scripts | `scripts/gather_interview.py` — structured requirements questionnaire | P3 | backlog | Capture Persona, Problem, KPI before LLM sees input |
+| 30 | Architecture | Subagent refactoring for `/workstream` and `/design` | — | backlog | Run in isolated context via `Task` tool instead of main window |
+| 31 | Integration | Adopt external plugins — evaluate pr-review-toolkit, commit-commands, etc. | — | backlog | Use community tools instead of building from scratch |
 
-## Context & Performance
+---
 
-- [ ] **Context diet for `commands/design.md`** — currently 1,708 lines. Target <200 lines. Move splitting rules to `skills/design/reference/`, workflow prose to `docs/manuals/`, examples to reference docs.
-- [ ] **Context diet for `commands/workstream.md`** — ~1,000 lines of prose algorithms. Move dependency resolution and status tracking to Python scripts.
-- [ ] **Context diet for `commands/build.md`** — ~500 lines. TDD philosophy already in CLAUDE.md; layer details belong in profile patterns.
-- [ ] **Progressive disclosure for skills** — lean SKILL.md loaded by default, `reference/` subfolder loaded on-demand (on retry or with less capable models).
+## Vision & Strategy
 
-## Scripts & Automation
+Atelier is the "Operating System" for a workflow where coding is delegated to LLMs but verification remains critical. The source of truth shifts from code to **PRDs, TDDs, and Execution Plans**. The toolkit enforces a strict pipeline (`Gather → Specify → Design → Plan → Build → Review → Deploy`) using progressive disclosure and specialized agents.
 
-- [ ] **`scripts/workstream_engine.py`** — replace prose algorithm with real dependency-aware Python code (create, status, next subcommands).
-- [ ] **`scripts/validate_prd.py`** — check PRD has all required sections, flag ambiguous words ("fast", "easy") at end of `/specify`.
-- [ ] **`scripts/validate_design.py`** — check tickets have acceptance criteria, point estimates, file targets at end of `/design`.
-- [ ] **`scripts/bootstrap.py`** — verify Python, git, profile tools all available at session start.
-- [ ] **`scripts/state_manager.py`** — init, transition, status, lock subcommands for the state machine.
+**Core thesis**: The process design is excellent — the pipeline, profiles, TDD enforcement, and separation of concerns are best-in-class. The gap is in *mechanical enforcement*. Build the enforcement layer first, diet the context second, steal integration patterns third.
 
-## Integration
+---
 
-- [ ] **MCP server config for Jira/Confluence** — add `.claude/settings.json` MCP block, update `/gather` to detect MCP availability.
-- [ ] **Session persistence** — `.atelier/sessions/` directory with session logs, resume capability.
-- [ ] **Multi-model hints** — add `model_hint` to command frontmatter (e.g., `model_hint: opus` for `/design`, `model_hint: haiku` for `/build`).
+## Gap Analysis
 
-## Profiles
+**Context bloat** — Core commands (`design.md` at 1,708 lines, `workstream.md` at ~1,000 lines) mix user manuals with agent instructions. A single `/design` invocation can load 3,000+ lines before touching user content, consuming ~30% of a Haiku context window in "token tax" alone.
 
-- [ ] **Flesh out stub profiles** — Flutter, React, OpenTofu profiles exist but are incomplete. Fix core engine first, then expand.
-- [ ] **Profile validation** — script or hook that checks all `${profile.tools.*}` references resolve to real commands when a profile is activated.
+**Missing enforcement** — Nothing mechanically prevents writing code during `/plan`, skipping TDD, or modifying the PRD during build. The hooks + state machine vision from the architecture PDF is the right answer but isn't implemented yet.
 
-## Commands & Skills
+**"Imposter script" problem** — `workstream.md` describes algorithms in prose (dependency graphs, priority search, state tracking) that LLMs execute unreliably. These should be deterministic Python scripts with the command as a thin wrapper.
 
-- [ ] **`/review --self --loop` end-to-end test** — validate the full pre-PR self-review flow on a real branch with deliberate issues.
-- [DONE] **`/author` command for IMPROVEMENTS.md** — teach `/author` to append structured entries here when improvement ideas surface during work. (Foundation: `validate-toolkit.sh` + `--loop` mode added)
-- [ ] **Workstream pr-check integration test** — verify `/review --self --loop <PR#>` works correctly when invoked from `/workstream pr-check`.
+**Platform dependency** — Documentation references `claude plugins install` which doesn't exist. `scripts/bootstrap.py` should handle environment setup honestly.
 
-## Config Architecture
+---
 
-- [ ] **User-level config at `~/.config/atelier/`** — Current config is project-only (`.atelier/config.yaml` hardcoded in 13+ files). When installed as a plugin, users have no way to set user-level preferences. Migrate to XDG standard `~/.config/atelier/config.yaml` for user-level config.
-  - **Resolution order**: project `.atelier/config.yaml` > user `~/.config/atelier/config.yaml` > auto-detect
-  - **Files to update**: `resolve-profile.sh`, `setup.sh`, `verify.sh`, `/init` command, all docs referencing `.atelier/config.yaml`
-  - **New capability**: `/init --global` to create user-level config
-  - **Plugin install**: `claude plugins install` should create `~/.config/atelier/config.yaml` with defaults
-  - **Established convention**: `/worklog` already writes to `~/.config/atelier/worklog.md`
-  - **Settings that move to user-level**: default profile, worklog path, default branch naming, preferred model hints
+## Priority Tiers
 
-## Documentation
+| Tier | Focus | Rationale |
+|------|-------|-----------|
+| **P0** | Hooks (enforcement layer) | Highest leverage — makes every other improvement enforceable |
+| **P1** | Context diet (commands <200 lines) | 90% reduction in token tax for common commands |
+| **P2** | State machine (`.atelier/state.json`) | Enables phase-aware hooks and artifact locking |
+| **P3** | Validation scripts | Self-verification — agents check their own work |
+| **P4** | Progressive disclosure for skills | Context savings across all commands |
+| **P5** | Integration (MCP, sessions, multi-model) | Enterprise readiness; port best of claude-toolkit |
+| **P6** | Workstream engine in Python | Deterministic dependency resolution |
 
-- [ ] **Human-readable manuals** — `docs/manuals/` with getting-started, design, and workstream guides. Never loaded by agents, just for humans.
-- [ ] **Remove fictional `plugins install`** — the `claude plugins install` command doesn't exist in standard Claude Code. Document git clone + symlink honestly.
+---
+
+## Things NOT To Do
+
+| Temptation | Why Not |
+|------------|---------|
+| Build a Bubble Tea TUI | Claude Code's native TUI is sufficient; custom wrapper adds maintenance with no agent benefit |
+| Implement agent teams via tmux | Experimental `TeammateTool` still unstable; use subagents (`Task` tool) instead |
+| Add more profiles before fixing core | Flutter/React/OpenTofu are stubs; fix hooks, state, and validation first |
+| Create a marketplace package | `claude plugins install` doesn't exist; use git clone + symlink |
+| Over-engineer session management | Simple `state.json` + artifact files is sufficient; don't build a database |
+
+---
+
+## Success Metrics
+
+| Metric | Current | Target |
+|--------|---------|--------|
+| Largest command file | 1,708 lines | <200 lines |
+| Avg tokens per command invocation | ~4,000 (estimated) | <1,000 |
+| Phase violations possible | Unlimited | 0 (hook-enforced) |
+| Self-verification scripts | 0 | 4+ |
+| Deterministic scripts (Python) | 0 | 6+ |
+| Commands requiring prose-algorithm execution | 2 (workstream, design) | 0 |
 
 ---
 
