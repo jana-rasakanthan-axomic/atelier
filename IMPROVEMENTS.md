@@ -6,34 +6,34 @@ Single source of truth for all atelier improvement ideas. Items originate from b
 
 **By Priority:**
 
-| Priority | Total | Backlog | Done |
-|----------|-------|---------|------|
-| P0 | 3 | 3 | 0 |
-| P1 | 5 | 5 | 0 |
-| P2 | 2 | 2 | 0 |
-| P3 | 7 | 7 | 0 |
-| P4 | 1 | 1 | 0 |
-| P5 | 4 | 4 | 0 |
-| P6 | 1 | 1 | 0 |
-| — | 8 | 7 | 1 |
-| **Total** | **31** | **30** | **1** |
+| Priority | Total | Backlog | Partial | Done |
+|----------|-------|---------|---------|------|
+| P0 | 3 | 2 | 0 | 1 |
+| P1 | 5 | 0 | 4 | 1 |
+| P2 | 2 | 2 | 0 | 0 |
+| P3 | 7 | 7 | 0 | 0 |
+| P4 | 1 | 0 | 0 | 1 |
+| P5 | 4 | 2 | 2 | 0 |
+| P6 | 1 | 1 | 0 | 0 |
+| — | 8 | 5 | 1 | 2 |
+| **Total** | **31** | **19** | **7** | **5** |
 
 **By Category:**
 
-| Category | Total | Backlog | Done |
-|----------|-------|---------|------|
-| Hooks | 3 | 3 | 0 |
-| State | 2 | 2 | 0 |
-| Context | 5 | 5 | 0 |
-| Scripts | 8 | 8 | 0 |
-| Integration | 4 | 4 | 0 |
-| Profiles | 2 | 2 | 0 |
-| Testing | 2 | 2 | 0 |
-| Commands | 1 | 0 | 1 |
-| Config | 1 | 1 | 0 |
-| Docs | 2 | 2 | 0 |
-| Architecture | 1 | 1 | 0 |
-| **Total** | **31** | **30** | **1** |
+| Category | Total | Backlog | Partial | Done |
+|----------|-------|---------|---------|------|
+| Hooks | 3 | 2 | 0 | 1 |
+| State | 2 | 2 | 0 | 0 |
+| Context | 5 | 0 | 3 | 2 |
+| Scripts | 8 | 8 | 0 | 0 |
+| Integration | 4 | 2 | 2 | 0 |
+| Profiles | 2 | 1 | 0 | 1 |
+| Testing | 2 | 2 | 0 | 0 |
+| Commands | 1 | 0 | 0 | 1 |
+| Config | 1 | 0 | 1 | 0 |
+| Docs | 2 | 1 | 1 | 0 |
+| Architecture | 1 | 1 | 0 | 0 |
+| **Total** | **31** | **19** | **7** | **5** |
 
 ---
 
@@ -42,31 +42,31 @@ Single source of truth for all atelier improvement ideas. Items originate from b
 | ID | Category | Improvement | Priority | Status | Notes |
 |----|----------|-------------|----------|--------|-------|
 | 1 | Hooks | Phase guard hook — block writes during read-only phases | P0 | backlog | Reads `.atelier/state.json`; needs state machine (ID 4) first |
-| 2 | Hooks | TDD verification hook — confirm test files modified before impl | P0 | backlog | `scripts/hooks/verify_tdd.py` |
+| 2 | Hooks | TDD verification hook — confirm test files modified before impl | P0 | implemented | `scripts/hooks/enforce-tdd-order.sh` (68 lines); registered in CLAUDE.md |
 | 3 | Hooks | Post-edit auto-lint hook — run `${profile.linter}` after edits | P0 | backlog | `scripts/hooks/post_edit_lint.py` |
 | 4 | State | State machine via `.atelier/state.json` — track phase, feature, locked files | P2 | backlog | Simple JSON FSM; hooks depend on this |
-| 5 | Context | Context diet for `commands/design.md` — 1,708→<200 lines | P1 | backlog | Move splitting rules to `skills/design/reference/`, prose to `docs/manuals/` |
-| 6 | Context | Context diet for `commands/workstream.md` — ~1,000→<150 lines | P1 | backlog | Move dependency resolution to `scripts/workstream_engine.py` |
-| 7 | Context | Context diet for `commands/build.md` — ~500→<150 lines | P1 | backlog | TDD philosophy already in CLAUDE.md; layer details to profiles |
-| 8 | Context | Progressive disclosure for skills — lean SKILL.md + `reference/` on-demand | P4 | backlog | Adopt claude-toolkit's `detailed/` pattern |
+| 5 | Context | Context diet for `commands/design.md` — 1,708→<200 lines | P1 | implemented | Now 159 lines; `skills/design/reference/` has 5 files |
+| 6 | Context | Context diet for `commands/workstream.md` — ~1,000→<150 lines | P1 | partial | Now 137 lines (target met); `workstream_engine.py` not yet created |
+| 7 | Context | Context diet for `commands/build.md` — ~500→<150 lines | P1 | partial | Now 161 lines (target <150); 11 lines over |
+| 8 | Context | Progressive disclosure for skills — lean SKILL.md + `reference/` on-demand | P4 | implemented | 6/11 skills have `reference/` or `detailed/` dirs; most SKILL.md 55-98 lines |
 | 9 | Scripts | `scripts/workstream_engine.py` — dependency-aware Python (create, status, next) | P6 | backlog | Replace prose algorithm with real code |
 | 10 | Scripts | `scripts/validate_prd.py` — check PRD sections, flag ambiguous words | P3 | backlog | Run at end of `/specify` |
 | 11 | Scripts | `scripts/validate_design.py` — check tickets have AC, estimates, file targets | P3 | backlog | Run at end of `/design` |
 | 12 | Scripts | `scripts/bootstrap.py` — verify Python, git, profile tools at session start | P3 | backlog | One-command environment check |
 | 13 | State | `scripts/state_manager.py` — init, transition, status, lock subcommands | P2 | backlog | Companion to state machine (ID 4) |
-| 14 | Integration | MCP server config for Jira/Confluence — `.claude/settings.json` MCP block | P5 | backlog | Update `/gather` to detect MCP availability |
-| 15 | Integration | Session persistence — `.atelier/sessions/` with logs and resume | P5 | backlog | Port pattern from claude-toolkit |
+| 14 | Integration | MCP server config for Jira/Confluence — `.claude/settings.json` MCP block | P5 | partial | `/gather` declares MCP tools in frontmatter; no `.claude/settings.json` template |
+| 15 | Integration | Session persistence — `.atelier/sessions/` with logs and resume | P5 | partial | `/worklog` command implemented; broader `.atelier/sessions/` pattern not adopted |
 | 16 | Integration | Multi-model hints — `model_hint` in command frontmatter | P5 | backlog | e.g. `opus` for `/design`, `haiku` for `/build` |
-| 17 | Profiles | Flesh out stub profiles — Flutter, React, OpenTofu incomplete | — | backlog | Fix core engine first |
+| 17 | Profiles | Flesh out stub profiles — Flutter, React, OpenTofu incomplete | — | implemented | All 4 profiles comprehensive (227-237 lines each) with patterns dirs |
 | 18 | Profiles | Profile validation — check `${profile.tools.*}` references resolve | — | backlog | Script or hook on profile activation |
 | 19 | Testing | `/review --self --loop` end-to-end test on real branch | — | backlog | Validate full pre-PR self-review flow |
 | 20 | Commands | `/author` validate-toolkit.sh + `--loop` mode | — | implemented | Foundation for author quality loop |
 | 21 | Testing | Workstream pr-check integration test | — | backlog | Verify `/review --self --loop <PR#>` from `/workstream pr-check` |
-| 22 | Config | User-level config at `~/.config/atelier/` (XDG standard) | — | backlog | Resolution: project > user > auto-detect; needs `/init --global` |
-| 23 | Docs | Human-readable manuals in `docs/manuals/` | P1 | backlog | Getting-started, design, workstream guides; never loaded by agents |
+| 22 | Config | User-level config at `~/.config/atelier/` (XDG standard) | — | partial | `/worklog` uses `~/.config/atelier/`; no `/init --global` or full resolution order |
+| 23 | Docs | Human-readable manuals in `docs/manuals/` | P1 | partial | `docs/manuals/design.md` exists (68 lines); getting-started and workstream missing |
 | 24 | Docs | Remove fictional `plugins install` — document git clone + symlink | P5 | backlog | Plugin install command doesn't exist in standard Claude Code |
 | 25 | Scripts | Evaluation framework — `evals/*.json` to test agent decisions | P3 | backlog | All commands must include self-check step |
-| 26 | Context | Refactor `commands/braindump.md` — extract user guide to `docs/manuals/` | P1 | backlog | 426 lines; mixes user manual with agent instructions |
+| 26 | Context | Refactor `commands/braindump.md` — extract user guide to `docs/manuals/` | P1 | partial | Now 163 lines (down from 426); user guide not yet extracted to manuals |
 | 27 | Scripts | `scripts/validate_skill.py` — lint new agent files against best practices | P3 | backlog | For `/author` to validate created components |
 | 28 | Scripts | `scripts/detect_source.py` — parse input string, return source type + ID | P3 | backlog | Replace brittle regex URL detection in `/gather` |
 | 29 | Scripts | `scripts/gather_interview.py` — structured requirements questionnaire | P3 | backlog | Capture Persona, Problem, KPI before LLM sees input |
