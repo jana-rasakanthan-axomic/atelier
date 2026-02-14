@@ -2,6 +2,39 @@
 
 Single source of truth for all atelier improvement ideas. Items originate from brainstorms, session observations, and gap analysis. When an item becomes real work, update its status here.
 
+## Summary
+
+**By Priority:**
+
+| Priority | Total | Backlog | Done |
+|----------|-------|---------|------|
+| P0 | 3 | 3 | 0 |
+| P1 | 5 | 5 | 0 |
+| P2 | 2 | 2 | 0 |
+| P3 | 7 | 7 | 0 |
+| P4 | 1 | 1 | 0 |
+| P5 | 4 | 4 | 0 |
+| P6 | 1 | 1 | 0 |
+| — | 8 | 7 | 1 |
+| **Total** | **31** | **30** | **1** |
+
+**By Category:**
+
+| Category | Total | Backlog | Done |
+|----------|-------|---------|------|
+| Hooks | 3 | 3 | 0 |
+| State | 2 | 2 | 0 |
+| Context | 5 | 5 | 0 |
+| Scripts | 8 | 8 | 0 |
+| Integration | 4 | 4 | 0 |
+| Profiles | 2 | 2 | 0 |
+| Testing | 2 | 2 | 0 |
+| Commands | 1 | 0 | 1 |
+| Config | 1 | 1 | 0 |
+| Docs | 2 | 2 | 0 |
+| Architecture | 1 | 1 | 0 |
+| **Total** | **31** | **30** | **1** |
+
 ---
 
 ## Status Tracker
