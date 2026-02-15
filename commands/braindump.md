@@ -1,6 +1,7 @@
 ---
 name: braindump
 description: Capture raw ideas and transform them into a structured PRD draft
+model_hint: sonnet
 allowed-tools: Read, Write, Edit, Grep, Glob, AskUserQuestion
 ---
 

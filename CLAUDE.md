@@ -225,6 +225,30 @@ Follow the principle of minimum permissions. A `/review` command should not need
 
 ---
 
+## Model Hints
+
+Commands declare `model_hint` in frontmatter to suggest optimal model selection:
+
+- **`opus`** -- Deep reasoning tasks (design, specify, review)
+- **`sonnet`** -- Balanced tasks (build, fix, plan, gather, braindump, workstream, deploy)
+- **`haiku`** -- Speed-priority tasks (commit, test, worklog, init, author, atelier-feedback)
+
+These are suggestions, not enforcement. The user's active model always takes precedence.
+
+---
+
+## Smart Context Loading
+
+Commands and skills load reference material on-demand, not upfront. When detailed documentation is needed:
+
+1. Check if the user's question or error relates to a specific topic
+2. Use `Read` to load the relevant file from `docs/reference/` or `docs/manuals/`
+3. Never load all reference material at once -- load only what the current task requires
+
+See `docs/reference/topic-index.md` for a mapping of common topics to their reference files.
+
+---
+
 ## Getting Started -- Workflows
 
 ### Quick Fix

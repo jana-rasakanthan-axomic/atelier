@@ -1,6 +1,7 @@
 ---
 name: build
 description: Implement a feature from an approved plan
+model_hint: sonnet
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash(git:*), Bash(uuidgen), Bash(~/.claude/scripts/*), Bash(./scripts/*), Bash(${profile.test_runner}), Bash(${profile.linter}), Bash(${profile.type_checker})
 ---
 

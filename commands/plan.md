@@ -1,6 +1,7 @@
 ---
 name: plan
 description: Create implementation plan and save to file
+model_hint: sonnet
 allowed-tools: Read, Grep, Glob, Write
 ---
 

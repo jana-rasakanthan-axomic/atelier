@@ -1,6 +1,7 @@
 ---
 name: atelier-feedback
 description: Capture toolkit improvement ideas and append to IMPROVEMENTS.md
+model_hint: haiku
 allowed-tools: Read, Edit, Grep, Glob, AskUserQuestion
 ---
 

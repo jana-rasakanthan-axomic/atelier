@@ -1,0 +1,51 @@
+# Atelier User-Level Configuration
+# Location: ~/.config/atelier/config.yaml
+#
+# This file sets defaults for all projects. Project-level config
+# (.atelier/config.yaml) takes priority over values set here.
+#
+# Resolution order (highest priority first):
+#   1. Project:  .atelier/config.yaml
+#   2. User:     ~/.config/atelier/config.yaml (this file)
+#   3. Auto:     Marker file detection
+#
+# Manage with: scripts/resolve-config.sh
+#   get <key>           Read a resolved value
+#   set <key> <value>   Write a value to this file
+#   show                Show all resolved values with sources
+
+# --------------------------------------------------------------------------
+# Profile
+# --------------------------------------------------------------------------
+# Default development profile used when no project-level config exists
+# and auto-detection finds no marker files.
+#
+# Built-in profiles: python-fastapi, flutter-dart, react-typescript, opentofu-hcl
+# See profiles/ directory for the full list.
+# profile: python-fastapi
+
+# --------------------------------------------------------------------------
+# Model
+# --------------------------------------------------------------------------
+# Preferred Claude model for commands that support model selection.
+# Options: opus, sonnet, haiku
+default_model: sonnet
+
+# --------------------------------------------------------------------------
+# Output Directories
+# --------------------------------------------------------------------------
+# Where worklogs are written. Supports ~ for home directory.
+output_dir: ~/.config/atelier/logs
+
+# Where session state files are stored.
+session_dir: ~/.config/atelier/sessions
+
+# --------------------------------------------------------------------------
+# Git
+# --------------------------------------------------------------------------
+git:
+  # Your initials for branch naming (e.g., jr -> jr_feature-name_TICKET-123)
+  # initials: jr
+
+  # Automatically create git worktrees for parallel work.
+  auto_worktree: true

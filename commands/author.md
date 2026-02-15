@@ -1,6 +1,7 @@
 ---
 name: author
 description: Create agents, skills, and commands following Anthropic best practices
+model_hint: haiku
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash(scripts/validate-toolkit.sh:*)
 ---
 
