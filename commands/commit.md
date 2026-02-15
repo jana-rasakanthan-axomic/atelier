@@ -1,6 +1,7 @@
 ---
 name: commit
 description: Generate meaningful commit message for staged changes
+model_hint: haiku
 allowed-tools: Read, Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git commit:*)
 ---
 

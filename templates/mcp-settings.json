@@ -1,0 +1,34 @@
+{
+  "_comment": "MCP server configuration template for Atelier. Copy the 'mcpServers' block into your project's .claude/settings.json or your global ~/.claude/settings.json. Replace all <PLACEHOLDER> values with your actual credentials.",
+
+  "mcpServers": {
+    "atlassian": {
+      "_comment_server": "Atlassian MCP server for Jira and Confluence. Provides tools: mcp__atlassian__getJiraIssue, mcp__atlassian__getConfluencePage, mcp__atlassian__getJiraIssueRemoteIssueLinks.",
+      "command": "npx",
+      "args": ["-y", "@anthropic/atlassian-mcp-server"],
+      "env": {
+        "_comment_jira_url": "Your Atlassian instance URL. Find it in your browser address bar when logged into Jira (e.g., https://yourcompany.atlassian.net).",
+        "JIRA_API_URL": "<https://yourcompany.atlassian.net>",
+
+        "_comment_confluence_url": "Usually the same as your Jira URL. Only set separately if your Confluence is on a different domain.",
+        "CONFLUENCE_API_URL": "<https://yourcompany.atlassian.net/wiki>",
+
+        "_comment_email": "The email address associated with your Atlassian account.",
+        "ATLASSIAN_EMAIL": "<you@yourcompany.com>",
+
+        "_comment_token": "Atlassian API token. Generate one at: https://id.atlassian.com/manage-profile/security/api-tokens. Store securely -- do NOT commit this file with a real token.",
+        "ATLASSIAN_API_TOKEN": "<your-api-token>"
+      }
+    },
+
+    "github": {
+      "_comment_server": "GitHub MCP server (optional). The gh CLI is usually sufficient for GitHub issues and PRs. Only add this if you need richer GitHub integration beyond what gh provides.",
+      "command": "npx",
+      "args": ["-y", "@anthropic/github-mcp-server"],
+      "env": {
+        "_comment_token": "GitHub personal access token. Generate one at: https://github.com/settings/tokens. Needs 'repo' scope for private repos.",
+        "GITHUB_TOKEN": "<your-github-pat>"
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "PRD validator passes a complete PRD",
+  "command": "scripts/validate_prd.sh evals/fixtures/valid-prd.md",
+  "expected_exit_code": 0,
+  "expected_output_contains": ["0 error(s)"]
+}

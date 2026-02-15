@@ -1,6 +1,7 @@
 ---
 name: review
 description: Review pull request with multiple perspectives
+model_hint: opus
 allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*), Bash(git show:*), Bash(${profile.tools.test_runner.command}:*), Bash(gh api:*), Bash(gh pr view:*), Bash(gh repo view:*), Bash(gh pr create:*)
 ---
 

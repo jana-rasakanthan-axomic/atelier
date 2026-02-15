@@ -29,6 +29,7 @@ Written to `.claude/status.json`:
       "status": "ready",
       "blocked_by": [],
       "blocks": ["PROJ-201", "PROJ-401"],
+      "depends_on": [],
       "plan_status": "none",
       "build_status": "none",
       "pr_number": null,
@@ -104,6 +105,7 @@ blocks:
   - PROJ-201
   - PROJ-401
   - PROJ-801
+depends_on: []
 acceptance_criteria:
   - User can log in with valid email and password
   - Invalid credentials return 401 with error message

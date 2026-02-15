@@ -1,6 +1,7 @@
 ---
 name: specify
 description: Extract business rules and generate BDD scenarios from PRD for PM review
+model_hint: opus
 allowed-tools: Read, Write, Edit, AskUserQuestion
 ---
 

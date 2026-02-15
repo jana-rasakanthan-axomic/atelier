@@ -1,6 +1,7 @@
 ---
 name: test
 description: Run tests using profile-configured test runner
+model_hint: haiku
 allowed-tools: Read, Grep, Glob, Bash(${profile.tools.test_runner.command}:*)
 ---
 

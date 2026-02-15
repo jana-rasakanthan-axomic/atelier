@@ -1,0 +1,6 @@
+{
+  "name": "Bootstrap detects git and jq",
+  "command": "scripts/bootstrap.sh",
+  "expected_exit_code": 0,
+  "expected_output_contains": ["git"]
+}

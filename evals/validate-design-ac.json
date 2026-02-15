@@ -1,0 +1,6 @@
+{
+  "name": "Design validator catches missing AC",
+  "command": "scripts/validate_design.sh evals/fixtures/incomplete-design.md",
+  "expected_exit_code": 2,
+  "expected_output_contains": ["Acceptance Criteria"]
+}

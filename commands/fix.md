@@ -1,6 +1,7 @@
 ---
 name: fix
 description: Fix code quality issues (lint, type, test errors)
+model_hint: sonnet
 allowed-tools: Read, Edit, Grep, Glob, Bash(${profile.test_runner}), Bash(${profile.linter}), Bash(${profile.type_checker}), Bash(git:*), Bash(uuidgen), Bash(~/.claude/scripts/*), Bash(./scripts/*)
 ---
 

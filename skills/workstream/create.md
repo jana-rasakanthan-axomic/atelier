@@ -100,7 +100,43 @@ Each ticket written to `.claude/tickets/<TICKET-ID>.md`.
 
 ### 3.1 Parse Dependencies
 
-Read `blocked_by` and `blocks` fields from each ticket's frontmatter.
+Read `blocked_by`, `blocks`, and `depends_on` fields from each ticket's frontmatter.
+
+#### The `depends_on` Field
+
+Tickets may declare a `depends_on` field to express **PR-level merge ordering**. This is distinct from `blocked_by`:
+
+| Field | Scope | Meaning |
+|-------|-------|---------|
+| `blocked_by` | Build-time | Cannot start building until blockers complete |
+| `depends_on` | Merge-time | PR cannot merge until dependency PRs are merged first |
+
+```yaml
+---
+id: PROJ-301
+depends_on: [PROJ-201, PROJ-101]
+blocked_by: [PROJ-201]
+---
+```
+
+In this example, PROJ-301 cannot start building until PROJ-201 finishes (blocked_by), and its PR cannot merge until both PROJ-201 and PROJ-101 PRs have merged (depends_on).
+
+#### Merge Order Validation
+
+Before a PR is eligible to merge, all tickets listed in its `depends_on` must have `pr.status: merged`. The `scripts/check-pr-dependencies.sh` script enforces this gate:
+
+- Run as part of `/workstream pr-check` before attempting any merge
+- Reports which PRs are ready to merge and which are blocked by unmerged dependencies
+- Exit 0 if all dependency PRs are merged, exit 1 if any are still open
+
+#### Status Propagation
+
+When a parent PR merges, dependent tickets are automatically unblocked:
+
+1. On PR merge, scan all tickets for `depends_on` references to the merged ticket
+2. Remove the merged ticket from each dependent's `depends_on` list in `status.json`
+3. When a ticket's `depends_on` list becomes empty, it is eligible for merge
+4. Log the unblock event: `"Unblocked PROJ-301: dependency PROJ-201 merged"`
 
 ### 3.2 Dependency Rules
 

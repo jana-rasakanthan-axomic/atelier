@@ -1,12 +1,21 @@
 ---
 name: gather
 description: Gather context from Jira, Confluence, or GitHub and save to file
+model_hint: sonnet
 allowed-tools: Write, mcp__atlassian__getJiraIssue, mcp__atlassian__getConfluencePage, mcp__atlassian__getJiraIssueRemoteIssueLinks, Bash(gh:*)
 ---
 
 # /gather
 
 Gather context from external sources (Jira, Confluence, GitHub) and save to `.claude/context/` for review/edit before use.
+
+## MCP Availability Check
+
+Before fetching from Jira or Confluence, check if MCP tools are available (look for `mcp__atlassian__getJiraIssue` in your tool list).
+
+- **MCP available:** Proceed with Jira/Confluence fetching as described below.
+- **MCP not available and source is Jira/Confluence:** STOP. Tell the user: "Atlassian MCP server is not configured. See `docs/manuals/mcp-setup.md` for setup instructions." Do not attempt to fetch.
+- **MCP not available and source is GitHub or plain text:** Proceed normally -- these do not require MCP.
 
 ## Input Formats
 

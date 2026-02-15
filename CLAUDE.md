@@ -10,8 +10,7 @@ Atelier encodes **how** you build software (TDD, outside-in, PR review) while pr
 
 | Method | Command |
 |--------|---------|
-| **Plugin** (recommended) | `claude plugins install jana-rasakanthan-axomic/atelier` |
-| **Global** (~/.claude) | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git ~/.claude/plugins/atelier` |
+| **Global** (~/.claude, recommended) | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git ~/.claude/plugins/atelier` |
 | **Project-specific** | `git clone https://github.com/jana-rasakanthan-axomic/atelier.git .atelier` |
 
 For project-specific installs, add to `.claude/settings.json`: `{ "plugins": [".atelier"] }`
@@ -113,6 +112,7 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `/braindump` | Capture unstructured ideas into structured output | Discovery |
 | `/init` | Initialize atelier in a new project | Setup |
 | `/author` | Create or improve toolkit components. `--loop` for automated validation | Documentation |
+| `/atelier-feedback` | Capture toolkit improvement ideas into IMPROVEMENTS.md | Feedback |
 
 ## Quick Reference — Skills
 
@@ -225,6 +225,30 @@ Follow the principle of minimum permissions. A `/review` command should not need
 
 ---
 
+## Model Hints
+
+Commands declare `model_hint` in frontmatter to suggest optimal model selection:
+
+- **`opus`** -- Deep reasoning tasks (design, specify, review)
+- **`sonnet`** -- Balanced tasks (build, fix, plan, gather, braindump, workstream, deploy)
+- **`haiku`** -- Speed-priority tasks (commit, test, worklog, init, author, atelier-feedback)
+
+These are suggestions, not enforcement. The user's active model always takes precedence.
+
+---
+
+## Smart Context Loading
+
+Commands and skills load reference material on-demand, not upfront. When detailed documentation is needed:
+
+1. Check if the user's question or error relates to a specific topic
+2. Use `Read` to load the relevant file from `docs/reference/` or `docs/manuals/`
+3. Never load all reference material at once -- load only what the current task requires
+
+See `docs/reference/topic-index.md` for a mapping of common topics to their reference files.
+
+---
+
 ## Getting Started -- Workflows
 
 ### Quick Fix
@@ -305,10 +329,29 @@ Atelier registers Claude Code hooks in `.claude/settings.json` for deterministic
 | Hook | Type | Trigger | Purpose |
 |------|------|---------|---------|
 | `enforce-tdd-order.sh` | PreToolUse | Write/Edit | Blocks implementation writes if no test file modified first |
+| `phase-guard.sh` | PreToolUse | Write/Edit | Blocks impl writes during read-only phases (gather, specify, design, plan, review) |
 | `protect-main.sh` | PreToolUse | Bash | Blocks `git commit` on main/master |
+| `commit-size-check.sh` | PreToolUse | Bash | Warns when staged changes exceed 500 lines or 30 files |
+| `detect-secrets.sh` | PreToolUse | Bash | Blocks commits containing credentials or API keys |
+| `force-push-warning.sh` | PreToolUse | Bash | Blocks force push to main/master, warns on other branches |
+| `amend-safety.sh` | PreToolUse | Bash | Blocks `--amend` if HEAD was already pushed |
 | `regression-reminder.sh` | PostToolUse | Bash | Reminds to run full regression after targeted tests |
+| `post-edit-lint.sh` | PostToolUse | Write/Edit | Runs profile linter on edited file (informational) |
 
-Hooks live in `scripts/hooks/`. To temporarily bypass TDD enforcement: `touch .claude/skip-tdd` (remove after).
+Hooks live in `scripts/hooks/`. Bypass flags: `touch .claude/skip-tdd` (TDD), `touch .claude/skip-phase-guard` (phase guard), `touch .claude/skip-lint` (auto-lint).
+
+---
+
+## Session Logging
+
+Before responding to any of the following, run `/worklog --auto` first:
+- **compact** (manual or automatic)
+- **clear** (or `/clear`)
+- **exit** / **quit** / session end
+
+This captures session context before it is lost. `--auto` skips user approval.
+
+**Exception:** Skip if no meaningful work was done (only read-only commands or simple questions).
 
 ---
 

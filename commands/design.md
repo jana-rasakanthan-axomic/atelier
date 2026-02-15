@@ -1,6 +1,7 @@
 ---
 name: design
 description: Create technical design and detailed implementation tickets from PRD
+model_hint: opus
 allowed-tools: Read, Grep, Glob, AskUserQuestion, Write, Edit
 ---
 
@@ -103,6 +104,8 @@ Define contracts for each layer (API, Service, Repository). Reference active pro
 ### Stage 4: Break Into Endpoint-Level Tickets
 
 **Agent:** Designer | **Skills:** `skills/design/vertical-slicing.md`, `skills/design/pattern-referencing.md`
+
+**Large designs (>3 tickets):** Delegate ticket generation to a Designer subagent via the Task tool. The main context handles Stages 0-3 and user review in Stage 5; the subagent reads contracts from Stage 3 and generates tickets mechanically. See `docs/reference/subagent-patterns.md`.
 
 **Rule:** One ticket = one primary endpoint. Points: 2 (simple CRUD), 3 (with business logic), 5 (complex/async). Never exceed 5.
 

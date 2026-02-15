@@ -1,7 +1,8 @@
 ---
 name: worklog
 description: Capture session summary and append to work log. Use when ending a session, before compacting, or to record progress.
-allowed-tools: Read, Write, Edit, Bash(git:*), Bash(date:*), Bash(mkdir:*), Grep, Glob
+model_hint: haiku
+allowed-tools: Read, Write, Edit, Bash(git:*), Bash(date:*), Bash(mkdir:*), Bash(scripts/session-manager.sh:*), Grep, Glob
 ---
 
 # /worklog
@@ -28,7 +29,7 @@ Capture a session summary and append it to a persistent work log.
 
 ---
 
-## Workflow (4 Stages)
+## Workflow (5 Stages)
 
 ### Stage 1: Resolve & Gather
 
@@ -113,6 +114,19 @@ Write the entry to the work log file.
 **Confirmation:** Report the file path and timestamp of the appended entry.
 
 ---
+
+### Stage 5: Save Session State
+
+After appending the worklog entry, persist current session state for future resume.
+
+Run: `scripts/session-manager.sh save`
+
+This captures phase, feature, branch, commit, uncommitted file count, locked files, and workstream state to `.atelier/sessions/<session_id>.json`. The session ID is auto-generated from the current date and branch name.
+
+If the save fails (e.g., not in a git repo), log a warning and continue -- session persistence is best-effort and should not block the worklog.
+
+---
+
 
 ## Error Handling
 

@@ -1,6 +1,7 @@
 ---
 name: braindump
 description: Capture raw ideas and transform them into a structured PRD draft
+model_hint: sonnet
 allowed-tools: Read, Write, Edit, Grep, Glob, AskUserQuestion
 ---
 
@@ -63,14 +64,7 @@ Accept raw input in whatever form it arrives.
 
 **Interactive Mode (no input provided):**
 
-Ask the following in a single batch using `AskUserQuestion`. One pass only -- no follow-ups.
-
-1. What problem are you trying to solve? (one sentence)
-2. Who is this for? (target users/audience)
-3. What are the key things it should do? (bullet points, rough is fine)
-4. What should it NOT do? (boundaries, out of scope)
-5. Any constraints? (tech, budget, timeline, platform)
-6. Anything else I should know? (context, inspiration, existing solutions)
+Ask these 6 questions in a single `AskUserQuestion` batch (one pass, no follow-ups): Problem, Users, Features, Boundaries, Constraints, Context.
 
 **File/Text Mode:** Read content, extract key themes and requirements, note existing structure, identify input format.
 
@@ -80,16 +74,7 @@ Ask the following in a single batch using `AskUserQuestion`. One pass only -- no
 
 Extract structured elements from raw input and identify gaps.
 
-**Extraction Targets:**
-
-| Element | Source Signals |
-|---------|---------------|
-| Problem Statement | "the problem is...", "we need...", "currently..." |
-| Target Users | "users", "customers", "admins", "developers" |
-| Key Features | "should be able to...", "must have...", "I want..." |
-| Constraints | "can't", "must not", "limited to", "only" |
-| Out of Scope | "not now", "later", "won't", "skip" |
-| Non-Functional | "fast", "secure", "scalable", "accessible" |
+Extract: Problem Statement, Target Users, Key Features, Constraints, Out of Scope, Non-Functional requirements. Scan for signal phrases (e.g., "we need...", "must have...", "can't...", "not now...").
 
 **Gap Analysis:** After extraction, identify missing users, vague scope, missing constraints, conflicting needs, or missing priority signals.
 
@@ -101,18 +86,7 @@ Extract structured elements from raw input and identify gaps.
 
 Write a structured PRD draft to `.claude/context/{feature-name}-prd-draft.md`.
 
-**PRD Sections:**
-
-1. **Header** -- Status (DRAFT), created date, source
-2. **Problem Statement** -- Why this needs to exist
-3. **Target Users / Personas** -- Table of persona, description, primary need
-4. **User Stories** -- Given/When/Then format per persona
-5. **Feature Requirements** -- Prioritized: Must Have (P0), Should Have (P1), Nice to Have (P2)
-6. **Non-Functional Requirements** -- Performance, security, scalability, accessibility
-7. **Out of Scope** -- Items excluded with rationale
-8. **Open Questions** -- Unresolved items needing answers before implementation
-9. **Assumptions** -- Stated assumptions
-10. **Next Steps** -- Recommended follow-on commands
+**PRD Sections:** Header (DRAFT status, date, source), Problem Statement, Target Users/Personas (table), User Stories (Given/When/Then), Feature Requirements (P0/P1/P2), Non-Functional Requirements, Out of Scope (with rationale), Open Questions, Assumptions, Next Steps.
 
 **Writing Rules:**
 - Fill sections with extracted content; leave clear placeholders for unknowns
