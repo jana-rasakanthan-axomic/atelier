@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/jana-rasakanthan-axomic/atelier/schemas/state.schema.json",
+  "title": "Atelier State",
+  "description": "Workflow phase state for an atelier session. Managed by scripts/state_manager.sh.",
+  "type": "object",
+  "required": ["version", "phase", "feature", "locked_files", "updated_at"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema version. Always 1 for this format."
+    },
+    "phase": {
+      "type": "string",
+      "enum": ["gather", "specify", "design", "plan", "build", "review", "deploy"],
+      "description": "Current workflow phase."
+    },
+    "feature": {
+      "type": "string",
+      "description": "Name of the feature being worked on. Empty string if not set."
+    },
+    "locked_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "File paths currently locked by the active phase."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO-8601 timestamp of the last state change."
+    }
+  }
+}
