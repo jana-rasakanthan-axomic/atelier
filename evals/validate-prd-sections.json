@@ -1,0 +1,6 @@
+{
+  "name": "PRD validator catches missing sections",
+  "command": "scripts/validate_prd.sh evals/fixtures/incomplete-prd.md",
+  "expected_exit_code": 2,
+  "expected_output_contains": ["Missing section"]
+}

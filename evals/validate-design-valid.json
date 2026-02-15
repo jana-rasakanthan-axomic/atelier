@@ -1,0 +1,6 @@
+{
+  "name": "Design validator passes a complete design ticket",
+  "command": "scripts/validate_design.sh evals/fixtures/valid-design.md",
+  "expected_exit_code": 0,
+  "expected_output_contains": ["0 error(s)"]
+}
