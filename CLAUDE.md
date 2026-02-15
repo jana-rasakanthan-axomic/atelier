@@ -305,10 +305,16 @@ Atelier registers Claude Code hooks in `.claude/settings.json` for deterministic
 | Hook | Type | Trigger | Purpose |
 |------|------|---------|---------|
 | `enforce-tdd-order.sh` | PreToolUse | Write/Edit | Blocks implementation writes if no test file modified first |
+| `phase-guard.sh` | PreToolUse | Write/Edit | Blocks impl writes during read-only phases (gather, specify, design, plan, review) |
 | `protect-main.sh` | PreToolUse | Bash | Blocks `git commit` on main/master |
+| `commit-size-check.sh` | PreToolUse | Bash | Warns when staged changes exceed 500 lines or 30 files |
+| `detect-secrets.sh` | PreToolUse | Bash | Blocks commits containing credentials or API keys |
+| `force-push-warning.sh` | PreToolUse | Bash | Blocks force push to main/master, warns on other branches |
+| `amend-safety.sh` | PreToolUse | Bash | Blocks `--amend` if HEAD was already pushed |
 | `regression-reminder.sh` | PostToolUse | Bash | Reminds to run full regression after targeted tests |
+| `post-edit-lint.sh` | PostToolUse | Write/Edit | Runs profile linter on edited file (informational) |
 
-Hooks live in `scripts/hooks/`. To temporarily bypass TDD enforcement: `touch .claude/skip-tdd` (remove after).
+Hooks live in `scripts/hooks/`. Bypass flags: `touch .claude/skip-tdd` (TDD), `touch .claude/skip-phase-guard` (phase guard), `touch .claude/skip-lint` (auto-lint).
 
 ---
 
