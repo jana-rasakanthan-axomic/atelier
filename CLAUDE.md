@@ -355,6 +355,19 @@ This captures session context before it is lost. `--auto` skips user approval.
 
 ---
 
+## Session Logging
+
+Before responding to any of the following, run `/worklog --auto` first:
+- **compact** (manual or automatic)
+- **clear** (or `/clear`)
+- **exit** / **quit** / session end
+
+This captures session context before it is lost. `--auto` skips user approval.
+
+**Exception:** Skip if no meaningful work was done (only read-only commands or simple questions).
+
+---
+
 ## Sources
 
 This toolkit's process design is informed by:

@@ -127,6 +127,7 @@ If the save fails (e.g., not in a git repo), log a warning and continue -- sessi
 
 ---
 
+
 ## Error Handling
 
 | Scenario | Action |
