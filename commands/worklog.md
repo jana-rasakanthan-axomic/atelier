@@ -1,26 +1,26 @@
 ---
 name: worklog
-description: Capture session summary and append to work log. Use when ending a session, before compacting, or to record progress.
+description: Capture incremental session summary and append to work log. Use anytime to record progress — each run captures changes since the last entry.
 model_hint: haiku
 allowed-tools: Read, Write, Edit, Bash(git:*), Bash(date:*), Bash(mkdir:*), Bash(scripts/session-manager.sh:*), Grep, Glob
 ---
 
 # /worklog
 
-Capture a session summary and append it to a persistent work log.
+Capture an incremental session summary and append it to a persistent work log. Each invocation captures the **delta since the last `/worklog` run**, so it is safe to run multiple times per session.
 
 ## Input Formats
 
 - `/worklog` — Draft session summary, show for approval, then append
-- `/worklog --auto` — Skip approval, append directly (for auto-trigger)
+- `/worklog --auto` — Skip approval, append directly
 - `/worklog --dry-run` — Preview entry without appending
 - `/worklog --path ~/custom/log.md` — Override output path for this invocation
 
 ## When to Use
 
-- Ending a session (before compact, clear, or exit)
-- Switching context to a different project
-- Recording progress at a natural stopping point
+- Anytime you want to checkpoint your progress
+- Before stepping away, switching context, or ending a session
+- After completing a meaningful piece of work
 
 ## When NOT to Use
 
@@ -33,7 +33,7 @@ Capture a session summary and append it to a persistent work log.
 
 ### Stage 1: Resolve & Gather
 
-Determine the output path and collect context for the entry.
+Determine the output path, check for a previous checkpoint, and collect context for the entry.
 
 **Path Resolution:**
 1. `--path` flag — if provided, use directly
@@ -41,15 +41,31 @@ Determine the output path and collect context for the entry.
 
 Create `~/.config/atelier/` directory if it doesn't exist: `mkdir -p ~/.config/atelier`
 
+**Checkpoint Resolution:**
+
+Check for a previous worklog timestamp:
+```bash
+LAST_RUN=$(cat .claude/worklog-last 2>/dev/null || echo "")
+```
+
+- If `LAST_RUN` is set, this is an **incremental** run — gather only changes since that timestamp.
+- If `LAST_RUN` is empty, this is the **first** run in this session — gather everything available.
+
 **Gather Context:**
 - Repo name: `basename $(git rev-parse --show-toplevel 2>/dev/null)` (fallback: `no-repo`)
 - Branch: `git rev-parse --abbrev-ref HEAD 2>/dev/null` (fallback: `none`)
-- Recent commits on this branch: `git log --oneline -5 2>/dev/null`
-- Diff stat: `git diff --stat HEAD~5..HEAD 2>/dev/null`
 - Current date/time: `date '+%Y-%m-%d %H:%M'`
 
+If `LAST_RUN` is set (incremental):
+- Commits since last run: `git log --oneline --since="$LAST_RUN" 2>/dev/null`
+- Diff stat since last run: `git diff --stat $(git log --format=%H --since="$LAST_RUN" | tail -1)..HEAD 2>/dev/null`
+
+If `LAST_RUN` is empty (first run):
+- Recent commits on this branch: `git log --oneline -5 2>/dev/null`
+- Diff stat: `git diff --stat HEAD~5..HEAD 2>/dev/null`
+
 **Synthesize from conversation:**
-- What was discussed, researched, or decided
+- What was discussed, researched, or decided **since the last `/worklog` run** (or since session start if first run)
 - Code changes made and their purpose
 - Problems encountered and how they were resolved
 - What remains to be done
@@ -115,9 +131,18 @@ Write the entry to the work log file.
 
 ---
 
-### Stage 5: Save Session State
+### Stage 5: Save Checkpoint & Session State
 
-After appending the worklog entry, persist current session state for future resume.
+After appending the worklog entry, record the checkpoint timestamp and persist session state.
+
+**Write checkpoint timestamp:**
+```bash
+mkdir -p .claude && date '+%Y-%m-%d %H:%M:%S' > .claude/worklog-last
+```
+
+This ensures the next `/worklog` run only captures the delta from this point forward.
+
+**Save session state:**
 
 Run: `scripts/session-manager.sh save`
 
@@ -140,5 +165,7 @@ If the save fails (e.g., not in a git repo), log a warning and continue -- sessi
 ## Scope Limits
 
 - One entry per invocation
+- Each entry covers the delta since the last `/worklog` run (or session start if first run)
 - Does not read or modify the existing log (append-only)
 - Does not sync or push the log anywhere
+- Checkpoint file (`.claude/worklog-last`) is local and not committed to git
