@@ -8,32 +8,32 @@ Improvement ideas collected while using atelier. Both the table and the details 
 
 | Priority | Total | Backlog | Partial | Done |
 |----------|-------|---------|---------|------|
-| P0 | 3 | 2 | 0 | 1 |
-| P1 | 5 | 0 | 4 | 1 |
-| P2 | 2 | 2 | 0 | 0 |
-| P3 | 7 | 7 | 0 | 0 |
+| P0 | 3 | 0 | 0 | 3 |
+| P1 | 5 | 0 | 1 | 4 |
+| P2 | 2 | 0 | 0 | 2 |
+| P3 | 7 | 4 | 0 | 3 |
 | P4 | 1 | 0 | 0 | 1 |
-| P5 | 4 | 2 | 2 | 0 |
+| P5 | 4 | 1 | 2 | 1 |
 | P6 | 1 | 1 | 0 | 0 |
-| — | 19 | 16 | 1 | 2 |
-| **Total** | **42** | **30** | **7** | **5** |
+| — | 19 | 10 | 1 | 8 |
+| **Total** | **42** | **16** | **4** | **22** |
 
 **By Category:**
 
 | Category | Total | Backlog | Partial | Done |
 |----------|-------|---------|---------|------|
-| Hooks | 7 | 6 | 0 | 1 |
-| State | 2 | 2 | 0 | 0 |
-| Context | 6 | 1 | 3 | 2 |
-| Scripts | 10 | 10 | 0 | 0 |
+| Hooks | 7 | 0 | 0 | 7 |
+| State | 2 | 0 | 0 | 2 |
+| Context | 6 | 1 | 1 | 4 |
+| Scripts | 11 | 8 | 0 | 3 |
 | Integration | 5 | 3 | 2 | 0 |
-| Profiles | 2 | 1 | 0 | 1 |
+| Profiles | 2 | 0 | 0 | 2 |
 | Testing | 2 | 2 | 0 | 0 |
-| Commands | 3 | 2 | 0 | 1 |
+| Commands | 3 | 1 | 0 | 2 |
 | Config | 1 | 0 | 1 | 0 |
-| Docs | 2 | 1 | 1 | 0 |
+| Docs | 2 | 0 | 0 | 2 |
 | Architecture | 1 | 1 | 0 | 0 |
-| **Total** | **42** | **30** | **7** | **5** |
+| **Total** | **42** | **16** | **4** | **22** |
 
 ---
 
@@ -41,48 +41,48 @@ Improvement ideas collected while using atelier. Both the table and the details 
 
 | ID | Title | Category | Description | Priority | Status |
 |----|-------|----------|-------------|----------|--------|
-| 1 | Phase guard hook | Hooks | Block writes to impl files during read-only phases | P0 | backlog |
+| 1 | Phase guard hook | Hooks | Block writes to impl files during read-only phases | P0 | implemented |
 | 2 | TDD verification hook | Hooks | Confirm test files modified before impl writes | P0 | implemented |
-| 3 | Post-edit auto-lint | Hooks | Run profile linter automatically after edits | P0 | backlog |
-| 4 | State machine | State | Track phase, feature, and locked files via JSON FSM | P2 | backlog |
+| 3 | Post-edit auto-lint | Hooks | Run profile linter automatically after edits | P0 | implemented |
+| 4 | State machine | State | Track phase, feature, and locked files via JSON FSM | P2 | implemented |
 | 5 | Design command diet | Context | Reduce `commands/design.md` to <200 lines | P1 | implemented |
 | 6 | Workstream command diet | Context | Reduce `commands/workstream.md` to <150 lines | P1 | partial |
-| 7 | Build command diet | Context | Reduce `commands/build.md` to <150 lines | P1 | partial |
+| 7 | Build command diet | Context | Reduce `commands/build.md` to <150 lines | P1 | implemented |
 | 8 | Skill progressive disclosure | Context | Lean SKILL.md with `reference/` dirs for details | P4 | implemented |
 | 9 | Workstream engine | Scripts | Dependency-aware Python script for workstream ops | P6 | backlog |
-| 10 | PRD validator | Scripts | Check PRD sections and flag ambiguous language | P3 | backlog |
-| 11 | Design validator | Scripts | Check design tickets for AC, estimates, file targets | P3 | backlog |
-| 12 | Bootstrap script | Scripts | Verify environment tools at session start | P3 | backlog |
-| 13 | State manager | State | CLI script for state init, transition, status, lock | P2 | backlog |
+| 10 | PRD validator | Scripts | Check PRD sections and flag ambiguous language | P3 | implemented |
+| 11 | Design validator | Scripts | Check design tickets for AC, estimates, file targets | P3 | implemented |
+| 12 | Bootstrap script | Scripts | Verify environment tools at session start | P3 | implemented |
+| 13 | State manager | State | CLI script for state init, transition, status, lock | P2 | implemented |
 | 14 | MCP server config | Integration | Settings template for Jira/Confluence MCP tools | P5 | partial |
 | 15 | Session persistence | Integration | Save/resume session state across conversations | P5 | partial |
 | 16 | Multi-model hints | Integration | Model preference in command frontmatter | P5 | backlog |
 | 17 | Flesh out profiles | Profiles | Complete stub profiles for all four stacks | — | implemented |
-| 18 | Profile validation | Profiles | Verify profile tool references resolve correctly | — | backlog |
+| 18 | Profile validation | Profiles | Verify profile tool references resolve correctly | — | implemented |
 | 19 | Self-review loop test | Testing | E2E test of `/review --self --loop` on real branch | — | backlog |
 | 20 | Author quality loop | Commands | validate-toolkit.sh + `--loop` mode for `/author` | — | implemented |
 | 21 | Workstream pr-check test | Testing | Integration test for workstream pr-check flow | — | backlog |
 | 22 | User-level config | Config | XDG config at `~/.config/atelier/` | — | partial |
-| 23 | Human-readable manuals | Docs | User guides in `docs/manuals/` | P1 | partial |
-| 24 | Fix install docs | Docs | Replace fictional `plugins install` with git clone | P5 | backlog |
+| 23 | Human-readable manuals | Docs | User guides in `docs/manuals/` | P1 | implemented |
+| 24 | Fix install docs | Docs | Replace fictional `plugins install` with git clone | P5 | implemented |
 | 25 | Evaluation framework | Scripts | `evals/*.json` to test agent decisions | P3 | backlog |
-| 26 | Braindump command diet | Context | Reduce and extract user guide from braindump.md | P1 | partial |
+| 26 | Braindump command diet | Context | Reduce and extract user guide from braindump.md | P1 | implemented |
 | 27 | Skill validator | Scripts | Lint agent files against best practices | P3 | backlog |
 | 28 | Source detector | Scripts | Parse input strings into structured source types | P3 | backlog |
 | 29 | Gather interview | Scripts | Structured requirements questionnaire | P3 | backlog |
 | 30 | Subagent refactoring | Architecture | Isolate heavy commands in subagent context | — | backlog |
 | 31 | Adopt external plugins | Integration | Evaluate community tools vs building from scratch | — | backlog |
-| 32 | Commit size warning | Hooks | Warn when staged changes exceed size thresholds | — | backlog |
-| 33 | Secrets detection | Hooks | Scan for credentials and API keys before commit | — | backlog |
+| 32 | Commit size warning | Hooks | Warn when staged changes exceed size thresholds | — | implemented |
+| 33 | Secrets detection | Hooks | Scan for credentials and API keys before commit | — | implemented |
 | 34 | Stacked PR dependencies | Integration | Track PR merge order for dependent features | — | backlog |
 | 35 | Smart context loading | Context | On-demand doc loading triggered by user need | — | backlog |
 | 36 | Plugin update command | Commands | Self-update mechanism for atelier installations | — | backlog |
 | 37 | Git account mismatch detection | Scripts | Validate gh account matches repo owner before push | — | backlog |
-| 38 | Force push protection | Hooks | Warn before force-pushing amended commits | — | backlog |
+| 38 | Force push protection | Hooks | Warn before force-pushing amended commits | — | implemented |
 | 39 | Cross-platform path library | Scripts | Shared path resolution for macOS/Linux differences | — | backlog |
 | 40 | Plugin registry verification | Scripts | Check plugin symlink and settings.json are in sync | — | backlog |
-| 41 | Amend safety check | Hooks | Verify HEAD matches expected commit before amend | — | backlog |
-| 42 | /atelier-feedback command | Commands | Capture toolkit improvement ideas into IMPROVEMENTS.md | — | backlog |
+| 41 | Amend safety check | Hooks | Verify HEAD matches expected commit before amend | — | implemented |
+| 42 | /atelier-feedback command | Commands | Capture toolkit improvement ideas into IMPROVEMENTS.md | — | implemented |
 
 ---
 
@@ -342,4 +342,4 @@ Improvement ideas collected while using atelier. Both the table and the details 
 
 ---
 
-*Last updated: 2026-02-14*
+*Last updated: 2026-02-15*
