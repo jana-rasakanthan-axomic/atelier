@@ -277,10 +277,11 @@ See `docs/reference/topic-index.md` for a mapping of common topics to their refe
 ```
 Review each PR in the morning, then `/fix --loop` to address remaining quality issues.
 
-### Session End
+### Session End (Optional)
 ```
 /worklog -> (compact / clear / exit)
 ```
+`/worklog` is optional — run it anytime to checkpoint progress. Each run captures only the delta since the last entry.
 
 ---
 
@@ -339,32 +340,6 @@ Atelier registers Claude Code hooks in `.claude/settings.json` for deterministic
 | `post-edit-lint.sh` | PostToolUse | Write/Edit | Runs profile linter on edited file (informational) |
 
 Hooks live in `scripts/hooks/`. Bypass flags: `touch .claude/skip-tdd` (TDD), `touch .claude/skip-phase-guard` (phase guard), `touch .claude/skip-lint` (auto-lint).
-
----
-
-## Session Logging
-
-Before responding to any of the following, run `/worklog --auto` first:
-- **compact** (manual or automatic)
-- **clear** (or `/clear`)
-- **exit** / **quit** / session end
-
-This captures session context before it is lost. `--auto` skips user approval.
-
-**Exception:** Skip if no meaningful work was done (only read-only commands or simple questions).
-
----
-
-## Session Logging
-
-Before responding to any of the following, run `/worklog --auto` first:
-- **compact** (manual or automatic)
-- **clear** (or `/clear`)
-- **exit** / **quit** / session end
-
-This captures session context before it is lost. `--auto` skips user approval.
-
-**Exception:** Skip if no meaningful work was done (only read-only commands or simple questions).
 
 ---
 
