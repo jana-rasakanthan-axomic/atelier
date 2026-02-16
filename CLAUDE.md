@@ -112,6 +112,7 @@ Each repo resolves its own profile. Commands automatically use the correct tools
 | `/braindump` | Capture unstructured ideas into structured output | Discovery |
 | `/init` | Initialize atelier in a new project | Setup |
 | `/author` | Create or improve toolkit components. `--loop` for automated validation | Documentation |
+| `/daily-brief` | Start your day — aggregate PRs, worklog next steps, workstream status | Discovery |
 | `/atelier-feedback` | Capture toolkit improvement ideas into IMPROVEMENTS.md | Feedback |
 
 ## Quick Reference — Skills
