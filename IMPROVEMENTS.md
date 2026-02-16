@@ -15,8 +15,8 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | P4 | 1 | 0 | 0 | 1 |
 | P5 | 4 | 0 | 0 | 4 |
 | P6 | 1 | 0 | 0 | 1 |
-| — | 21 | 2 | 0 | 19 |
-| **Total** | **44** | **2** | **0** | **42** |
+| — | 21 | 1 | 0 | 20 |
+| **Total** | **44** | **1** | **0** | **43** |
 
 **By Category:**
 
@@ -25,7 +25,7 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | Hooks | 7 | 0 | 0 | 7 |
 | State | 2 | 0 | 0 | 2 |
 | Context | 6 | 0 | 0 | 6 |
-| Scripts | 12 | 1 | 0 | 11 |
+| Scripts | 12 | 0 | 0 | 12 |
 | Integration | 5 | 0 | 0 | 5 |
 | Profiles | 2 | 0 | 0 | 2 |
 | Testing | 2 | 0 | 0 | 2 |
@@ -33,7 +33,7 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | Config | 1 | 0 | 0 | 1 |
 | Docs | 2 | 0 | 0 | 2 |
 | Architecture | 1 | 0 | 0 | 1 |
-| **Total** | **44** | **2** | **0** | **42** |
+| **Total** | **44** | **1** | **0** | **43** |
 
 ---
 
@@ -83,7 +83,7 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | 40 | Plugin registry verification | Scripts | Check plugin symlink and settings.json are in sync | — | implemented |
 | 41 | Amend safety check | Hooks | Verify HEAD matches expected commit before amend | — | implemented |
 | 42 | /atelier-feedback command | Commands | Capture toolkit improvement ideas into IMPROVEMENTS.md | — | implemented |
-| 43 | Auto-increment toolkit version on merge | Scripts | Bump version automatically when changes merge to main/master | — | backlog |
+| 43 | Auto-increment toolkit version on merge | Scripts | Bump version automatically when changes merge to main/master | — | implemented |
 | 44 | Daily brief command | Commands | /daily-brief command to start the day — pull worklog next steps, PR reviews, workstream status, configurable by engineer level | — | backlog |
 
 ---

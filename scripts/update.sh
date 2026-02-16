@@ -94,10 +94,11 @@ validate_git_repo() {
 # --- Version info ---
 
 show_version() {
-  local hash date
+  local semver hash date
+  semver="$(tr -d '[:space:]' < "$TOOLKIT_DIR/VERSION" 2>/dev/null || echo "unknown")"
   hash="$(git -C "$TOOLKIT_DIR" rev-parse --short HEAD 2>/dev/null || echo "unknown")"
   date="$(git -C "$TOOLKIT_DIR" log -1 --format='%ci' 2>/dev/null || echo "unknown")"
-  echo "Version: $hash ($date)"
+  echo "Version: $semver ($hash, $date)"
 }
 
 # --- Fetch and compare ---
