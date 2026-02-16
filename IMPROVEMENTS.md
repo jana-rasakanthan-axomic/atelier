@@ -15,8 +15,8 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | P4 | 1 | 0 | 0 | 1 |
 | P5 | 4 | 0 | 0 | 4 |
 | P6 | 1 | 0 | 0 | 1 |
-| — | 19 | 0 | 0 | 19 |
-| **Total** | **42** | **0** | **0** | **42** |
+| — | 21 | 2 | 0 | 19 |
+| **Total** | **44** | **2** | **0** | **42** |
 
 **By Category:**
 
@@ -25,15 +25,15 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | Hooks | 7 | 0 | 0 | 7 |
 | State | 2 | 0 | 0 | 2 |
 | Context | 6 | 0 | 0 | 6 |
-| Scripts | 11 | 0 | 0 | 11 |
+| Scripts | 12 | 1 | 0 | 11 |
 | Integration | 5 | 0 | 0 | 5 |
 | Profiles | 2 | 0 | 0 | 2 |
 | Testing | 2 | 0 | 0 | 2 |
-| Commands | 3 | 0 | 0 | 3 |
+| Commands | 4 | 1 | 0 | 3 |
 | Config | 1 | 0 | 0 | 1 |
 | Docs | 2 | 0 | 0 | 2 |
 | Architecture | 1 | 0 | 0 | 1 |
-| **Total** | **42** | **0** | **0** | **42** |
+| **Total** | **44** | **2** | **0** | **42** |
 
 ---
 
@@ -83,6 +83,8 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | 40 | Plugin registry verification | Scripts | Check plugin symlink and settings.json are in sync | — | implemented |
 | 41 | Amend safety check | Hooks | Verify HEAD matches expected commit before amend | — | implemented |
 | 42 | /atelier-feedback command | Commands | Capture toolkit improvement ideas into IMPROVEMENTS.md | — | implemented |
+| 43 | Auto-increment toolkit version on merge | Scripts | Bump version automatically when changes merge to main/master | — | backlog |
+| 44 | Daily brief command | Commands | /daily-brief command to start the day — pull worklog next steps, PR reviews, workstream status, configurable by engineer level | — | backlog |
 
 ---
 
@@ -340,6 +342,18 @@ Improvement ideas collected while using atelier. Both the table and the details 
 
 **Solution:** A `/atelier-feedback` command that takes the user's raw suggestion, reformats it into the Title/Problem/Solution structure, shows it for confirmation, then appends to both the Status Tracker table and Details section in IMPROVEMENTS.md.
 
+### 43. Auto-increment toolkit version on merge
+
+**Problem:** The toolkit version (`0.1.0` in `installed_plugins.json`) is static and never updates when changes merge to main. Users and the plugin cache have no way to know if their cached version is current, and there's no version history tracking releases.
+
+**Solution:** Add a version bump mechanism that increments the toolkit version each time a PR merges to main. This could be a GitHub Action, a git hook, or a script run by `/commit`. Store the version in a canonical location (e.g., `VERSION` file or `package.json`) and update the marketplace metadata accordingly.
+
+### 44. Daily brief command
+
+**Problem:** There's no structured way to start an engineering day. Context from previous sessions, pending PR reviews, and workstream status are scattered across tools. Engineers waste time manually piecing together what needs attention.
+
+**Solution:** A `/daily-brief` command that aggregates: (1) "next steps" from the last worklog entry, (2) workstream ticket status, (3) pending PR reviews via `gh`, (4) uncommitted work across worktrees. Support a `--level` flag (default: senior) that adjusts focus — IC level emphasizes code tasks, staff level adds cross-team dependencies and blockers. Configuration (repos, boards, level default) lives in `~/.config/atelier/config.yaml`.
+
 ---
 
-*Last updated: 2026-02-15*
+*Last updated: 2026-02-16*
