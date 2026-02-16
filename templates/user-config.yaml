@@ -49,3 +49,20 @@ git:
 
   # Automatically create git worktrees for parallel work.
   auto_worktree: true
+
+# --------------------------------------------------------------------------
+# Daily Brief
+# --------------------------------------------------------------------------
+# Settings for the /daily-brief command.
+daily_brief:
+  # Output directory for daily brief files.
+  # output_dir: ~/worklogs/daily-briefs
+
+  # Default engineer level: ic, senior, staff
+  level: senior
+
+  # GitHub repos to monitor (auto-detect from current dir if empty).
+  # repos: org/repo1,org/repo2
+
+  # Command to open the brief file.
+  editor: code

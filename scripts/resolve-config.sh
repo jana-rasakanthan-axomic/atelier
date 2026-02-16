@@ -57,6 +57,10 @@ Supported keys:
   session_dir            Directory for session files
   git.initials           Initials for branch naming
   git.auto_worktree      Auto-create worktrees (true/false)
+  daily_brief.output_dir Output directory for daily briefs
+  daily_brief.level      Default engineer level (ic/senior/staff)
+  daily_brief.repos      GitHub repos to monitor (comma-separated)
+  daily_brief.editor     Editor command to open briefs
 
 Resolution order (highest priority first):
   1. Project (.atelier/config.yaml)
@@ -207,6 +211,15 @@ auto_detect() {
     session_dir)
       echo "$USER_CONFIG_DIR/sessions"
       ;;
+    daily_brief.output_dir)
+      echo "$HOME/worklogs/daily-briefs"
+      ;;
+    daily_brief.level)
+      echo "senior"
+      ;;
+    daily_brief.editor)
+      echo "code"
+      ;;
     *)
       return 1
       ;;
@@ -307,7 +320,7 @@ case "$cmd" in
     ;;
 
   show)
-    ALL_KEYS=(profile default_model output_dir session_dir git.initials git.auto_worktree)
+    ALL_KEYS=(profile default_model output_dir session_dir git.initials git.auto_worktree daily_brief.output_dir daily_brief.level daily_brief.repos daily_brief.editor)
 
     printf "%-22s %-30s %s\n" "KEY" "VALUE" "SOURCE"
     printf "%-22s %-30s %s\n" "---" "-----" "------"

@@ -15,8 +15,8 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | P4 | 1 | 0 | 0 | 1 |
 | P5 | 4 | 0 | 0 | 4 |
 | P6 | 1 | 0 | 0 | 1 |
-| — | 21 | 1 | 0 | 20 |
-| **Total** | **44** | **1** | **0** | **43** |
+| — | 21 | 0 | 0 | 21 |
+| **Total** | **44** | **0** | **0** | **44** |
 
 **By Category:**
 
@@ -29,11 +29,11 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | Integration | 5 | 0 | 0 | 5 |
 | Profiles | 2 | 0 | 0 | 2 |
 | Testing | 2 | 0 | 0 | 2 |
-| Commands | 4 | 1 | 0 | 3 |
+| Commands | 4 | 0 | 0 | 4 |
 | Config | 1 | 0 | 0 | 1 |
 | Docs | 2 | 0 | 0 | 2 |
 | Architecture | 1 | 0 | 0 | 1 |
-| **Total** | **44** | **1** | **0** | **43** |
+| **Total** | **44** | **0** | **0** | **44** |
 
 ---
 
@@ -84,7 +84,7 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | 41 | Amend safety check | Hooks | Verify HEAD matches expected commit before amend | — | implemented |
 | 42 | /atelier-feedback command | Commands | Capture toolkit improvement ideas into IMPROVEMENTS.md | — | implemented |
 | 43 | Auto-increment toolkit version on merge | Scripts | Bump version automatically when changes merge to main/master | — | implemented |
-| 44 | Daily brief command | Commands | /daily-brief command to start the day — pull worklog next steps, PR reviews, workstream status, configurable by engineer level | — | backlog |
+| 44 | Daily brief command | Commands | /daily-brief command to start the day — pull worklog next steps, PR reviews, workstream status, configurable by engineer level | — | implemented |
 
 ---
 
