@@ -230,9 +230,9 @@ Follow the principle of minimum permissions. A `/review` command should not need
 
 Commands declare `model_hint` in frontmatter to suggest optimal model selection:
 
-- **`opus`** -- Deep reasoning tasks (design, specify, review)
-- **`sonnet`** -- Balanced tasks (build, fix, plan, gather, braindump, workstream, deploy)
-- **`haiku`** -- Speed-priority tasks (commit, test, worklog, init, author, atelier-feedback)
+- **`opus`** -- Deep reasoning tasks (design, specify, review, plan)
+- **`sonnet`** -- Balanced tasks (build, fix, braindump, workstream)
+- **`haiku`** -- Speed-priority tasks (commit, test, worklog, init, author, gather, daily-brief, deploy, update, atelier-feedback)
 
 These are suggestions, not enforcement. The user's active model always takes precedence.
 
