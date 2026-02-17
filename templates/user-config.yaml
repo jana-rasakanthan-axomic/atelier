@@ -66,3 +66,13 @@ daily_brief:
 
   # Command to open the brief file.
   editor: code
+
+  # Jira: custom JQL query (replaces default "assignee = currentUser()" query).
+  # jira_jql: "project = SHRED AND assignee = currentUser() AND status != Done"
+
+  # Confluence: space keys to monitor (comma-separated). Empty = all spaces.
+  # confluence_spaces: ENG,ARCH
+  # Confluence: only pages with these labels (comma-separated). Empty = all labels.
+  # confluence_labels: rfc,adr
+  # Confluence: lookback window in days (default: 1).
+  # confluence_days: 1

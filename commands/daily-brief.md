@@ -1,8 +1,8 @@
 ---
 name: daily-brief
 description: Start your day — aggregate PR reviews, worklog next steps, and workstream status into an actionable checklist
-model_hint: sonnet
-allowed-tools: Read, Write, Grep, Glob, Bash(gh:*), Bash(git:*), Bash(date:*), Bash(mkdir:*), Bash(code:*), Bash(open:*), Bash(scripts/daily-brief-gather.sh:*), Bash(scripts/resolve-config.sh:*), mcp__atlassian__searchJiraIssues, mcp__atlassian__searchConfluencePages
+model_hint: haiku
+allowed-tools: Read, Write, Grep, Glob, Bash(gh:*), Bash(git:*), Bash(date:*), Bash(mkdir:*), Bash(code:*), Bash(open:*), Bash(scripts/daily-brief-gather.sh:*), Bash(scripts/resolve-config.sh:*), mcp__atlassian__searchJiraIssuesUsingJql, mcp__atlassian__searchConfluenceUsingCql, mcp__atlassian__getAccessibleAtlassianResources
 ---
 
 # /daily-brief
@@ -44,6 +44,10 @@ LEVEL="${--level flag or $(scripts/resolve-config.sh get daily_brief.level 2>/de
 OUTPUT_DIR="${--path flag or $(scripts/resolve-config.sh get daily_brief.output_dir 2>/dev/null) or ~/worklogs/daily-briefs}"
 EDITOR="$(scripts/resolve-config.sh get daily_brief.editor 2>/dev/null || echo 'code')"
 REPOS="$(scripts/resolve-config.sh get daily_brief.repos 2>/dev/null || echo '')"
+JIRA_JQL="$(scripts/resolve-config.sh get daily_brief.jira_jql 2>/dev/null || echo '')"
+CONFLUENCE_SPACES="$(scripts/resolve-config.sh get daily_brief.confluence_spaces 2>/dev/null || echo '')"
+CONFLUENCE_LABELS="$(scripts/resolve-config.sh get daily_brief.confluence_labels 2>/dev/null || echo '')"
+CONFLUENCE_DAYS="$(scripts/resolve-config.sh get daily_brief.confluence_days 2>/dev/null || echo '1')"
 DATE="$(date '+%Y-%m-%d')"
 OUTPUT_FILE="$OUTPUT_DIR/$DATE.md"
 ```
@@ -71,12 +75,24 @@ scripts/daily-brief-gather.sh repos       # Recent merge activity in configured 
 
 If `REPOS` is empty, the script auto-detects from the current directory's git remote.
 
-**Jira/Confluence (via MCP — optional):**
+**Jira (via MCP — optional):**
 
 Check if MCP tools are available (look for `mcp__atlassian__searchJiraIssues` in your tool list).
 
-- **MCP available:** Search for assigned Jira tickets (`assignee = currentUser() AND status != Done`) and recently updated Confluence pages.
-- **MCP not available:** Skip these sections. Add a note: `> Jira/Confluence: Not configured. See docs/manuals/mcp-setup.md for setup.`
+- **MCP available:**
+  - If `JIRA_JQL` is set: use it as the JQL query directly.
+  - If `JIRA_JQL` is empty: use default `assignee = currentUser() AND status != Done`.
+- **MCP not available:** Skip this section. Add a note: `> Jira: Not configured. See docs/manuals/mcp-setup.md for setup.`
+
+**Confluence (via MCP — optional):**
+
+- **MCP available:**
+  - Build a CQL query from config filters:
+    - If `CONFLUENCE_SPACES` is set: add `space in ("SPACE1","SPACE2")` (split on comma).
+    - If `CONFLUENCE_LABELS` is set: add `label in ("label1","label2")` (split on comma).
+    - Always add: `lastModified >= now("-${CONFLUENCE_DAYS}d")`.
+    - If no spaces or labels are configured: skip Confluence. Add a note: `> Confluence: No spaces configured. Set daily_brief.confluence_spaces in config.`
+- **MCP not available:** Skip this section. Add a note: `> Confluence: Not configured. See docs/manuals/mcp-setup.md for setup.`
 
 **Workstream status:**
 
