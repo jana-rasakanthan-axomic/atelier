@@ -2,7 +2,7 @@
 name: designer
 description: Converts PRDs into LLM-optimized design tickets (requirements documents)
 allowed-tools: Read, Grep, Glob, AskUserQuestion, Write
-model: opus
+model_hint: opus
 ---
 
 # Designer Agent

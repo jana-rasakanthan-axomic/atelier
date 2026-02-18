@@ -1,6 +1,7 @@
 ---
 name: reviewer
 description: Multi-persona code review from security, engineering, and product perspectives. Use for PR reviews, security audits, and architecture validation.
+model_hint: opus
 allowed-tools: Read, Grep, Glob, Bash(git:*)
 ---
 

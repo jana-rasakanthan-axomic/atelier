@@ -2,7 +2,7 @@
 name: specifier
 description: Extracts business rules and generates BDD scenarios from PRDs for PM review
 allowed-tools: Read, Write, Edit, AskUserQuestion
-model: opus
+model_hint: opus
 ---
 
 # Specifier Agent
