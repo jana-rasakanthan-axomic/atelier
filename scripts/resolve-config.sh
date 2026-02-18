@@ -61,6 +61,10 @@ Supported keys:
   daily_brief.level      Default engineer level (ic/senior/staff)
   daily_brief.repos      GitHub repos to monitor (comma-separated)
   daily_brief.editor     Editor command to open briefs
+  daily_brief.jira_jql   Custom JQL query for Jira tickets
+  daily_brief.confluence_spaces  Confluence space keys (comma-separated)
+  daily_brief.confluence_labels  Confluence page labels (comma-separated)
+  daily_brief.confluence_days    Confluence lookback window in days
 
 Resolution order (highest priority first):
   1. Project (.atelier/config.yaml)
@@ -220,6 +224,9 @@ auto_detect() {
     daily_brief.editor)
       echo "code"
       ;;
+    daily_brief.confluence_days)
+      echo "1"
+      ;;
     *)
       return 1
       ;;
@@ -320,7 +327,7 @@ case "$cmd" in
     ;;
 
   show)
-    ALL_KEYS=(profile default_model output_dir session_dir git.initials git.auto_worktree daily_brief.output_dir daily_brief.level daily_brief.repos daily_brief.editor)
+    ALL_KEYS=(profile default_model output_dir session_dir git.initials git.auto_worktree daily_brief.output_dir daily_brief.level daily_brief.repos daily_brief.editor daily_brief.jira_jql daily_brief.confluence_spaces daily_brief.confluence_labels daily_brief.confluence_days)
 
     printf "%-22s %-30s %s\n" "KEY" "VALUE" "SOURCE"
     printf "%-22s %-30s %s\n" "---" "-----" "------"

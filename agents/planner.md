@@ -1,6 +1,7 @@
 ---
 name: planner
 description: Analyze requirements and create implementation plans. Use when starting new features, performing gap analysis, or assessing risks before implementation.
+model_hint: opus
 allowed-tools: Read, Grep, Glob
 ---
 

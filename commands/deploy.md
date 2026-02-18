@@ -1,7 +1,7 @@
 ---
 name: deploy
 description: Build, deploy, and verify application using profile-configured tools
-model_hint: sonnet
+model_hint: haiku
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash(${profile.tools.test_runner.command}:*), Bash(${profile.tools.linter.command}:*), Bash(git:*), Bash(docker:*), AskUserQuestion
 ---
 

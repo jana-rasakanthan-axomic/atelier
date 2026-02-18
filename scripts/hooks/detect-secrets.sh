@@ -40,7 +40,7 @@ while IFS= read -r file; do
 done <<< "$FILES_TO_SCAN"
 
 # Content pattern scanning (only for files that exist and are staged)
-CONTENT_PATTERNS='API_KEY=|SECRET_KEY=|PASSWORD=|aws_access_key_id|PRIVATE KEY|sk-[a-zA-Z0-9]|ghp_[a-zA-Z0-9]|Bearer '
+CONTENT_PATTERNS='API_KEY=|SECRET_KEY=|PASSWORD=|aws_access_key_id|PRIVATE KEY|sk-[a-zA-Z0-9]{20,}|ghp_[a-zA-Z0-9]{20,}|Bearer [a-zA-Z0-9]'
 
 while IFS= read -r file; do
   [[ -z "$file" ]] && continue

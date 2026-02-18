@@ -1,7 +1,7 @@
 ---
 name: plan
 description: Create implementation plan and save to file
-model_hint: sonnet
+model_hint: opus
 allowed-tools: Read, Grep, Glob, Write
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: gather
 description: Gather context from Jira, Confluence, or GitHub and save to file
-model_hint: sonnet
+model_hint: haiku
 allowed-tools: Write, mcp__atlassian__getJiraIssue, mcp__atlassian__getConfluencePage, mcp__atlassian__getJiraIssueRemoteIssueLinks, Bash(gh:*)
 ---
 

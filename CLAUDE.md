@@ -339,8 +339,9 @@ Atelier registers Claude Code hooks in `.claude/settings.json` for deterministic
 | `amend-safety.sh` | PreToolUse | Bash | Blocks `--amend` if HEAD was already pushed |
 | `regression-reminder.sh` | PostToolUse | Bash | Reminds to run full regression after targeted tests |
 | `post-edit-lint.sh` | PostToolUse | Write/Edit | Runs profile linter on edited file (informational) |
+| `run-profile-hooks.sh` | PreToolUse | Write/Edit | Dispatches to profile-specific hooks in `profiles/hooks/<profile>/` |
 
-Hooks live in `scripts/hooks/`. Bypass flags: `touch .claude/skip-tdd` (TDD), `touch .claude/skip-phase-guard` (phase guard), `touch .claude/skip-lint` (auto-lint).
+Hooks live in `scripts/hooks/`. Profile-specific hooks live in `profiles/hooks/<profile>/`. Bypass flags: `touch .claude/skip-tdd` (TDD), `touch .claude/skip-phase-guard` (phase guard), `touch .claude/skip-lint` (auto-lint).
 
 ---
 

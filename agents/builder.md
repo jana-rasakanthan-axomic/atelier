@@ -1,6 +1,7 @@
 ---
 name: builder
 description: Implement code across all layers using skills. Use when executing approved plans, adding domain entities, or building integrations.
+model_hint: sonnet
 allowed-tools: Read, Write, Edit, Grep, Glob, Bash(${profile.test_runner}), Bash(${profile.linter}), Bash(${profile.type_checker})
 ---
 

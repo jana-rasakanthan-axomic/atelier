@@ -36,7 +36,12 @@ When a user's question or error matches a topic below, load the listed file(s) u
 | Agent template / structure | `skills/authoring/templates/agent.md` |
 | Skill template / structure | `skills/authoring/templates/skill.md` |
 | Model optimization tips | `skills/authoring/model-optimization.md` |
+| Model/thinking strategy | `docs/reference/model-thinking-strategy.md` |
+| MCP strategy / context bloat | `docs/reference/mcp-strategy.md` |
 | Toolkit architecture overview | `docs/ARCHITECTURE.md` |
+| Claude Code security / data privacy | `docs/reference/claude-code-security.md` |
+| Disable telemetry / non-essential traffic | `docs/reference/claude-code-security.md` |
+| What does /bug send? | `docs/reference/claude-code-security.md` |
 
 ---
 

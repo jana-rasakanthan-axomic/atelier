@@ -4,7 +4,8 @@
 #
 # Usage:
 #   scripts/validate-toolkit.sh <file> [<file>...]   # Validate specific files
-#   scripts/validate-toolkit.sh --all                 # Validate all toolkit components
+#   scripts/validate-toolkit.sh --all                 # Validate all components + CLAUDE.md + profiles
+#   scripts/validate-toolkit.sh --meta                 # Validate CLAUDE.md and profiles only
 #   scripts/validate-toolkit.sh --commands             # Validate all commands
 #   scripts/validate-toolkit.sh --agents               # Validate all agents
 #   scripts/validate-toolkit.sh --skills               # Validate all SKILL.md files
@@ -163,6 +164,114 @@ check_file_size() {
   fi
 }
 
+# ─── CLAUDE.md audit ─────────────────────────────────────────────────────────
+
+check_claude_md() {
+  local claude_md="$TOOLKIT_DIR/CLAUDE.md"
+  if [[ ! -f "$claude_md" ]]; then
+    emit_error "CLAUDE.md" "0" "CLAUDE.md not found at toolkit root"
+    return 0
+  fi
+
+  local rel_file="CLAUDE.md"
+  local line_count
+  line_count="$(wc -l < "$claude_md" | tr -d ' ')"
+
+  # Size limits: hard 500, soft 350 (Anthropic recommends <500 lines)
+  if (( line_count > 500 )); then
+    emit_error "$rel_file" "${line_count}" "CLAUDE.md exceeds 500 lines (${line_count} lines) — agent context window impact"
+  elif (( line_count > 350 )); then
+    emit_warn "$rel_file" "0" "CLAUDE.md exceeds 350 lines (${line_count} lines) — consider trimming"
+  fi
+
+  # Estimate tokens (~1.3 tokens per word for technical markdown)
+  local word_count
+  word_count="$(wc -w < "$claude_md" | tr -d ' ')"
+  local est_tokens=$(( word_count * 13 / 10 ))
+  if (( est_tokens > 4000 )); then
+    emit_warn "$rel_file" "0" "Estimated ~${est_tokens} tokens (${word_count} words) — may consume significant context"
+  fi
+
+  # Required sections in CLAUDE.md
+  local -a required=("Quick Reference" "TDD" "Design Principles" "Strict Compliance" "Model Hints")
+  for section in "${required[@]}"; do
+    if ! grep -qi "$section" "$claude_md"; then
+      emit_warn "$rel_file" "0" "Missing expected section: \"${section}\""
+    fi
+  done
+
+  # Check that all commands in commands/ are referenced
+  local cmd_name
+  while IFS= read -r cmd_file; do
+    [[ -z "$cmd_file" ]] && continue
+    cmd_name="$(get_frontmatter_field "$cmd_file" "name")"
+    [[ -z "$cmd_name" ]] && continue
+    if ! grep -q "/${cmd_name}" "$claude_md"; then
+      emit_warn "$rel_file" "0" "Command \"/${cmd_name}\" exists but not listed in CLAUDE.md"
+    fi
+  done < <(collect_commands)
+
+  # Check that all agents in agents/ are referenced
+  local agent_name
+  while IFS= read -r agent_file; do
+    [[ -z "$agent_file" ]] && continue
+    agent_name="$(get_frontmatter_field "$agent_file" "name")"
+    [[ -z "$agent_name" ]] && continue
+    local capitalized
+    capitalized="$(echo "${agent_name:0:1}" | tr '[:lower:]' '[:upper:]')${agent_name:1}"
+    if ! grep -qi "${capitalized}" "$claude_md"; then
+      emit_warn "$rel_file" "0" "Agent \"${capitalized}\" exists but not listed in CLAUDE.md"
+    fi
+  done < <(collect_agents)
+
+  # Check that all skills in skills/ are referenced
+  local skill_name
+  while IFS= read -r skill_file; do
+    [[ -z "$skill_file" ]] && continue
+    skill_name="$(get_frontmatter_field "$skill_file" "name")"
+    [[ -z "$skill_name" ]] && continue
+    if ! grep -q "${skill_name}/" "$claude_md"; then
+      emit_warn "$rel_file" "0" "Skill \"${skill_name}/\" exists but not listed in CLAUDE.md"
+    fi
+  done < <(collect_skills)
+
+  local errors_after=$ERRORS
+  local warnings_after=$WARNINGS
+  if (( errors_after == 0 && warnings_after == 0 )); then
+    emit_pass "$rel_file"
+  fi
+}
+
+# ─── Profile validation ──────────────────────────────────────────────────────
+
+check_profiles() {
+  local profiles_dir="$TOOLKIT_DIR/profiles"
+  [[ ! -d "$profiles_dir" ]] && return 0
+
+  local profile_file
+  for profile_file in "$profiles_dir"/*.md; do
+    [[ -f "$profile_file" ]] || continue
+    local rel_file
+    rel_file="$(rel_path "$profile_file")"
+    local line_count
+    line_count="$(wc -l < "$profile_file" | tr -d ' ')"
+
+    if (( line_count > 500 )); then
+      emit_error "$rel_file" "${line_count}" "Profile exceeds 500 lines (${line_count} lines)"
+    elif (( line_count > 300 )); then
+      emit_warn "$rel_file" "0" "Profile exceeds 300 lines (${line_count} lines)"
+    fi
+
+    # Profiles should have key sections
+    local -a expected_sections=("Test" "Lint")
+    for section in "${expected_sections[@]}"; do
+      if ! grep -qi "$section" "$profile_file"; then
+        emit_warn "$rel_file" "0" "Profile may be missing \"${section}\" configuration"
+      fi
+    done
+  done
+}
+
 # ─── Frontmatter validation ──────────────────────────────────────────────────
 
 check_frontmatter() {
@@ -305,17 +414,22 @@ collect_skills() {
 
 main() {
   if [[ $# -eq 0 ]]; then
-    echo "Usage: scripts/validate-toolkit.sh <file> [<file>...] | --all | --commands | --agents | --skills"
+    echo "Usage: scripts/validate-toolkit.sh <file> [<file>...] | --all | --meta | --commands | --agents | --skills"
     exit 1
   fi
 
   local files=()
+  local run_meta=false
 
   case "$1" in
     --all)
+      run_meta=true
       while IFS= read -r f; do files+=("$f"); done < <(collect_commands)
       while IFS= read -r f; do files+=("$f"); done < <(collect_agents)
       while IFS= read -r f; do files+=("$f"); done < <(collect_skills)
+      ;;
+    --meta)
+      run_meta=true
       ;;
     --commands)
       while IFS= read -r f; do files+=("$f"); done < <(collect_commands)
@@ -337,14 +451,25 @@ main() {
       ;;
   esac
 
-  if [[ ${#files[@]} -eq 0 ]]; then
+  # Validate component files
+  if [[ ${#files[@]} -gt 0 ]]; then
+    for file in "${files[@]}"; do
+      validate_file "$file"
+    done
+  fi
+
+  # Validate meta files (CLAUDE.md, profiles)
+  if [[ "$run_meta" == true ]]; then
+    echo ""
+    echo "─── Meta Validation ────────────────────────────────"
+    check_claude_md
+    check_profiles
+  fi
+
+  if [[ ${#files[@]} -eq 0 && "$run_meta" == false ]]; then
     echo "No files found to validate."
     exit 0
   fi
-
-  for file in "${files[@]}"; do
-    validate_file "$file"
-  done
 
   # Summary
   echo ""

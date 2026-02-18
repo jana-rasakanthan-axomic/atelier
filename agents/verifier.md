@@ -1,6 +1,7 @@
 ---
 name: verifier
 description: Execute tests and validate quality gates. Use for running test suites, coverage analysis, and pre-merge quality checks.
+model_hint: haiku
 allowed-tools: Read, Bash(${profile.tools.test_runner.command}), Bash(${profile.tools.test_runner.coverage}), Bash(${profile.tools.linter.command}), Bash(${profile.tools.type_checker.command})
 ---
 

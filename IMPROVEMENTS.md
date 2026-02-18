@@ -15,8 +15,8 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | P4 | 1 | 0 | 0 | 1 |
 | P5 | 4 | 0 | 0 | 4 |
 | P6 | 1 | 0 | 0 | 1 |
-| — | 21 | 0 | 0 | 21 |
-| **Total** | **44** | **0** | **0** | **44** |
+| — | 22 | 1 | 0 | 21 |
+| **Total** | **45** | **1** | **0** | **44** |
 
 **By Category:**
 
@@ -29,11 +29,11 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | Integration | 5 | 0 | 0 | 5 |
 | Profiles | 2 | 0 | 0 | 2 |
 | Testing | 2 | 0 | 0 | 2 |
-| Commands | 4 | 0 | 0 | 4 |
+| Commands | 5 | 1 | 0 | 4 |
 | Config | 1 | 0 | 0 | 1 |
 | Docs | 2 | 0 | 0 | 2 |
 | Architecture | 1 | 0 | 0 | 1 |
-| **Total** | **44** | **0** | **0** | **44** |
+| **Total** | **45** | **1** | **0** | **44** |
 
 ---
 
@@ -85,6 +85,7 @@ Improvement ideas collected while using atelier. Both the table and the details 
 | 42 | /atelier-feedback command | Commands | Capture toolkit improvement ideas into IMPROVEMENTS.md | — | implemented |
 | 43 | Auto-increment toolkit version on merge | Scripts | Bump version automatically when changes merge to main/master | — | implemented |
 | 44 | Daily brief command | Commands | /daily-brief command to start the day — pull worklog next steps, PR reviews, workstream status, configurable by engineer level | — | implemented |
+| 45 | Plan command model hint upgrade | Commands | `/plan` uses model_hint: sonnet but planning benefits from deeper reasoning — should default to opus like `/design` and `/specify` | — | backlog |
 
 ---
 
@@ -354,6 +355,12 @@ Improvement ideas collected while using atelier. Both the table and the details 
 
 **Solution:** A `/daily-brief` command that aggregates: (1) "next steps" from the last worklog entry, (2) workstream ticket status, (3) pending PR reviews via `gh`, (4) uncommitted work across worktrees. Support a `--level` flag (default: senior) that adjusts focus — IC level emphasizes code tasks, staff level adds cross-team dependencies and blockers. Configuration (repos, boards, level default) lives in `~/.config/atelier/config.yaml`.
 
+### 45. Plan command model hint upgrade
+
+**Problem:** The `/plan` command declares `model_hint: sonnet` in its frontmatter, but planning requires deep architectural reasoning similar to `/design` and `/specify` (which use opus). Sonnet produces shallower plans that miss edge cases and design nuances.
+
+**Solution:** Change `model_hint` in `commands/plan.md` from `sonnet` to `opus`. This aligns `/plan` with the other design-phase commands that benefit from deeper reasoning.
+
 ---
 
-*Last updated: 2026-02-16*
+*Last updated: 2026-02-17*

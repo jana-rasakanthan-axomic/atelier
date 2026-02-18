@@ -1,6 +1,7 @@
 ---
 name: update
 description: Update atelier to the latest version
+model_hint: haiku
 allowed-tools: Bash(git:*), Bash(bash:*), Read
 ---
 
